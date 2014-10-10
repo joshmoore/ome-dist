@@ -1304,6 +1304,41 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_Search_byFullText> AMD_Search_byFullTextPtr;
 
+class AMI_Search_byLuceneQueryBuilder : public ::Ice::AMICallbackBase
+{
+public:
+
+    virtual void ice_response() = 0;
+
+    void __response()
+    {
+        ice_response();
+    }
+    void __exception(const ::Ice::Exception& ex)
+    {
+        ice_exception(ex);
+    }
+    void __sent(bool sentSynchronously)
+    {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        AMICallbackBase::__sent(sentSynchronously);
+#else
+        ::Ice::AMICallbackBase::__sent(sentSynchronously);
+#endif
+    }
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_Search_byLuceneQueryBuilder> AMI_Search_byLuceneQueryBuilderPtr;
+
+class AMD_Search_byLuceneQueryBuilder : virtual public ::Ice::AMDCallback
+{
+public:
+
+    virtual void ice_response() = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_Search_byLuceneQueryBuilder> AMD_Search_byLuceneQueryBuilderPtr;
+
 class AMI_Search_bySimilarTerms : public ::Ice::AMICallbackBase
 {
 public:
@@ -2385,6 +2420,23 @@ public:
 #endif
 };
 
+class AMD_Search_byLuceneQueryBuilder : public ::omero::api::AMD_Search_byLuceneQueryBuilder, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_Search_byLuceneQueryBuilder(::IceInternal::Incoming&);
+
+    virtual void ice_response();
+    virtual void ice_exception(const ::std::exception&);
+#if defined(__BCPLUSPLUS__)
+    // COMPILERFIX: Avoid compiler warnings with C++Builder 2010
+    virtual void ice_exception()
+    {
+        ::IceInternal::IncomingAsync::ice_exception();
+    }
+#endif
+};
+
 class AMD_Search_bySimilarTerms : public ::omero::api::AMD_Search_bySimilarTerms, public ::IceInternal::IncomingAsync
 {
 public:
@@ -2736,6 +2788,9 @@ typedef ::IceUtil::Handle< Callback_Search_byTagForGroups_Base> Callback_Search_
 
 class Callback_Search_byFullText_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_Search_byFullText_Base> Callback_Search_byFullTextPtr;
+
+class Callback_Search_byLuceneQueryBuilder_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_Search_byLuceneQueryBuilder_Base> Callback_Search_byLuceneQueryBuilderPtr;
 
 class Callback_Search_bySimilarTerms_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_Search_bySimilarTerms_Base> Callback_Search_bySimilarTermsPtr;
@@ -4496,6 +4551,56 @@ public:
     bool byFullText_async(const ::omero::api::AMI_Search_byFullTextPtr&, const ::std::string&);
     bool byFullText_async(const ::omero::api::AMI_Search_byFullTextPtr&, const ::std::string&, const ::Ice::Context&);
 
+    void byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query)
+    {
+        byLuceneQueryBuilder(fields, from, to, dateType, query, 0);
+    }
+    void byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::Context& __ctx)
+    {
+        byLuceneQueryBuilder(fields, from, to, dateType, query, &__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::Context& __ctx)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::omero::api::Callback_Search_byLuceneQueryBuilderPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::Context& __ctx, const ::omero::api::Callback_Search_byLuceneQueryBuilderPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_byLuceneQueryBuilder(fields, from, to, dateType, query, &__ctx, __del, __cookie);
+    }
+
+    void end_byLuceneQueryBuilder(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    bool byLuceneQueryBuilder_async(const ::omero::api::AMI_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&);
+    bool byLuceneQueryBuilder_async(const ::omero::api::AMI_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context&);
+
     void bySimilarTerms(const ::omero::api::StringSet& terms)
     {
         bySimilarTerms(terms, 0);
@@ -5482,6 +5587,8 @@ public:
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*) = 0;
 
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*) = 0;
+
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*) = 0;
 
     virtual void byHqlQuery(const ::std::string&, const ::omero::sys::ParametersPtr&, const ::Ice::Context*) = 0;
@@ -5599,6 +5706,8 @@ public:
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*);
 
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*);
 
     virtual void byHqlQuery(const ::std::string&, const ::omero::sys::ParametersPtr&, const ::Ice::Context*);
@@ -5715,6 +5824,8 @@ public:
     virtual void byTagForGroups(const ::std::string&, const ::Ice::Context*);
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*);
+
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
 
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*);
 
@@ -5872,6 +5983,9 @@ public:
 
     virtual void byFullText_async(const ::omero::api::AMD_Search_byFullTextPtr&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___byFullText(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void byLuceneQueryBuilder_async(const ::omero::api::AMD_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___byLuceneQueryBuilder(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void bySimilarTerms_async(const ::omero::api::AMD_Search_bySimilarTermsPtr&, const ::omero::api::StringSet&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___bySimilarTerms(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -10482,6 +10596,144 @@ template<class T, typename CT> Callback_Search_byFullTextPtr
 newCallback_Search_byFullText(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_Search_byFullText<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_Search_byLuceneQueryBuilder : public Callback_Search_byLuceneQueryBuilder_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_Search_byLuceneQueryBuilder(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::SearchPrx __proxy = ::omero::api::SearchPrx::uncheckedCast(__result->getProxy());
+        try
+        {
+            __proxy->end_byLuceneQueryBuilder(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)();
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)();
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Search_byLuceneQueryBuilder<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Search_byLuceneQueryBuilder<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Search_byLuceneQueryBuilder<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Search_byLuceneQueryBuilder<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_Search_byLuceneQueryBuilder : public Callback_Search_byLuceneQueryBuilder_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_Search_byLuceneQueryBuilder(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::SearchPrx __proxy = ::omero::api::SearchPrx::uncheckedCast(__result->getProxy());
+        try
+        {
+            __proxy->end_byLuceneQueryBuilder(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Search_byLuceneQueryBuilder<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Search_byLuceneQueryBuilder<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Search_byLuceneQueryBuilder<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_Search_byLuceneQueryBuilderPtr
+newCallback_Search_byLuceneQueryBuilder(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Search_byLuceneQueryBuilder<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>

@@ -144,6 +144,8 @@ const ::std::string ChecksumAlgorithmMurmur3128 = "Murmur3-128";
 
 const ::std::string ChecksumAlgorithmSHA1160 = "SHA1-160";
 
+const ::std::string ChecksumAlgorithmFileSize64 = "File-Size-64";
+
 }
 
 }

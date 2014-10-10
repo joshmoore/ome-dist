@@ -179,7 +179,11 @@ const ::std::string NSMOVIE = "openmicroscopy.org/omero/movie";
 namespace namespaces
 {
 
+const ::std::string NSFSRENAME = "openmicroscopy.org/omero/fs/rename";
+
 const ::std::string NSMEASUREMENT = "openmicroscopy.org/omero/measurement";
+
+const ::std::string NSAUTOCLOSE = "openmicroscopy.org/omero/import/autoClose";
 
 const ::std::string NSCOMPANIONFILE = "openmicroscopy.org/omero/import/companionFile";
 

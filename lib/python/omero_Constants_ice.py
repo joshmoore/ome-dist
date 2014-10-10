@@ -183,7 +183,11 @@ _M_omero.constants.namespaces = Ice.openModule('omero.constants.namespaces')
 __name__ = 'omero.constants.namespaces'
 _M_omero.constants.namespaces.__doc__ = '''General namespaces for StructuredAnnotations'''
 
+_M_omero.constants.namespaces.NSFSRENAME = "openmicroscopy.org/omero/fs/rename"
+
 _M_omero.constants.namespaces.NSMEASUREMENT = "openmicroscopy.org/omero/measurement"
+
+_M_omero.constants.namespaces.NSAUTOCLOSE = "openmicroscopy.org/omero/import/autoClose"
 
 _M_omero.constants.namespaces.NSCOMPANIONFILE = "openmicroscopy.org/omero/import/companionFile"
 
