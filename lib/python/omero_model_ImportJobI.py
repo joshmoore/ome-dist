@@ -13,11 +13,44 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ImportJob_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ImportJobI(_omero_model.ImportJob):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "imageName",
+          "imageDescription",
+          "username",
+          "groupname",
+          "type",
+          "message",
+          "status",
+          "submitted",
+          "scheduledFor",
+          "started",
+          "finished",
+          "originalFileLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          imageName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          imageDescription=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          username=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          groupname=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          type=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          message=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          status=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          submitted=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          scheduledFor=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          started=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          finished=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          originalFileLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       IMAGENAME =  "ome.model.jobs.ImportJob_imageName"
       IMAGEDESCRIPTION =  "ome.model.jobs.ImportJob_imageDescription"
       USERNAME =  "ome.model.jobs.ImportJob_username"
@@ -53,10 +86,26 @@ class ImportJobI(_omero_model.ImportJob):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ImportJobI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -136,8 +185,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._imageName
 
-      def setImageName(self, _imageName, current = None):
+      def setImageName(self, _imageName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.imageName.wrapper is not None:
+              if _imageName is not None:
+                  _imageName = self._field_info.imageName.wrapper(_imageName)
           self._imageName = _imageName
           pass
 
@@ -149,8 +201,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._imageDescription
 
-      def setImageDescription(self, _imageDescription, current = None):
+      def setImageDescription(self, _imageDescription, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.imageDescription.wrapper is not None:
+              if _imageDescription is not None:
+                  _imageDescription = self._field_info.imageDescription.wrapper(_imageDescription)
           self._imageDescription = _imageDescription
           pass
 
@@ -162,8 +217,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._username
 
-      def setUsername(self, _username, current = None):
+      def setUsername(self, _username, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.username.wrapper is not None:
+              if _username is not None:
+                  _username = self._field_info.username.wrapper(_username)
           self._username = _username
           pass
 
@@ -175,8 +233,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._groupname
 
-      def setGroupname(self, _groupname, current = None):
+      def setGroupname(self, _groupname, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.groupname.wrapper is not None:
+              if _groupname is not None:
+                  _groupname = self._field_info.groupname.wrapper(_groupname)
           self._groupname = _groupname
           pass
 
@@ -188,8 +249,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -201,8 +265,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._message
 
-      def setMessage(self, _message, current = None):
+      def setMessage(self, _message, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.message.wrapper is not None:
+              if _message is not None:
+                  _message = self._field_info.message.wrapper(_message)
           self._message = _message
           pass
 
@@ -214,8 +281,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._status
 
-      def setStatus(self, _status, current = None):
+      def setStatus(self, _status, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.status.wrapper is not None:
+              if _status is not None:
+                  _status = self._field_info.status.wrapper(_status)
           self._status = _status
           pass
 
@@ -227,8 +297,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._submitted
 
-      def setSubmitted(self, _submitted, current = None):
+      def setSubmitted(self, _submitted, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.submitted.wrapper is not None:
+              if _submitted is not None:
+                  _submitted = self._field_info.submitted.wrapper(_submitted)
           self._submitted = _submitted
           pass
 
@@ -240,8 +313,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._scheduledFor
 
-      def setScheduledFor(self, _scheduledFor, current = None):
+      def setScheduledFor(self, _scheduledFor, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.scheduledFor.wrapper is not None:
+              if _scheduledFor is not None:
+                  _scheduledFor = self._field_info.scheduledFor.wrapper(_scheduledFor)
           self._scheduledFor = _scheduledFor
           pass
 
@@ -253,8 +329,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._started
 
-      def setStarted(self, _started, current = None):
+      def setStarted(self, _started, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.started.wrapper is not None:
+              if _started is not None:
+                  _started = self._field_info.started.wrapper(_started)
           self._started = _started
           pass
 
@@ -266,8 +345,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._finished
 
-      def setFinished(self, _finished, current = None):
+      def setFinished(self, _finished, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.finished.wrapper is not None:
+              if _finished is not None:
+                  _finished = self._field_info.finished.wrapper(_finished)
           self._finished = _finished
           pass
 
@@ -279,8 +361,11 @@ class ImportJobI(_omero_model.ImportJob):
           self.errorIfUnloaded()
           return self._originalFileLinksSeq
 
-      def _setOriginalFileLinks(self, _originalFileLinks, current = None):
+      def _setOriginalFileLinks(self, _originalFileLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.originalFileLinksSeq.wrapper is not None:
+              if _originalFileLinks is not None:
+                  _originalFileLinks = self._field_info.originalFileLinksSeq.wrapper(_originalFileLinks)
           self._originalFileLinksSeq = _originalFileLinks
           self.checkUnloadedProperty(_originalFileLinks,'originalFileLinksLoaded')
 
@@ -415,6 +500,8 @@ class ImportJobI(_omero_model.ImportJob):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

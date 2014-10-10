@@ -1017,6 +1017,10 @@ will be shutdown immediately, and all intermediate results
     _M_omero.grid.ScriptProcessPrx = ScriptProcessPrx
     del ScriptProcessPrx
 
+if 'Processor' not in _M_omero.grid.__dict__:
+    _M_omero.grid._t_Processor = IcePy.declareClass('::omero::grid::Processor')
+    _M_omero.grid._t_ProcessorPrx = IcePy.declareProxy('::omero::grid::Processor')
+
 if 'ProcessorCallback' not in _M_omero.grid.__dict__:
     _M_omero.grid.ProcessorCallback = Ice.createTempClass()
     class ProcessorCallback(Ice.Object):
@@ -1036,7 +1040,10 @@ to query whether or not a processor will accept a certain operation.'''
             return '::omero::grid::ProcessorCallback'
         ice_staticId = staticmethod(ice_staticId)
 
-        def isAccepted(self, accepted, sessionUuid, processorConn, current=None):
+        def isAccepted(self, accepted, sessionUuid, procConn, current=None):
+            pass
+
+        def isProxyAccepted(self, accepted, sessionUuid, procProxy, current=None):
             pass
 
         def responseRunning(self, jobIds, current=None):
@@ -1050,14 +1057,23 @@ to query whether or not a processor will accept a certain operation.'''
     _M_omero.grid.ProcessorCallbackPrx = Ice.createTempClass()
     class ProcessorCallbackPrx(Ice.ObjectPrx):
 
-        def isAccepted(self, accepted, sessionUuid, processorConn, _ctx=None):
-            return _M_omero.grid.ProcessorCallback._op_isAccepted.invoke(self, ((accepted, sessionUuid, processorConn), _ctx))
+        def isAccepted(self, accepted, sessionUuid, procConn, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isAccepted.invoke(self, ((accepted, sessionUuid, procConn), _ctx))
 
-        def begin_isAccepted(self, accepted, sessionUuid, processorConn, _response=None, _ex=None, _sent=None, _ctx=None):
-            return _M_omero.grid.ProcessorCallback._op_isAccepted.begin(self, ((accepted, sessionUuid, processorConn), _response, _ex, _sent, _ctx))
+        def begin_isAccepted(self, accepted, sessionUuid, procConn, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isAccepted.begin(self, ((accepted, sessionUuid, procConn), _response, _ex, _sent, _ctx))
 
         def end_isAccepted(self, _r):
             return _M_omero.grid.ProcessorCallback._op_isAccepted.end(self, _r)
+
+        def isProxyAccepted(self, accepted, sessionUuid, procProxy, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isProxyAccepted.invoke(self, ((accepted, sessionUuid, procProxy), _ctx))
+
+        def begin_isProxyAccepted(self, accepted, sessionUuid, procProxy, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isProxyAccepted.begin(self, ((accepted, sessionUuid, procProxy), _response, _ex, _sent, _ctx))
+
+        def end_isProxyAccepted(self, _r):
+            return _M_omero.grid.ProcessorCallback._op_isProxyAccepted.end(self, _r)
 
         def responseRunning(self, jobIds, _ctx=None):
             return _M_omero.grid.ProcessorCallback._op_responseRunning.invoke(self, ((jobIds, ), _ctx))
@@ -1082,6 +1098,7 @@ to query whether or not a processor will accept a certain operation.'''
     ProcessorCallback._ice_type = _M_omero.grid._t_ProcessorCallback
 
     ProcessorCallback._op_isAccepted = IcePy.Operation('isAccepted', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_bool, False, 0), ((), IcePy._t_string, False, 0), ((), IcePy._t_string, False, 0)), (), None, ())
+    ProcessorCallback._op_isProxyAccepted = IcePy.Operation('isProxyAccepted', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_bool, False, 0), ((), IcePy._t_string, False, 0), ((), _M_omero.grid._t_ProcessorPrx, False, 0)), (), None, ())
     ProcessorCallback._op_responseRunning = IcePy.Operation('responseRunning', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), _M_omero.api._t_LongList, False, 0),), (), None, ())
 
     _M_omero.grid.ProcessorCallback = ProcessorCallback

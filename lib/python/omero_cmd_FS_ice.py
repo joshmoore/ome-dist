@@ -158,6 +158,136 @@ images will have [filesetAnnotationId] set; otherwise
     _M_omero.cmd.OriginalMetadataResponsePrx = OriginalMetadataResponsePrx
     del OriginalMetadataResponsePrx
 
+if 'ManageImageBinaries' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.ManageImageBinaries = Ice.createTempClass()
+    class ManageImageBinaries(_M_omero.cmd.Request):
+        '''Queries and modifies the various binary artifacts
+which may be linked to an [omero::model::Image].
+
+This can be useful, e.g., after converting pre-OMERO-5
+archived original files into [omero::model::Fileset].
+
+The command works in several stages:
+
+1. loads an [omero::model::Image] by id, failing if none present.
+2. renames Pixels file to '*_bak'
+3. deletes existing Pyramidfiles if present;
+
+This command can be run multiple times with different settings
+to iteratively test if the migration is working.'''
+        def __init__(self, imageId=0, togglePixels=False, deletePyramid=False):
+            _M_omero.cmd.Request.__init__(self)
+            self.imageId = imageId
+            self.togglePixels = togglePixels
+            self.deletePyramid = deletePyramid
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::ManageImageBinaries', '::omero::cmd::Request')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::ManageImageBinaries'
+
+        def ice_staticId():
+            return '::omero::cmd::ManageImageBinaries'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_ManageImageBinaries)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.ManageImageBinariesPrx = Ice.createTempClass()
+    class ManageImageBinariesPrx(_M_omero.cmd.RequestPrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.ManageImageBinariesPrx.ice_checkedCast(proxy, '::omero::cmd::ManageImageBinaries', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.ManageImageBinariesPrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_ManageImageBinariesPrx = IcePy.defineProxy('::omero::cmd::ManageImageBinaries', ManageImageBinariesPrx)
+
+    _M_omero.cmd._t_ManageImageBinaries = IcePy.defineClass('::omero::cmd::ManageImageBinaries', ManageImageBinaries, -1, (), False, False, _M_omero.cmd._t_Request, (), (
+        ('imageId', (), IcePy._t_long, False, 0),
+        ('togglePixels', (), IcePy._t_bool, False, 0),
+        ('deletePyramid', (), IcePy._t_bool, False, 0)
+    ))
+    ManageImageBinaries._ice_type = _M_omero.cmd._t_ManageImageBinaries
+
+    _M_omero.cmd.ManageImageBinaries = ManageImageBinaries
+    del ManageImageBinaries
+
+    _M_omero.cmd.ManageImageBinariesPrx = ManageImageBinariesPrx
+    del ManageImageBinariesPrx
+
+if 'ManageImageBinariesResponse' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.ManageImageBinariesResponse = Ice.createTempClass()
+    class ManageImageBinariesResponse(_M_omero.cmd.Response):
+        '''[Response] from a [ManageImageBinaries] [Request].
+If no action is requested, then the fields of this
+instance can be examined to see what would be done
+if requested.'''
+        def __init__(self, filesetId=None, archivedFiles=None, pixelsPresent=False, pyramidPresent=False, archivedSize=0, pixelSize=0, pyramidSize=0, thumbnailSize=0):
+            _M_omero.cmd.Response.__init__(self)
+            self.filesetId = filesetId
+            self.archivedFiles = archivedFiles
+            self.pixelsPresent = pixelsPresent
+            self.pyramidPresent = pyramidPresent
+            self.archivedSize = archivedSize
+            self.pixelSize = pixelSize
+            self.pyramidSize = pyramidSize
+            self.thumbnailSize = thumbnailSize
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::ManageImageBinariesResponse', '::omero::cmd::Response')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::ManageImageBinariesResponse'
+
+        def ice_staticId():
+            return '::omero::cmd::ManageImageBinariesResponse'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_ManageImageBinariesResponse)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.ManageImageBinariesResponsePrx = Ice.createTempClass()
+    class ManageImageBinariesResponsePrx(_M_omero.cmd.ResponsePrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.ManageImageBinariesResponsePrx.ice_checkedCast(proxy, '::omero::cmd::ManageImageBinariesResponse', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.ManageImageBinariesResponsePrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_ManageImageBinariesResponsePrx = IcePy.defineProxy('::omero::cmd::ManageImageBinariesResponse', ManageImageBinariesResponsePrx)
+
+    _M_omero.cmd._t_ManageImageBinariesResponse = IcePy.declareClass('::omero::cmd::ManageImageBinariesResponse')
+
+    _M_omero.cmd._t_ManageImageBinariesResponse = IcePy.defineClass('::omero::cmd::ManageImageBinariesResponse', ManageImageBinariesResponse, -1, (), False, False, _M_omero.cmd._t_Response, (), (
+        ('filesetId', (), _M_omero._t_RLong, False, 0),
+        ('archivedFiles', (), _M_omero.api._t_LongList, False, 0),
+        ('pixelsPresent', (), IcePy._t_bool, False, 0),
+        ('pyramidPresent', (), IcePy._t_bool, False, 0),
+        ('archivedSize', (), IcePy._t_long, False, 0),
+        ('pixelSize', (), IcePy._t_long, False, 0),
+        ('pyramidSize', (), IcePy._t_long, False, 0),
+        ('thumbnailSize', (), IcePy._t_long, False, 0)
+    ))
+    ManageImageBinariesResponse._ice_type = _M_omero.cmd._t_ManageImageBinariesResponse
+
+    _M_omero.cmd.ManageImageBinariesResponse = ManageImageBinariesResponse
+    del ManageImageBinariesResponse
+
+    _M_omero.cmd.ManageImageBinariesResponsePrx = ManageImageBinariesResponsePrx
+    del ManageImageBinariesResponsePrx
+
 # End of module omero.cmd
 
 __name__ = 'omero'

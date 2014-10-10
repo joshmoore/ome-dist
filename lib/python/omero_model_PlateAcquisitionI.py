@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_PlateAcquisition_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class PlateAcquisitionI(_omero_model.PlateAcquisition):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "name",
+          "startTime",
+          "endTime",
+          "maximumFieldCount",
+          "plate",
+          "wellSample",
+          "annotationLinks",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          startTime=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          endTime=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          maximumFieldCount=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          plate=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          wellSample=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       NAME =  "ome.model.screen.PlateAcquisition_name"
       STARTTIME =  "ome.model.screen.PlateAcquisition_startTime"
       ENDTIME =  "ome.model.screen.PlateAcquisition_endTime"
@@ -56,10 +81,26 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(PlateAcquisitionI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -135,8 +176,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -148,8 +192,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._startTime
 
-      def setStartTime(self, _startTime, current = None):
+      def setStartTime(self, _startTime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.startTime.wrapper is not None:
+              if _startTime is not None:
+                  _startTime = self._field_info.startTime.wrapper(_startTime)
           self._startTime = _startTime
           pass
 
@@ -161,8 +208,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._endTime
 
-      def setEndTime(self, _endTime, current = None):
+      def setEndTime(self, _endTime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.endTime.wrapper is not None:
+              if _endTime is not None:
+                  _endTime = self._field_info.endTime.wrapper(_endTime)
           self._endTime = _endTime
           pass
 
@@ -174,8 +224,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._maximumFieldCount
 
-      def setMaximumFieldCount(self, _maximumFieldCount, current = None):
+      def setMaximumFieldCount(self, _maximumFieldCount, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.maximumFieldCount.wrapper is not None:
+              if _maximumFieldCount is not None:
+                  _maximumFieldCount = self._field_info.maximumFieldCount.wrapper(_maximumFieldCount)
           self._maximumFieldCount = _maximumFieldCount
           pass
 
@@ -187,8 +240,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._plate
 
-      def setPlate(self, _plate, current = None):
+      def setPlate(self, _plate, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.plate.wrapper is not None:
+              if _plate is not None:
+                  _plate = self._field_info.plate.wrapper(_plate)
           self._plate = _plate
           pass
 
@@ -200,8 +256,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._wellSampleSeq
 
-      def _setWellSample(self, _wellSample, current = None):
+      def _setWellSample(self, _wellSample, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellSampleSeq.wrapper is not None:
+              if _wellSample is not None:
+                  _wellSample = self._field_info.wellSampleSeq.wrapper(_wellSample)
           self._wellSampleSeq = _wellSample
           self.checkUnloadedProperty(_wellSample,'wellSampleLoaded')
 
@@ -281,8 +340,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -406,8 +468,11 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -430,6 +495,8 @@ class PlateAcquisitionI(_omero_model.PlateAcquisition):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

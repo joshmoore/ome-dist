@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Experimenter_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ExperimenterI(_omero_model.Experimenter):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "groupExperimenterMap",
+          "omeName",
+          "firstName",
+          "middleName",
+          "lastName",
+          "institution",
+          "email",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          groupExperimenterMap=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          omeName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          firstName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          middleName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          lastName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          institution=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          email=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       GROUPEXPERIMENTERMAP =  "ome.model.meta.Experimenter_groupExperimenterMap"
       OMENAME =  "ome.model.meta.Experimenter_omeName"
       FIRSTNAME =  "ome.model.meta.Experimenter_firstName"
@@ -56,10 +81,26 @@ class ExperimenterI(_omero_model.Experimenter):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ExperimenterI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -135,8 +176,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._groupExperimenterMapSeq
 
-      def _setGroupExperimenterMap(self, _groupExperimenterMap, current = None):
+      def _setGroupExperimenterMap(self, _groupExperimenterMap, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.groupExperimenterMapSeq.wrapper is not None:
+              if _groupExperimenterMap is not None:
+                  _groupExperimenterMap = self._field_info.groupExperimenterMapSeq.wrapper(_groupExperimenterMap)
           self._groupExperimenterMapSeq = _groupExperimenterMap
           self.checkUnloadedProperty(_groupExperimenterMap,'groupExperimenterMapLoaded')
 
@@ -213,10 +257,13 @@ class ExperimenterI(_omero_model.Experimenter):
           if not self._groupExperimenterMapLoaded: self.throwNullCollectionException("groupExperimenterMapSeq")
           return self._groupExperimenterMapSeq[index]
 
-      def setGroupExperimenterMap(self, index, element, current = None):
+      def setGroupExperimenterMap(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._groupExperimenterMapLoaded: self.throwNullCollectionException("groupExperimenterMapSeq")
           old = self._groupExperimenterMapSeq[index]
+          if wrap and self._field_info.groupExperimenterMapSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.groupExperimenterMapSeq.wrapper(_groupExperimenterMap)
           self._groupExperimenterMapSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setChild( self )
@@ -289,8 +336,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._omeName
 
-      def setOmeName(self, _omeName, current = None):
+      def setOmeName(self, _omeName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.omeName.wrapper is not None:
+              if _omeName is not None:
+                  _omeName = self._field_info.omeName.wrapper(_omeName)
           self._omeName = _omeName
           pass
 
@@ -302,8 +352,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._firstName
 
-      def setFirstName(self, _firstName, current = None):
+      def setFirstName(self, _firstName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.firstName.wrapper is not None:
+              if _firstName is not None:
+                  _firstName = self._field_info.firstName.wrapper(_firstName)
           self._firstName = _firstName
           pass
 
@@ -315,8 +368,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._middleName
 
-      def setMiddleName(self, _middleName, current = None):
+      def setMiddleName(self, _middleName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.middleName.wrapper is not None:
+              if _middleName is not None:
+                  _middleName = self._field_info.middleName.wrapper(_middleName)
           self._middleName = _middleName
           pass
 
@@ -328,8 +384,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._lastName
 
-      def setLastName(self, _lastName, current = None):
+      def setLastName(self, _lastName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lastName.wrapper is not None:
+              if _lastName is not None:
+                  _lastName = self._field_info.lastName.wrapper(_lastName)
           self._lastName = _lastName
           pass
 
@@ -341,8 +400,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._institution
 
-      def setInstitution(self, _institution, current = None):
+      def setInstitution(self, _institution, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.institution.wrapper is not None:
+              if _institution is not None:
+                  _institution = self._field_info.institution.wrapper(_institution)
           self._institution = _institution
           pass
 
@@ -354,8 +416,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._email
 
-      def setEmail(self, _email, current = None):
+      def setEmail(self, _email, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.email.wrapper is not None:
+              if _email is not None:
+                  _email = self._field_info.email.wrapper(_email)
           self._email = _email
           pass
 
@@ -367,8 +432,11 @@ class ExperimenterI(_omero_model.Experimenter):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -503,6 +571,8 @@ class ExperimenterI(_omero_model.Experimenter):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

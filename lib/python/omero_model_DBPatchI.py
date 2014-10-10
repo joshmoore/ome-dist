@@ -13,11 +13,32 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_DBPatch_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class DBPatchI(_omero_model.DBPatch):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "currentVersion",
+          "currentPatch",
+          "previousVersion",
+          "previousPatch",
+          "finished",
+          "message",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          currentVersion=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          currentPatch=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          previousVersion=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          previousPatch=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          finished=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          message=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       CURRENTVERSION =  "ome.model.meta.DBPatch_currentVersion"
       CURRENTPATCH =  "ome.model.meta.DBPatch_currentPatch"
       PREVIOUSVERSION =  "ome.model.meta.DBPatch_previousVersion"
@@ -40,10 +61,26 @@ class DBPatchI(_omero_model.DBPatch):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(DBPatchI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -108,8 +145,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._currentVersion
 
-      def setCurrentVersion(self, _currentVersion, current = None):
+      def setCurrentVersion(self, _currentVersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.currentVersion.wrapper is not None:
+              if _currentVersion is not None:
+                  _currentVersion = self._field_info.currentVersion.wrapper(_currentVersion)
           self._currentVersion = _currentVersion
           pass
 
@@ -121,8 +161,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._currentPatch
 
-      def setCurrentPatch(self, _currentPatch, current = None):
+      def setCurrentPatch(self, _currentPatch, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.currentPatch.wrapper is not None:
+              if _currentPatch is not None:
+                  _currentPatch = self._field_info.currentPatch.wrapper(_currentPatch)
           self._currentPatch = _currentPatch
           pass
 
@@ -134,8 +177,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._previousVersion
 
-      def setPreviousVersion(self, _previousVersion, current = None):
+      def setPreviousVersion(self, _previousVersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.previousVersion.wrapper is not None:
+              if _previousVersion is not None:
+                  _previousVersion = self._field_info.previousVersion.wrapper(_previousVersion)
           self._previousVersion = _previousVersion
           pass
 
@@ -147,8 +193,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._previousPatch
 
-      def setPreviousPatch(self, _previousPatch, current = None):
+      def setPreviousPatch(self, _previousPatch, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.previousPatch.wrapper is not None:
+              if _previousPatch is not None:
+                  _previousPatch = self._field_info.previousPatch.wrapper(_previousPatch)
           self._previousPatch = _previousPatch
           pass
 
@@ -160,8 +209,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._finished
 
-      def setFinished(self, _finished, current = None):
+      def setFinished(self, _finished, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.finished.wrapper is not None:
+              if _finished is not None:
+                  _finished = self._field_info.finished.wrapper(_finished)
           self._finished = _finished
           pass
 
@@ -173,8 +225,11 @@ class DBPatchI(_omero_model.DBPatch):
           self.errorIfUnloaded()
           return self._message
 
-      def setMessage(self, _message, current = None):
+      def setMessage(self, _message, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.message.wrapper is not None:
+              if _message is not None:
+                  _message = self._field_info.message.wrapper(_message)
           self._message = _message
           pass
 
@@ -197,6 +252,8 @@ class DBPatchI(_omero_model.DBPatch):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

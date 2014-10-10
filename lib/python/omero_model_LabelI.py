@@ -13,11 +13,86 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Label_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class LabelI(_omero_model.Label):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "x",
+          "y",
+          "textValue",
+          "anchor",
+          "decoration",
+          "baselineShift",
+          "glyphOrientationVertical",
+          "direction",
+          "writingMode",
+          "theZ",
+          "theT",
+          "theC",
+          "roi",
+          "locked",
+          "g",
+          "transform",
+          "vectorEffect",
+          "visibility",
+          "fillColor",
+          "fillRule",
+          "strokeColor",
+          "strokeDashArray",
+          "strokeDashOffset",
+          "strokeLineCap",
+          "strokeLineJoin",
+          "strokeMiterLimit",
+          "strokeWidth",
+          "fontFamily",
+          "fontSize",
+          "fontStretch",
+          "fontStyle",
+          "fontVariant",
+          "fontWeight",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          x=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          y=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          textValue=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          anchor=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          decoration=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          baselineShift=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          glyphOrientationVertical=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          direction=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          writingMode=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          theZ=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          theT=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          theC=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          roi=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          locked=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          g=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          transform=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          vectorEffect=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          visibility=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          fillColor=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          fillRule=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          strokeColor=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          strokeDashArray=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          strokeDashOffset=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          strokeLineCap=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          strokeLineJoin=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          strokeMiterLimit=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          strokeWidth=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          fontFamily=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          fontSize=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          fontStretch=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          fontStyle=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          fontVariant=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          fontWeight=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       X =  "ome.model.roi.Label_x"
       Y =  "ome.model.roi.Label_y"
       TEXTVALUE =  "ome.model.roi.Label_textValue"
@@ -67,10 +142,26 @@ class LabelI(_omero_model.Label):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(LabelI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -171,8 +262,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._x
 
-      def setX(self, _x, current = None):
+      def setX(self, _x, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.x.wrapper is not None:
+              if _x is not None:
+                  _x = self._field_info.x.wrapper(_x)
           self._x = _x
           pass
 
@@ -184,8 +278,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._y
 
-      def setY(self, _y, current = None):
+      def setY(self, _y, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.y.wrapper is not None:
+              if _y is not None:
+                  _y = self._field_info.y.wrapper(_y)
           self._y = _y
           pass
 
@@ -197,8 +294,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._textValue
 
-      def setTextValue(self, _textValue, current = None):
+      def setTextValue(self, _textValue, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.textValue.wrapper is not None:
+              if _textValue is not None:
+                  _textValue = self._field_info.textValue.wrapper(_textValue)
           self._textValue = _textValue
           pass
 
@@ -210,8 +310,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._anchor
 
-      def setAnchor(self, _anchor, current = None):
+      def setAnchor(self, _anchor, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.anchor.wrapper is not None:
+              if _anchor is not None:
+                  _anchor = self._field_info.anchor.wrapper(_anchor)
           self._anchor = _anchor
           pass
 
@@ -223,8 +326,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._decoration
 
-      def setDecoration(self, _decoration, current = None):
+      def setDecoration(self, _decoration, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.decoration.wrapper is not None:
+              if _decoration is not None:
+                  _decoration = self._field_info.decoration.wrapper(_decoration)
           self._decoration = _decoration
           pass
 
@@ -236,8 +342,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._baselineShift
 
-      def setBaselineShift(self, _baselineShift, current = None):
+      def setBaselineShift(self, _baselineShift, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.baselineShift.wrapper is not None:
+              if _baselineShift is not None:
+                  _baselineShift = self._field_info.baselineShift.wrapper(_baselineShift)
           self._baselineShift = _baselineShift
           pass
 
@@ -249,8 +358,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._glyphOrientationVertical
 
-      def setGlyphOrientationVertical(self, _glyphOrientationVertical, current = None):
+      def setGlyphOrientationVertical(self, _glyphOrientationVertical, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.glyphOrientationVertical.wrapper is not None:
+              if _glyphOrientationVertical is not None:
+                  _glyphOrientationVertical = self._field_info.glyphOrientationVertical.wrapper(_glyphOrientationVertical)
           self._glyphOrientationVertical = _glyphOrientationVertical
           pass
 
@@ -262,8 +374,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._direction
 
-      def setDirection(self, _direction, current = None):
+      def setDirection(self, _direction, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.direction.wrapper is not None:
+              if _direction is not None:
+                  _direction = self._field_info.direction.wrapper(_direction)
           self._direction = _direction
           pass
 
@@ -275,8 +390,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._writingMode
 
-      def setWritingMode(self, _writingMode, current = None):
+      def setWritingMode(self, _writingMode, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.writingMode.wrapper is not None:
+              if _writingMode is not None:
+                  _writingMode = self._field_info.writingMode.wrapper(_writingMode)
           self._writingMode = _writingMode
           pass
 
@@ -288,8 +406,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._theZ
 
-      def setTheZ(self, _theZ, current = None):
+      def setTheZ(self, _theZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theZ.wrapper is not None:
+              if _theZ is not None:
+                  _theZ = self._field_info.theZ.wrapper(_theZ)
           self._theZ = _theZ
           pass
 
@@ -301,8 +422,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._theT
 
-      def setTheT(self, _theT, current = None):
+      def setTheT(self, _theT, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theT.wrapper is not None:
+              if _theT is not None:
+                  _theT = self._field_info.theT.wrapper(_theT)
           self._theT = _theT
           pass
 
@@ -314,8 +438,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._theC
 
-      def setTheC(self, _theC, current = None):
+      def setTheC(self, _theC, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theC.wrapper is not None:
+              if _theC is not None:
+                  _theC = self._field_info.theC.wrapper(_theC)
           self._theC = _theC
           pass
 
@@ -327,8 +454,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._roi
 
-      def setRoi(self, _roi, current = None):
+      def setRoi(self, _roi, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.roi.wrapper is not None:
+              if _roi is not None:
+                  _roi = self._field_info.roi.wrapper(_roi)
           self._roi = _roi
           pass
 
@@ -340,8 +470,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._locked
 
-      def setLocked(self, _locked, current = None):
+      def setLocked(self, _locked, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.locked.wrapper is not None:
+              if _locked is not None:
+                  _locked = self._field_info.locked.wrapper(_locked)
           self._locked = _locked
           pass
 
@@ -353,8 +486,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._g
 
-      def setG(self, _g, current = None):
+      def setG(self, _g, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.g.wrapper is not None:
+              if _g is not None:
+                  _g = self._field_info.g.wrapper(_g)
           self._g = _g
           pass
 
@@ -366,8 +502,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._transform
 
-      def setTransform(self, _transform, current = None):
+      def setTransform(self, _transform, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.transform.wrapper is not None:
+              if _transform is not None:
+                  _transform = self._field_info.transform.wrapper(_transform)
           self._transform = _transform
           pass
 
@@ -379,8 +518,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._vectorEffect
 
-      def setVectorEffect(self, _vectorEffect, current = None):
+      def setVectorEffect(self, _vectorEffect, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.vectorEffect.wrapper is not None:
+              if _vectorEffect is not None:
+                  _vectorEffect = self._field_info.vectorEffect.wrapper(_vectorEffect)
           self._vectorEffect = _vectorEffect
           pass
 
@@ -392,8 +534,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._visibility
 
-      def setVisibility(self, _visibility, current = None):
+      def setVisibility(self, _visibility, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.visibility.wrapper is not None:
+              if _visibility is not None:
+                  _visibility = self._field_info.visibility.wrapper(_visibility)
           self._visibility = _visibility
           pass
 
@@ -405,8 +550,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fillColor
 
-      def setFillColor(self, _fillColor, current = None):
+      def setFillColor(self, _fillColor, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fillColor.wrapper is not None:
+              if _fillColor is not None:
+                  _fillColor = self._field_info.fillColor.wrapper(_fillColor)
           self._fillColor = _fillColor
           pass
 
@@ -418,8 +566,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fillRule
 
-      def setFillRule(self, _fillRule, current = None):
+      def setFillRule(self, _fillRule, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fillRule.wrapper is not None:
+              if _fillRule is not None:
+                  _fillRule = self._field_info.fillRule.wrapper(_fillRule)
           self._fillRule = _fillRule
           pass
 
@@ -431,8 +582,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeColor
 
-      def setStrokeColor(self, _strokeColor, current = None):
+      def setStrokeColor(self, _strokeColor, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeColor.wrapper is not None:
+              if _strokeColor is not None:
+                  _strokeColor = self._field_info.strokeColor.wrapper(_strokeColor)
           self._strokeColor = _strokeColor
           pass
 
@@ -444,8 +598,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeDashArray
 
-      def setStrokeDashArray(self, _strokeDashArray, current = None):
+      def setStrokeDashArray(self, _strokeDashArray, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeDashArray.wrapper is not None:
+              if _strokeDashArray is not None:
+                  _strokeDashArray = self._field_info.strokeDashArray.wrapper(_strokeDashArray)
           self._strokeDashArray = _strokeDashArray
           pass
 
@@ -457,8 +614,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeDashOffset
 
-      def setStrokeDashOffset(self, _strokeDashOffset, current = None):
+      def setStrokeDashOffset(self, _strokeDashOffset, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeDashOffset.wrapper is not None:
+              if _strokeDashOffset is not None:
+                  _strokeDashOffset = self._field_info.strokeDashOffset.wrapper(_strokeDashOffset)
           self._strokeDashOffset = _strokeDashOffset
           pass
 
@@ -470,8 +630,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeLineCap
 
-      def setStrokeLineCap(self, _strokeLineCap, current = None):
+      def setStrokeLineCap(self, _strokeLineCap, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeLineCap.wrapper is not None:
+              if _strokeLineCap is not None:
+                  _strokeLineCap = self._field_info.strokeLineCap.wrapper(_strokeLineCap)
           self._strokeLineCap = _strokeLineCap
           pass
 
@@ -483,8 +646,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeLineJoin
 
-      def setStrokeLineJoin(self, _strokeLineJoin, current = None):
+      def setStrokeLineJoin(self, _strokeLineJoin, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeLineJoin.wrapper is not None:
+              if _strokeLineJoin is not None:
+                  _strokeLineJoin = self._field_info.strokeLineJoin.wrapper(_strokeLineJoin)
           self._strokeLineJoin = _strokeLineJoin
           pass
 
@@ -496,8 +662,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeMiterLimit
 
-      def setStrokeMiterLimit(self, _strokeMiterLimit, current = None):
+      def setStrokeMiterLimit(self, _strokeMiterLimit, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeMiterLimit.wrapper is not None:
+              if _strokeMiterLimit is not None:
+                  _strokeMiterLimit = self._field_info.strokeMiterLimit.wrapper(_strokeMiterLimit)
           self._strokeMiterLimit = _strokeMiterLimit
           pass
 
@@ -509,8 +678,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._strokeWidth
 
-      def setStrokeWidth(self, _strokeWidth, current = None):
+      def setStrokeWidth(self, _strokeWidth, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.strokeWidth.wrapper is not None:
+              if _strokeWidth is not None:
+                  _strokeWidth = self._field_info.strokeWidth.wrapper(_strokeWidth)
           self._strokeWidth = _strokeWidth
           pass
 
@@ -522,8 +694,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontFamily
 
-      def setFontFamily(self, _fontFamily, current = None):
+      def setFontFamily(self, _fontFamily, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontFamily.wrapper is not None:
+              if _fontFamily is not None:
+                  _fontFamily = self._field_info.fontFamily.wrapper(_fontFamily)
           self._fontFamily = _fontFamily
           pass
 
@@ -535,8 +710,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontSize
 
-      def setFontSize(self, _fontSize, current = None):
+      def setFontSize(self, _fontSize, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontSize.wrapper is not None:
+              if _fontSize is not None:
+                  _fontSize = self._field_info.fontSize.wrapper(_fontSize)
           self._fontSize = _fontSize
           pass
 
@@ -548,8 +726,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontStretch
 
-      def setFontStretch(self, _fontStretch, current = None):
+      def setFontStretch(self, _fontStretch, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontStretch.wrapper is not None:
+              if _fontStretch is not None:
+                  _fontStretch = self._field_info.fontStretch.wrapper(_fontStretch)
           self._fontStretch = _fontStretch
           pass
 
@@ -561,8 +742,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontStyle
 
-      def setFontStyle(self, _fontStyle, current = None):
+      def setFontStyle(self, _fontStyle, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontStyle.wrapper is not None:
+              if _fontStyle is not None:
+                  _fontStyle = self._field_info.fontStyle.wrapper(_fontStyle)
           self._fontStyle = _fontStyle
           pass
 
@@ -574,8 +758,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontVariant
 
-      def setFontVariant(self, _fontVariant, current = None):
+      def setFontVariant(self, _fontVariant, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontVariant.wrapper is not None:
+              if _fontVariant is not None:
+                  _fontVariant = self._field_info.fontVariant.wrapper(_fontVariant)
           self._fontVariant = _fontVariant
           pass
 
@@ -587,8 +774,11 @@ class LabelI(_omero_model.Label):
           self.errorIfUnloaded()
           return self._fontWeight
 
-      def setFontWeight(self, _fontWeight, current = None):
+      def setFontWeight(self, _fontWeight, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fontWeight.wrapper is not None:
+              if _fontWeight is not None:
+                  _fontWeight = self._field_info.fontWeight.wrapper(_fontWeight)
           self._fontWeight = _fontWeight
           pass
 
@@ -611,6 +801,8 @@ class LabelI(_omero_model.Label):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,50 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Plate_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class PlateI(_omero_model.Plate):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "defaultSample",
+          "columnNamingConvention",
+          "rowNamingConvention",
+          "wellOriginX",
+          "wellOriginY",
+          "rows",
+          "columns",
+          "status",
+          "externalIdentifier",
+          "screenLinks",
+          "wells",
+          "plateAcquisitions",
+          "annotationLinks",
+          "name",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          defaultSample=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          columnNamingConvention=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          rowNamingConvention=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          wellOriginX=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          wellOriginY=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          rows=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          columns=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          status=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          externalIdentifier=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          screenLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          wells=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          plateAcquisitions=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       DEFAULTSAMPLE =  "ome.model.screen.Plate_defaultSample"
       COLUMNNAMINGCONVENTION =  "ome.model.screen.Plate_columnNamingConvention"
       ROWNAMINGCONVENTION =  "ome.model.screen.Plate_rowNamingConvention"
@@ -77,10 +116,26 @@ class PlateI(_omero_model.Plate):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(PlateI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -163,8 +218,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._defaultSample
 
-      def setDefaultSample(self, _defaultSample, current = None):
+      def setDefaultSample(self, _defaultSample, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.defaultSample.wrapper is not None:
+              if _defaultSample is not None:
+                  _defaultSample = self._field_info.defaultSample.wrapper(_defaultSample)
           self._defaultSample = _defaultSample
           pass
 
@@ -176,8 +234,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._columnNamingConvention
 
-      def setColumnNamingConvention(self, _columnNamingConvention, current = None):
+      def setColumnNamingConvention(self, _columnNamingConvention, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.columnNamingConvention.wrapper is not None:
+              if _columnNamingConvention is not None:
+                  _columnNamingConvention = self._field_info.columnNamingConvention.wrapper(_columnNamingConvention)
           self._columnNamingConvention = _columnNamingConvention
           pass
 
@@ -189,8 +250,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._rowNamingConvention
 
-      def setRowNamingConvention(self, _rowNamingConvention, current = None):
+      def setRowNamingConvention(self, _rowNamingConvention, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.rowNamingConvention.wrapper is not None:
+              if _rowNamingConvention is not None:
+                  _rowNamingConvention = self._field_info.rowNamingConvention.wrapper(_rowNamingConvention)
           self._rowNamingConvention = _rowNamingConvention
           pass
 
@@ -202,8 +266,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._wellOriginX
 
-      def setWellOriginX(self, _wellOriginX, current = None):
+      def setWellOriginX(self, _wellOriginX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellOriginX.wrapper is not None:
+              if _wellOriginX is not None:
+                  _wellOriginX = self._field_info.wellOriginX.wrapper(_wellOriginX)
           self._wellOriginX = _wellOriginX
           pass
 
@@ -215,8 +282,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._wellOriginY
 
-      def setWellOriginY(self, _wellOriginY, current = None):
+      def setWellOriginY(self, _wellOriginY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellOriginY.wrapper is not None:
+              if _wellOriginY is not None:
+                  _wellOriginY = self._field_info.wellOriginY.wrapper(_wellOriginY)
           self._wellOriginY = _wellOriginY
           pass
 
@@ -228,8 +298,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._rows
 
-      def setRows(self, _rows, current = None):
+      def setRows(self, _rows, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.rows.wrapper is not None:
+              if _rows is not None:
+                  _rows = self._field_info.rows.wrapper(_rows)
           self._rows = _rows
           pass
 
@@ -241,8 +314,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._columns
 
-      def setColumns(self, _columns, current = None):
+      def setColumns(self, _columns, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.columns.wrapper is not None:
+              if _columns is not None:
+                  _columns = self._field_info.columns.wrapper(_columns)
           self._columns = _columns
           pass
 
@@ -254,8 +330,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._status
 
-      def setStatus(self, _status, current = None):
+      def setStatus(self, _status, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.status.wrapper is not None:
+              if _status is not None:
+                  _status = self._field_info.status.wrapper(_status)
           self._status = _status
           pass
 
@@ -267,8 +346,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._externalIdentifier
 
-      def setExternalIdentifier(self, _externalIdentifier, current = None):
+      def setExternalIdentifier(self, _externalIdentifier, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.externalIdentifier.wrapper is not None:
+              if _externalIdentifier is not None:
+                  _externalIdentifier = self._field_info.externalIdentifier.wrapper(_externalIdentifier)
           self._externalIdentifier = _externalIdentifier
           pass
 
@@ -280,8 +362,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._screenLinksSeq
 
-      def _setScreenLinks(self, _screenLinks, current = None):
+      def _setScreenLinks(self, _screenLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.screenLinksSeq.wrapper is not None:
+              if _screenLinks is not None:
+                  _screenLinks = self._field_info.screenLinksSeq.wrapper(_screenLinks)
           self._screenLinksSeq = _screenLinks
           self.checkUnloadedProperty(_screenLinks,'screenLinksLoaded')
 
@@ -409,8 +494,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._wellsSeq
 
-      def _setWells(self, _wells, current = None):
+      def _setWells(self, _wells, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellsSeq.wrapper is not None:
+              if _wells is not None:
+                  _wells = self._field_info.wellsSeq.wrapper(_wells)
           self._wellsSeq = _wells
           self.checkUnloadedProperty(_wells,'wellsLoaded')
 
@@ -490,8 +578,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._plateAcquisitionsSeq
 
-      def _setPlateAcquisitions(self, _plateAcquisitions, current = None):
+      def _setPlateAcquisitions(self, _plateAcquisitions, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.plateAcquisitionsSeq.wrapper is not None:
+              if _plateAcquisitions is not None:
+                  _plateAcquisitions = self._field_info.plateAcquisitionsSeq.wrapper(_plateAcquisitions)
           self._plateAcquisitionsSeq = _plateAcquisitions
           self.checkUnloadedProperty(_plateAcquisitions,'plateAcquisitionsLoaded')
 
@@ -571,8 +662,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -696,8 +790,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -709,8 +806,11 @@ class PlateI(_omero_model.Plate):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -733,6 +833,8 @@ class PlateI(_omero_model.Plate):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

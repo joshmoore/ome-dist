@@ -104,13 +104,13 @@ class ScriptProcess;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ScriptProcess>&);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ScriptProcess*);
 
-class ProcessorCallback;
-void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback>&);
-::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ProcessorCallback*);
-
 class Processor;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::Processor>&);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::Processor*);
+
+class ProcessorCallback;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ProcessorCallback*);
 
 class InteractiveProcessor;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::InteractiveProcessor>&);
@@ -208,14 +208,6 @@ typedef ::IceInternal::Handle< ::omero::grid::ScriptProcess> ScriptProcessPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ScriptProcess> ScriptProcessPrx;
 void __patch(ScriptProcessPtr&, const ::Ice::ObjectPtr&);
 
-class ProcessorCallback;
-bool operator==(const ProcessorCallback&, const ProcessorCallback&);
-bool operator<(const ProcessorCallback&, const ProcessorCallback&);
-::Ice::Object* upCast(::omero::grid::ProcessorCallback*);
-typedef ::IceInternal::Handle< ::omero::grid::ProcessorCallback> ProcessorCallbackPtr;
-typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback> ProcessorCallbackPrx;
-void __patch(ProcessorCallbackPtr&, const ::Ice::ObjectPtr&);
-
 class Processor;
 bool operator==(const Processor&, const Processor&);
 bool operator<(const Processor&, const Processor&);
@@ -223,6 +215,14 @@ bool operator<(const Processor&, const Processor&);
 typedef ::IceInternal::Handle< ::omero::grid::Processor> ProcessorPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::Processor> ProcessorPrx;
 void __patch(ProcessorPtr&, const ::Ice::ObjectPtr&);
+
+class ProcessorCallback;
+bool operator==(const ProcessorCallback&, const ProcessorCallback&);
+bool operator<(const ProcessorCallback&, const ProcessorCallback&);
+::Ice::Object* upCast(::omero::grid::ProcessorCallback*);
+typedef ::IceInternal::Handle< ::omero::grid::ProcessorCallback> ProcessorCallbackPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback> ProcessorCallbackPrx;
+void __patch(ProcessorCallbackPtr&, const ::Ice::ObjectPtr&);
 
 class InteractiveProcessor;
 bool operator==(const InteractiveProcessor&, const InteractiveProcessor&);
@@ -777,6 +777,9 @@ typedef ::IceUtil::Handle< Callback_ScriptProcess_close_Base> Callback_ScriptPro
 
 class Callback_ProcessorCallback_isAccepted_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ProcessorCallback_isAccepted_Base> Callback_ProcessorCallback_isAcceptedPtr;
+
+class Callback_ProcessorCallback_isProxyAccepted_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ProcessorCallback_isProxyAccepted_Base> Callback_ProcessorCallback_isProxyAcceptedPtr;
 
 class Callback_ProcessorCallback_responseRunning_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ProcessorCallback_responseRunning_Base> Callback_ProcessorCallback_responseRunningPtr;
@@ -3501,65 +3504,65 @@ class ProcessorCallback : virtual public ::IceProxy::Ice::Object
 {
 public:
 
-    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn)
+    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn)
     {
-        isAccepted(accepted, sessionUuid, processorConn, 0);
+        isAccepted(accepted, sessionUuid, procConn, 0);
     }
-    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx)
+    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx)
     {
-        isAccepted(accepted, sessionUuid, processorConn, &__ctx);
+        isAccepted(accepted, sessionUuid, procConn, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+        return begin_isAccepted(accepted, sessionUuid, procConn, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
     }
     ::Ice::AsyncResultPtr
-    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_isAccepted(accepted, sessionUuid, procConn, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+        return begin_isAccepted(accepted, sessionUuid, procConn, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_isAccepted(accepted, sessionUuid, procConn, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
 #endif
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_isAccepted(accepted, sessionUuid, procConn, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_isAccepted(accepted, sessionUuid, procConn, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, 0, __del, __cookie);
+        return begin_isAccepted(accepted, sessionUuid, procConn, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, &__ctx, __del, __cookie);
+        return begin_isAccepted(accepted, sessionUuid, procConn, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::omero::grid::Callback_ProcessorCallback_isAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::omero::grid::Callback_ProcessorCallback_isAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, 0, __del, __cookie);
+        return begin_isAccepted(accepted, sessionUuid, procConn, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx, const ::omero::grid::Callback_ProcessorCallback_isAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx, const ::omero::grid::Callback_ProcessorCallback_isAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_isAccepted(accepted, sessionUuid, processorConn, &__ctx, __del, __cookie);
+        return begin_isAccepted(accepted, sessionUuid, procConn, &__ctx, __del, __cookie);
     }
 
     void end_isAccepted(const ::Ice::AsyncResultPtr&);
@@ -3568,6 +3571,76 @@ private:
 
     void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy)
+    {
+        isProxyAccepted(accepted, sessionUuid, procProxy, 0);
+    }
+    void isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx)
+    {
+        isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, 0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::omero::grid::Callback_ProcessorCallback_isProxyAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx, const ::omero::grid::Callback_ProcessorCallback_isProxyAcceptedPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx, __del, __cookie);
+    }
+
+    void end_isProxyAccepted(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -5255,6 +5328,8 @@ public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
 
@@ -5401,6 +5476,8 @@ class ProcessorCallback : virtual public ::IceDelegate::omero::grid::ProcessorCa
 public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -5550,6 +5627,8 @@ class ProcessorCallback : virtual public ::IceDelegate::omero::grid::ProcessorCa
 public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -6194,6 +6273,9 @@ public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___isAccepted(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___isProxyAccepted(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___responseRunning(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -7902,6 +7984,88 @@ template<class T, typename CT> Callback_ProcessorCallback_isAcceptedPtr
 newCallback_ProcessorCallback_isAccepted(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_ProcessorCallback_isAccepted<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_ProcessorCallback_isProxyAccepted : public Callback_ProcessorCallback_isProxyAccepted_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_ProcessorCallback_isProxyAccepted(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ProcessorCallback_isProxyAccepted<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ProcessorCallback_isProxyAccepted<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ProcessorCallback_isProxyAccepted<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ProcessorCallback_isProxyAccepted<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_ProcessorCallback_isProxyAccepted : public Callback_ProcessorCallback_isProxyAccepted_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_ProcessorCallback_isProxyAccepted(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ProcessorCallback_isProxyAccepted<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ProcessorCallback_isProxyAccepted<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ProcessorCallback_isProxyAccepted<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ProcessorCallback_isProxyAcceptedPtr
+newCallback_ProcessorCallback_isProxyAccepted(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ProcessorCallback_isProxyAccepted<T, CT>(instance, 0, excb, sentcb);
 }
 
 template<class T>

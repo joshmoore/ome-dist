@@ -13,11 +13,26 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_LightPath_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class LightPathI(_omero_model.LightPath):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "excitationFilterLink",
+          "dichroic",
+          "emissionFilterLink",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          excitationFilterLink=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          dichroic=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          emissionFilterLink=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       EXCITATIONFILTERLINK =  "ome.model.acquisition.LightPath_excitationFilterLink"
       DICHROIC =  "ome.model.acquisition.LightPath_dichroic"
       EMISSIONFILTERLINK =  "ome.model.acquisition.LightPath_emissionFilterLink"
@@ -51,10 +66,26 @@ class LightPathI(_omero_model.LightPath):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(LightPathI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -125,8 +156,11 @@ class LightPathI(_omero_model.LightPath):
           self.errorIfUnloaded()
           return self._excitationFilterLinkSeq
 
-      def _setExcitationFilterLink(self, _excitationFilterLink, current = None):
+      def _setExcitationFilterLink(self, _excitationFilterLink, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.excitationFilterLinkSeq.wrapper is not None:
+              if _excitationFilterLink is not None:
+                  _excitationFilterLink = self._field_info.excitationFilterLinkSeq.wrapper(_excitationFilterLink)
           self._excitationFilterLinkSeq = _excitationFilterLink
           self.checkUnloadedProperty(_excitationFilterLink,'excitationFilterLinkLoaded')
 
@@ -203,10 +237,13 @@ class LightPathI(_omero_model.LightPath):
           if not self._excitationFilterLinkLoaded: self.throwNullCollectionException("excitationFilterLinkSeq")
           return self._excitationFilterLinkSeq[index]
 
-      def setLightPathExcitationFilterLink(self, index, element, current = None):
+      def setLightPathExcitationFilterLink(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._excitationFilterLinkLoaded: self.throwNullCollectionException("excitationFilterLinkSeq")
           old = self._excitationFilterLinkSeq[index]
+          if wrap and self._field_info.excitationFilterLinkSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.excitationFilterLinkSeq.wrapper(_excitationFilterLink)
           self._excitationFilterLinkSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setParent( self )
@@ -278,8 +315,11 @@ class LightPathI(_omero_model.LightPath):
           self.errorIfUnloaded()
           return self._dichroic
 
-      def setDichroic(self, _dichroic, current = None):
+      def setDichroic(self, _dichroic, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.dichroic.wrapper is not None:
+              if _dichroic is not None:
+                  _dichroic = self._field_info.dichroic.wrapper(_dichroic)
           self._dichroic = _dichroic
           pass
 
@@ -291,8 +331,11 @@ class LightPathI(_omero_model.LightPath):
           self.errorIfUnloaded()
           return self._emissionFilterLinkSeq
 
-      def _setEmissionFilterLink(self, _emissionFilterLink, current = None):
+      def _setEmissionFilterLink(self, _emissionFilterLink, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.emissionFilterLinkSeq.wrapper is not None:
+              if _emissionFilterLink is not None:
+                  _emissionFilterLink = self._field_info.emissionFilterLinkSeq.wrapper(_emissionFilterLink)
           self._emissionFilterLinkSeq = _emissionFilterLink
           self.checkUnloadedProperty(_emissionFilterLink,'emissionFilterLinkLoaded')
 
@@ -427,6 +470,8 @@ class LightPathI(_omero_model.LightPath):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

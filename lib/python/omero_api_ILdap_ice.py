@@ -94,6 +94,9 @@ if 'ILdap' not in _M_omero.api.__dict__:
         def getSetting_async(self, _cb, current=None):
             pass
 
+        def createUser_async(self, _cb, username, current=None):
+            pass
+
         def __str__(self):
             return IcePy.stringify(self, _M_omero.api._t_ILdap)
 
@@ -210,6 +213,18 @@ if 'ILdap' not in _M_omero.api.__dict__:
         def getSetting_async(self, _cb, _ctx=None):
             return _M_omero.api.ILdap._op_getSetting.invokeAsync(self, (_cb, (), _ctx))
 
+        def createUser(self, username, _ctx=None):
+            return _M_omero.api.ILdap._op_createUser.invoke(self, ((username, ), _ctx))
+
+        def begin_createUser(self, username, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.api.ILdap._op_createUser.begin(self, ((username, ), _response, _ex, _sent, _ctx))
+
+        def end_createUser(self, _r):
+            return _M_omero.api.ILdap._op_createUser.end(self, _r)
+
+        def createUser_async(self, _cb, username, _ctx=None):
+            return _M_omero.api.ILdap._op_createUser.invokeAsync(self, (_cb, (username, ), _ctx))
+
         def checkedCast(proxy, facetOrCtx=None, _ctx=None):
             return _M_omero.api.ILdapPrx.ice_checkedCast(proxy, '::omero::api::ILdap', facetOrCtx, _ctx)
         checkedCast = staticmethod(checkedCast)
@@ -232,6 +247,7 @@ if 'ILdap' not in _M_omero.api.__dict__:
     ILdap._op_findExperimenter = IcePy.Operation('findExperimenter', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), IcePy._t_string, False, 0),), (), ((), _M_omero.model._t_Experimenter, False, 0), (_M_omero._t_ServerError,))
     ILdap._op_setDN = IcePy.Operation('setDN', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RLong, False, 0), ((), IcePy._t_string, False, 0)), (), None, (_M_omero._t_ServerError,))
     ILdap._op_getSetting = IcePy.Operation('getSetting', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (), (), ((), IcePy._t_bool, False, 0), (_M_omero._t_ServerError,))
+    ILdap._op_createUser = IcePy.Operation('createUser', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0),), (), ((), _M_omero.model._t_Experimenter, False, 0), (_M_omero._t_ServerError,))
 
     _M_omero.api.ILdap = ILdap
     del ILdap

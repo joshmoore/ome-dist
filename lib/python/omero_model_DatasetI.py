@@ -13,11 +13,30 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Dataset_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class DatasetI(_omero_model.Dataset):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "projectLinks",
+          "imageLinks",
+          "annotationLinks",
+          "name",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          projectLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          imageLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       PROJECTLINKS =  "ome.model.containers.Dataset_projectLinks"
       IMAGELINKS =  "ome.model.containers.Dataset_imageLinks"
       ANNOTATIONLINKS =  "ome.model.containers.Dataset_annotationLinks"
@@ -60,10 +79,26 @@ class DatasetI(_omero_model.Dataset):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(DatasetI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -136,8 +171,11 @@ class DatasetI(_omero_model.Dataset):
           self.errorIfUnloaded()
           return self._projectLinksSeq
 
-      def _setProjectLinks(self, _projectLinks, current = None):
+      def _setProjectLinks(self, _projectLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.projectLinksSeq.wrapper is not None:
+              if _projectLinks is not None:
+                  _projectLinks = self._field_info.projectLinksSeq.wrapper(_projectLinks)
           self._projectLinksSeq = _projectLinks
           self.checkUnloadedProperty(_projectLinks,'projectLinksLoaded')
 
@@ -265,8 +303,11 @@ class DatasetI(_omero_model.Dataset):
           self.errorIfUnloaded()
           return self._imageLinksSeq
 
-      def _setImageLinks(self, _imageLinks, current = None):
+      def _setImageLinks(self, _imageLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.imageLinksSeq.wrapper is not None:
+              if _imageLinks is not None:
+                  _imageLinks = self._field_info.imageLinksSeq.wrapper(_imageLinks)
           self._imageLinksSeq = _imageLinks
           self.checkUnloadedProperty(_imageLinks,'imageLinksLoaded')
 
@@ -394,8 +435,11 @@ class DatasetI(_omero_model.Dataset):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -519,8 +563,11 @@ class DatasetI(_omero_model.Dataset):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -532,8 +579,11 @@ class DatasetI(_omero_model.Dataset):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -556,6 +606,8 @@ class DatasetI(_omero_model.Dataset):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

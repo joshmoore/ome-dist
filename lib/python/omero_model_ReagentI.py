@@ -13,11 +13,32 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Reagent_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ReagentI(_omero_model.Reagent):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "name",
+          "reagentIdentifier",
+          "screen",
+          "wellLinks",
+          "annotationLinks",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          reagentIdentifier=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          screen=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          wellLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       NAME =  "ome.model.screen.Reagent_name"
       REAGENTIDENTIFIER =  "ome.model.screen.Reagent_reagentIdentifier"
       SCREEN =  "ome.model.screen.Reagent_screen"
@@ -54,10 +75,26 @@ class ReagentI(_omero_model.Reagent):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ReagentI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -131,8 +168,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -144,8 +184,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._reagentIdentifier
 
-      def setReagentIdentifier(self, _reagentIdentifier, current = None):
+      def setReagentIdentifier(self, _reagentIdentifier, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reagentIdentifier.wrapper is not None:
+              if _reagentIdentifier is not None:
+                  _reagentIdentifier = self._field_info.reagentIdentifier.wrapper(_reagentIdentifier)
           self._reagentIdentifier = _reagentIdentifier
           pass
 
@@ -157,8 +200,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._screen
 
-      def setScreen(self, _screen, current = None):
+      def setScreen(self, _screen, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.screen.wrapper is not None:
+              if _screen is not None:
+                  _screen = self._field_info.screen.wrapper(_screen)
           self._screen = _screen
           pass
 
@@ -170,8 +216,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._wellLinksSeq
 
-      def _setWellLinks(self, _wellLinks, current = None):
+      def _setWellLinks(self, _wellLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellLinksSeq.wrapper is not None:
+              if _wellLinks is not None:
+                  _wellLinks = self._field_info.wellLinksSeq.wrapper(_wellLinks)
           self._wellLinksSeq = _wellLinks
           self.checkUnloadedProperty(_wellLinks,'wellLinksLoaded')
 
@@ -299,8 +348,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -424,8 +476,11 @@ class ReagentI(_omero_model.Reagent):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -448,6 +503,8 @@ class ReagentI(_omero_model.Reagent):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -71,6 +71,14 @@ class OriginalMetadataResponse;
 void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::OriginalMetadataResponse>&);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::OriginalMetadataResponse*);
 
+class ManageImageBinaries;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinaries>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::ManageImageBinaries*);
+
+class ManageImageBinariesResponse;
+void __read(::IceInternal::BasicStream*, ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinariesResponse>&);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::ManageImageBinariesResponse*);
+
 }
 
 }
@@ -98,6 +106,22 @@ bool operator<(const OriginalMetadataResponse&, const OriginalMetadataResponse&)
 typedef ::IceInternal::Handle< ::omero::cmd::OriginalMetadataResponse> OriginalMetadataResponsePtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::OriginalMetadataResponse> OriginalMetadataResponsePrx;
 void __patch(OriginalMetadataResponsePtr&, const ::Ice::ObjectPtr&);
+
+class ManageImageBinaries;
+bool operator==(const ManageImageBinaries&, const ManageImageBinaries&);
+bool operator<(const ManageImageBinaries&, const ManageImageBinaries&);
+::Ice::Object* upCast(::omero::cmd::ManageImageBinaries*);
+typedef ::IceInternal::Handle< ::omero::cmd::ManageImageBinaries> ManageImageBinariesPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinaries> ManageImageBinariesPrx;
+void __patch(ManageImageBinariesPtr&, const ::Ice::ObjectPtr&);
+
+class ManageImageBinariesResponse;
+bool operator==(const ManageImageBinariesResponse&, const ManageImageBinariesResponse&);
+bool operator<(const ManageImageBinariesResponse&, const ManageImageBinariesResponse&);
+::Ice::Object* upCast(::omero::cmd::ManageImageBinariesResponse*);
+typedef ::IceInternal::Handle< ::omero::cmd::ManageImageBinariesResponse> ManageImageBinariesResponsePtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinariesResponse> ManageImageBinariesResponsePrx;
+void __patch(ManageImageBinariesResponsePtr&, const ::Ice::ObjectPtr&);
 
 }
 
@@ -353,6 +377,232 @@ private:
     virtual ::IceProxy::Ice::Object* __newInstance() const;
 };
 
+class ManageImageBinaries : virtual public ::IceProxy::omero::cmd::Request
+{
+public:
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_context(const ::Ice::Context& __context) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_adapterId(const ::std::string& __id) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_locatorCacheTimeout(int __timeout) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_connectionCached(bool __cached) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_secure(bool __secure) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_preferSecure(bool __preferSecure) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_collocationOptimized(bool __co) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_twoway() const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_twoway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_oneway() const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_oneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_batchOneway() const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_datagram() const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_datagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_batchDatagram() const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_compress(bool __compress) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_timeout(int __timeout) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_connectionId(const ::std::string& __id) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_encodingVersion(const ::Ice::EncodingVersion& __v) const
+    {
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_encodingVersion(__v).get());
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+
+    virtual ::IceInternal::Handle< ::IceDelegateM::Ice::Object> __createDelegateM();
+    virtual ::IceInternal::Handle< ::IceDelegateD::Ice::Object> __createDelegateD();
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
+class ManageImageBinariesResponse : virtual public ::IceProxy::omero::cmd::Response
+{
+public:
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_context(const ::Ice::Context& __context) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_adapterId(const ::std::string& __id) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_locatorCacheTimeout(int __timeout) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_connectionCached(bool __cached) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_secure(bool __secure) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_preferSecure(bool __preferSecure) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_collocationOptimized(bool __co) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_twoway() const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_twoway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_oneway() const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_oneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_batchOneway() const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_datagram() const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_datagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_batchDatagram() const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_compress(bool __compress) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_timeout(int __timeout) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_connectionId(const ::std::string& __id) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_encodingVersion(const ::Ice::EncodingVersion& __v) const
+    {
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_encodingVersion(__v).get());
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+
+    virtual ::IceInternal::Handle< ::IceDelegateM::Ice::Object> __createDelegateM();
+    virtual ::IceInternal::Handle< ::IceDelegateD::Ice::Object> __createDelegateD();
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
 }
 
 }
@@ -374,6 +624,16 @@ public:
 };
 
 class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::Response
+{
+public:
+};
+
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::Response
 {
 public:
 };
@@ -405,6 +665,18 @@ class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::Origi
 public:
 };
 
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::ManageImageBinaries,
+                            virtual public ::IceDelegateM::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::ManageImageBinariesResponse,
+                                    virtual public ::IceDelegateM::omero::cmd::Response
+{
+public:
+};
+
 }
 
 }
@@ -428,6 +700,18 @@ public:
 
 class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::OriginalMetadataResponse,
                                  virtual public ::IceDelegateD::omero::cmd::Response
+{
+public:
+};
+
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::ManageImageBinaries,
+                            virtual public ::IceDelegateD::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::ManageImageBinariesResponse,
+                                    virtual public ::IceDelegateD::omero::cmd::Response
 {
 public:
 };
@@ -570,6 +854,143 @@ inline bool operator==(const OriginalMetadataResponse& l, const OriginalMetadata
 }
 
 inline bool operator<(const OriginalMetadataResponse& l, const OriginalMetadataResponse& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class ManageImageBinaries : public ::omero::cmd::Request
+{
+public:
+
+    typedef ManageImageBinariesPrx ProxyType;
+    typedef ManageImageBinariesPtr PointerType;
+
+    ManageImageBinaries()
+    {
+    }
+
+    ManageImageBinaries(::Ice::Long __ice_imageId, bool __ice_togglePixels, bool __ice_deletePyramid) :
+        imageId(__ice_imageId),
+        togglePixels(__ice_togglePixels),
+        deletePyramid(__ice_deletePyramid)
+    {
+    }
+
+    virtual ::Ice::ObjectPtr ice_clone() const;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+
+    static const ::Ice::ObjectFactoryPtr& ice_factory();
+
+protected:
+    virtual void __writeImpl(::IceInternal::BasicStream*) const;
+    virtual void __readImpl(::IceInternal::BasicStream*);
+    #ifdef __SUNPRO_CC
+    using ::omero::cmd::Request::__writeImpl;
+    using ::omero::cmd::Request::__readImpl;
+    #endif
+
+public:
+
+    ::Ice::Long imageId;
+
+    bool togglePixels;
+
+    bool deletePyramid;
+
+protected:
+
+    virtual ~ManageImageBinaries() {}
+};
+
+inline bool operator==(const ManageImageBinaries& l, const ManageImageBinaries& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const ManageImageBinaries& l, const ManageImageBinaries& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class ManageImageBinariesResponse : public ::omero::cmd::Response, public IceInternal::GCShared
+{
+public:
+
+    typedef ManageImageBinariesResponsePrx ProxyType;
+    typedef ManageImageBinariesResponsePtr PointerType;
+
+    ManageImageBinariesResponse()
+    {
+    }
+
+    ManageImageBinariesResponse(const ::omero::RLongPtr& __ice_filesetId, const ::omero::api::LongList& __ice_archivedFiles, bool __ice_pixelsPresent, bool __ice_pyramidPresent, ::Ice::Long __ice_archivedSize, ::Ice::Long __ice_pixelSize, ::Ice::Long __ice_pyramidSize, ::Ice::Long __ice_thumbnailSize) :
+        filesetId(__ice_filesetId),
+        archivedFiles(__ice_archivedFiles),
+        pixelsPresent(__ice_pixelsPresent),
+        pyramidPresent(__ice_pyramidPresent),
+        archivedSize(__ice_archivedSize),
+        pixelSize(__ice_pixelSize),
+        pyramidSize(__ice_pyramidSize),
+        thumbnailSize(__ice_thumbnailSize)
+    {
+    }
+
+    virtual ::Ice::ObjectPtr ice_clone() const;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+    virtual void __addObject(::IceInternal::GCCountMap&);
+    virtual bool __usesGC();
+    virtual void __gcReachable(::IceInternal::GCCountMap&) const;
+    virtual void __gcClear();
+
+    static const ::Ice::ObjectFactoryPtr& ice_factory();
+
+protected:
+    virtual void __writeImpl(::IceInternal::BasicStream*) const;
+    virtual void __readImpl(::IceInternal::BasicStream*);
+    #ifdef __SUNPRO_CC
+    using ::omero::cmd::Response::__writeImpl;
+    using ::omero::cmd::Response::__readImpl;
+    #endif
+
+public:
+
+    ::omero::RLongPtr filesetId;
+
+    ::omero::api::LongList archivedFiles;
+
+    bool pixelsPresent;
+
+    bool pyramidPresent;
+
+    ::Ice::Long archivedSize;
+
+    ::Ice::Long pixelSize;
+
+    ::Ice::Long pyramidSize;
+
+    ::Ice::Long thumbnailSize;
+
+protected:
+
+    virtual ~ManageImageBinariesResponse() {}
+};
+
+inline bool operator==(const ManageImageBinariesResponse& l, const ManageImageBinariesResponse& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const ManageImageBinariesResponse& l, const ManageImageBinariesResponse& r)
 {
     return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
 }

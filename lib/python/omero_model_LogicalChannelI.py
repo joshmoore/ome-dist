@@ -13,11 +13,56 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_LogicalChannel_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class LogicalChannelI(_omero_model.LogicalChannel):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "name",
+          "pinHoleSize",
+          "illumination",
+          "contrastMethod",
+          "excitationWave",
+          "emissionWave",
+          "fluor",
+          "ndFilter",
+          "otf",
+          "detectorSettings",
+          "lightSourceSettings",
+          "filterSet",
+          "samplesPerPixel",
+          "photometricInterpretation",
+          "mode",
+          "pockelCellSetting",
+          "channels",
+          "lightPath",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          pinHoleSize=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          illumination=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          contrastMethod=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          excitationWave=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          emissionWave=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          fluor=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          ndFilter=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          otf=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          detectorSettings=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          lightSourceSettings=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          filterSet=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          samplesPerPixel=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          photometricInterpretation=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          mode=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          pockelCellSetting=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          channels=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          lightPath=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       NAME =  "ome.model.core.LogicalChannel_name"
       PINHOLESIZE =  "ome.model.core.LogicalChannel_pinHoleSize"
       ILLUMINATION =  "ome.model.core.LogicalChannel_illumination"
@@ -59,10 +104,26 @@ class LogicalChannelI(_omero_model.LogicalChannel):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(LogicalChannelI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -148,8 +209,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -161,8 +225,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._pinHoleSize
 
-      def setPinHoleSize(self, _pinHoleSize, current = None):
+      def setPinHoleSize(self, _pinHoleSize, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pinHoleSize.wrapper is not None:
+              if _pinHoleSize is not None:
+                  _pinHoleSize = self._field_info.pinHoleSize.wrapper(_pinHoleSize)
           self._pinHoleSize = _pinHoleSize
           pass
 
@@ -174,8 +241,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._illumination
 
-      def setIllumination(self, _illumination, current = None):
+      def setIllumination(self, _illumination, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.illumination.wrapper is not None:
+              if _illumination is not None:
+                  _illumination = self._field_info.illumination.wrapper(_illumination)
           self._illumination = _illumination
           pass
 
@@ -187,8 +257,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._contrastMethod
 
-      def setContrastMethod(self, _contrastMethod, current = None):
+      def setContrastMethod(self, _contrastMethod, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.contrastMethod.wrapper is not None:
+              if _contrastMethod is not None:
+                  _contrastMethod = self._field_info.contrastMethod.wrapper(_contrastMethod)
           self._contrastMethod = _contrastMethod
           pass
 
@@ -200,8 +273,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._excitationWave
 
-      def setExcitationWave(self, _excitationWave, current = None):
+      def setExcitationWave(self, _excitationWave, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.excitationWave.wrapper is not None:
+              if _excitationWave is not None:
+                  _excitationWave = self._field_info.excitationWave.wrapper(_excitationWave)
           self._excitationWave = _excitationWave
           pass
 
@@ -213,8 +289,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._emissionWave
 
-      def setEmissionWave(self, _emissionWave, current = None):
+      def setEmissionWave(self, _emissionWave, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.emissionWave.wrapper is not None:
+              if _emissionWave is not None:
+                  _emissionWave = self._field_info.emissionWave.wrapper(_emissionWave)
           self._emissionWave = _emissionWave
           pass
 
@@ -226,8 +305,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._fluor
 
-      def setFluor(self, _fluor, current = None):
+      def setFluor(self, _fluor, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fluor.wrapper is not None:
+              if _fluor is not None:
+                  _fluor = self._field_info.fluor.wrapper(_fluor)
           self._fluor = _fluor
           pass
 
@@ -239,8 +321,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._ndFilter
 
-      def setNdFilter(self, _ndFilter, current = None):
+      def setNdFilter(self, _ndFilter, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.ndFilter.wrapper is not None:
+              if _ndFilter is not None:
+                  _ndFilter = self._field_info.ndFilter.wrapper(_ndFilter)
           self._ndFilter = _ndFilter
           pass
 
@@ -252,8 +337,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._otf
 
-      def setOtf(self, _otf, current = None):
+      def setOtf(self, _otf, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.otf.wrapper is not None:
+              if _otf is not None:
+                  _otf = self._field_info.otf.wrapper(_otf)
           self._otf = _otf
           pass
 
@@ -265,8 +353,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._detectorSettings
 
-      def setDetectorSettings(self, _detectorSettings, current = None):
+      def setDetectorSettings(self, _detectorSettings, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.detectorSettings.wrapper is not None:
+              if _detectorSettings is not None:
+                  _detectorSettings = self._field_info.detectorSettings.wrapper(_detectorSettings)
           self._detectorSettings = _detectorSettings
           pass
 
@@ -278,8 +369,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._lightSourceSettings
 
-      def setLightSourceSettings(self, _lightSourceSettings, current = None):
+      def setLightSourceSettings(self, _lightSourceSettings, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lightSourceSettings.wrapper is not None:
+              if _lightSourceSettings is not None:
+                  _lightSourceSettings = self._field_info.lightSourceSettings.wrapper(_lightSourceSettings)
           self._lightSourceSettings = _lightSourceSettings
           pass
 
@@ -291,8 +385,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._filterSet
 
-      def setFilterSet(self, _filterSet, current = None):
+      def setFilterSet(self, _filterSet, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.filterSet.wrapper is not None:
+              if _filterSet is not None:
+                  _filterSet = self._field_info.filterSet.wrapper(_filterSet)
           self._filterSet = _filterSet
           pass
 
@@ -304,8 +401,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._samplesPerPixel
 
-      def setSamplesPerPixel(self, _samplesPerPixel, current = None):
+      def setSamplesPerPixel(self, _samplesPerPixel, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.samplesPerPixel.wrapper is not None:
+              if _samplesPerPixel is not None:
+                  _samplesPerPixel = self._field_info.samplesPerPixel.wrapper(_samplesPerPixel)
           self._samplesPerPixel = _samplesPerPixel
           pass
 
@@ -317,8 +417,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._photometricInterpretation
 
-      def setPhotometricInterpretation(self, _photometricInterpretation, current = None):
+      def setPhotometricInterpretation(self, _photometricInterpretation, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.photometricInterpretation.wrapper is not None:
+              if _photometricInterpretation is not None:
+                  _photometricInterpretation = self._field_info.photometricInterpretation.wrapper(_photometricInterpretation)
           self._photometricInterpretation = _photometricInterpretation
           pass
 
@@ -330,8 +433,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._mode
 
-      def setMode(self, _mode, current = None):
+      def setMode(self, _mode, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.mode.wrapper is not None:
+              if _mode is not None:
+                  _mode = self._field_info.mode.wrapper(_mode)
           self._mode = _mode
           pass
 
@@ -343,8 +449,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._pockelCellSetting
 
-      def setPockelCellSetting(self, _pockelCellSetting, current = None):
+      def setPockelCellSetting(self, _pockelCellSetting, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pockelCellSetting.wrapper is not None:
+              if _pockelCellSetting is not None:
+                  _pockelCellSetting = self._field_info.pockelCellSetting.wrapper(_pockelCellSetting)
           self._pockelCellSetting = _pockelCellSetting
           pass
 
@@ -356,8 +465,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._channelsSeq
 
-      def _setChannels(self, _channels, current = None):
+      def _setChannels(self, _channels, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.channelsSeq.wrapper is not None:
+              if _channels is not None:
+                  _channels = self._field_info.channelsSeq.wrapper(_channels)
           self._channelsSeq = _channels
           self.checkUnloadedProperty(_channels,'channelsLoaded')
 
@@ -437,8 +549,11 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           self.errorIfUnloaded()
           return self._lightPath
 
-      def setLightPath(self, _lightPath, current = None):
+      def setLightPath(self, _lightPath, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lightPath.wrapper is not None:
+              if _lightPath is not None:
+                  _lightPath = self._field_info.lightPath.wrapper(_lightPath)
           self._lightPath = _lightPath
           pass
 
@@ -461,6 +576,8 @@ class LogicalChannelI(_omero_model.LogicalChannel):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_StageLabel_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class StageLabelI(_omero_model.StageLabel):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "positionX",
+          "positionY",
+          "positionZ",
+          "name",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          positionX=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          positionY=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          positionZ=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       POSITIONX =  "ome.model.acquisition.StageLabel_positionX"
       POSITIONY =  "ome.model.acquisition.StageLabel_positionY"
       POSITIONZ =  "ome.model.acquisition.StageLabel_positionZ"
@@ -38,10 +55,26 @@ class StageLabelI(_omero_model.StageLabel):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(StageLabelI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -113,8 +146,11 @@ class StageLabelI(_omero_model.StageLabel):
           self.errorIfUnloaded()
           return self._positionX
 
-      def setPositionX(self, _positionX, current = None):
+      def setPositionX(self, _positionX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionX.wrapper is not None:
+              if _positionX is not None:
+                  _positionX = self._field_info.positionX.wrapper(_positionX)
           self._positionX = _positionX
           pass
 
@@ -126,8 +162,11 @@ class StageLabelI(_omero_model.StageLabel):
           self.errorIfUnloaded()
           return self._positionY
 
-      def setPositionY(self, _positionY, current = None):
+      def setPositionY(self, _positionY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionY.wrapper is not None:
+              if _positionY is not None:
+                  _positionY = self._field_info.positionY.wrapper(_positionY)
           self._positionY = _positionY
           pass
 
@@ -139,8 +178,11 @@ class StageLabelI(_omero_model.StageLabel):
           self.errorIfUnloaded()
           return self._positionZ
 
-      def setPositionZ(self, _positionZ, current = None):
+      def setPositionZ(self, _positionZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionZ.wrapper is not None:
+              if _positionZ is not None:
+                  _positionZ = self._field_info.positionZ.wrapper(_positionZ)
           self._positionZ = _positionZ
           pass
 
@@ -152,8 +194,11 @@ class StageLabelI(_omero_model.StageLabel):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -176,6 +221,8 @@ class StageLabelI(_omero_model.StageLabel):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

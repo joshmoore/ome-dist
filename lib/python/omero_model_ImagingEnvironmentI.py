@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ImagingEnvironment_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "temperature",
+          "airPressure",
+          "humidity",
+          "co2percent",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          temperature=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          airPressure=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          humidity=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          co2percent=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       TEMPERATURE =  "ome.model.acquisition.ImagingEnvironment_temperature"
       AIRPRESSURE =  "ome.model.acquisition.ImagingEnvironment_airPressure"
       HUMIDITY =  "ome.model.acquisition.ImagingEnvironment_humidity"
@@ -38,10 +55,26 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ImagingEnvironmentI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -113,8 +146,11 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
           self.errorIfUnloaded()
           return self._temperature
 
-      def setTemperature(self, _temperature, current = None):
+      def setTemperature(self, _temperature, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.temperature.wrapper is not None:
+              if _temperature is not None:
+                  _temperature = self._field_info.temperature.wrapper(_temperature)
           self._temperature = _temperature
           pass
 
@@ -126,8 +162,11 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
           self.errorIfUnloaded()
           return self._airPressure
 
-      def setAirPressure(self, _airPressure, current = None):
+      def setAirPressure(self, _airPressure, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.airPressure.wrapper is not None:
+              if _airPressure is not None:
+                  _airPressure = self._field_info.airPressure.wrapper(_airPressure)
           self._airPressure = _airPressure
           pass
 
@@ -139,8 +178,11 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
           self.errorIfUnloaded()
           return self._humidity
 
-      def setHumidity(self, _humidity, current = None):
+      def setHumidity(self, _humidity, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.humidity.wrapper is not None:
+              if _humidity is not None:
+                  _humidity = self._field_info.humidity.wrapper(_humidity)
           self._humidity = _humidity
           pass
 
@@ -152,8 +194,11 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
           self.errorIfUnloaded()
           return self._co2percent
 
-      def setCo2percent(self, _co2percent, current = None):
+      def setCo2percent(self, _co2percent, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.co2percent.wrapper is not None:
+              if _co2percent is not None:
+                  _co2percent = self._field_info.co2percent.wrapper(_co2percent)
           self._co2percent = _co2percent
           pass
 
@@ -176,6 +221,8 @@ class ImagingEnvironmentI(_omero_model.ImagingEnvironment):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

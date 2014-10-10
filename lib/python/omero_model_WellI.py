@@ -13,11 +13,48 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Well_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class WellI(_omero_model.Well):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "status",
+          "column",
+          "row",
+          "red",
+          "green",
+          "blue",
+          "alpha",
+          "reagentLinks",
+          "externalDescription",
+          "externalIdentifier",
+          "type",
+          "wellSamples",
+          "plate",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          status=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          column=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          row=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          red=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          green=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          blue=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          alpha=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          reagentLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          externalDescription=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          externalIdentifier=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          type=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          wellSamples=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          plate=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       STATUS =  "ome.model.screen.Well_status"
       COLUMN =  "ome.model.screen.Well_column"
       ROW =  "ome.model.screen.Well_row"
@@ -69,10 +106,26 @@ class WellI(_omero_model.Well):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(WellI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -154,8 +207,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._status
 
-      def setStatus(self, _status, current = None):
+      def setStatus(self, _status, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.status.wrapper is not None:
+              if _status is not None:
+                  _status = self._field_info.status.wrapper(_status)
           self._status = _status
           pass
 
@@ -167,8 +223,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._column
 
-      def setColumn(self, _column, current = None):
+      def setColumn(self, _column, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.column.wrapper is not None:
+              if _column is not None:
+                  _column = self._field_info.column.wrapper(_column)
           self._column = _column
           pass
 
@@ -180,8 +239,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._row
 
-      def setRow(self, _row, current = None):
+      def setRow(self, _row, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.row.wrapper is not None:
+              if _row is not None:
+                  _row = self._field_info.row.wrapper(_row)
           self._row = _row
           pass
 
@@ -193,8 +255,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._red
 
-      def setRed(self, _red, current = None):
+      def setRed(self, _red, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.red.wrapper is not None:
+              if _red is not None:
+                  _red = self._field_info.red.wrapper(_red)
           self._red = _red
           pass
 
@@ -206,8 +271,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._green
 
-      def setGreen(self, _green, current = None):
+      def setGreen(self, _green, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.green.wrapper is not None:
+              if _green is not None:
+                  _green = self._field_info.green.wrapper(_green)
           self._green = _green
           pass
 
@@ -219,8 +287,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._blue
 
-      def setBlue(self, _blue, current = None):
+      def setBlue(self, _blue, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.blue.wrapper is not None:
+              if _blue is not None:
+                  _blue = self._field_info.blue.wrapper(_blue)
           self._blue = _blue
           pass
 
@@ -232,8 +303,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._alpha
 
-      def setAlpha(self, _alpha, current = None):
+      def setAlpha(self, _alpha, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.alpha.wrapper is not None:
+              if _alpha is not None:
+                  _alpha = self._field_info.alpha.wrapper(_alpha)
           self._alpha = _alpha
           pass
 
@@ -245,8 +319,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._reagentLinksSeq
 
-      def _setReagentLinks(self, _reagentLinks, current = None):
+      def _setReagentLinks(self, _reagentLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reagentLinksSeq.wrapper is not None:
+              if _reagentLinks is not None:
+                  _reagentLinks = self._field_info.reagentLinksSeq.wrapper(_reagentLinks)
           self._reagentLinksSeq = _reagentLinks
           self.checkUnloadedProperty(_reagentLinks,'reagentLinksLoaded')
 
@@ -374,8 +451,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._externalDescription
 
-      def setExternalDescription(self, _externalDescription, current = None):
+      def setExternalDescription(self, _externalDescription, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.externalDescription.wrapper is not None:
+              if _externalDescription is not None:
+                  _externalDescription = self._field_info.externalDescription.wrapper(_externalDescription)
           self._externalDescription = _externalDescription
           pass
 
@@ -387,8 +467,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._externalIdentifier
 
-      def setExternalIdentifier(self, _externalIdentifier, current = None):
+      def setExternalIdentifier(self, _externalIdentifier, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.externalIdentifier.wrapper is not None:
+              if _externalIdentifier is not None:
+                  _externalIdentifier = self._field_info.externalIdentifier.wrapper(_externalIdentifier)
           self._externalIdentifier = _externalIdentifier
           pass
 
@@ -400,8 +483,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -413,8 +499,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._wellSamplesSeq
 
-      def _setWellSamples(self, _wellSamples, current = None):
+      def _setWellSamples(self, _wellSamples, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellSamplesSeq.wrapper is not None:
+              if _wellSamples is not None:
+                  _wellSamples = self._field_info.wellSamplesSeq.wrapper(_wellSamples)
           self._wellSamplesSeq = _wellSamples
           self.checkUnloadedProperty(_wellSamples,'wellSamplesLoaded')
 
@@ -491,10 +580,13 @@ class WellI(_omero_model.Well):
           if not self._wellSamplesLoaded: self.throwNullCollectionException("wellSamplesSeq")
           return self._wellSamplesSeq[index]
 
-      def setWellSample(self, index, element, current = None):
+      def setWellSample(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._wellSamplesLoaded: self.throwNullCollectionException("wellSamplesSeq")
           old = self._wellSamplesSeq[index]
+          if wrap and self._field_info.wellSamplesSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.wellSamplesSeq.wrapper(_wellSamples)
           self._wellSamplesSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setWell( self )
@@ -522,8 +614,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._plate
 
-      def setPlate(self, _plate, current = None):
+      def setPlate(self, _plate, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.plate.wrapper is not None:
+              if _plate is not None:
+                  _plate = self._field_info.plate.wrapper(_plate)
           self._plate = _plate
           pass
 
@@ -535,8 +630,11 @@ class WellI(_omero_model.Well):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -671,6 +769,8 @@ class WellI(_omero_model.Well):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,54 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Image_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ImageI(_omero_model.Image):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "acquisitionDate",
+          "archived",
+          "partial",
+          "format",
+          "imagingEnvironment",
+          "objectiveSettings",
+          "instrument",
+          "stageLabel",
+          "experiment",
+          "pixels",
+          "wellSamples",
+          "rois",
+          "datasetLinks",
+          "fileset",
+          "annotationLinks",
+          "name",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          acquisitionDate=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          archived=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          partial=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          format=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          imagingEnvironment=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          objectiveSettings=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          instrument=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          stageLabel=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          experiment=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          pixels=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          wellSamples=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          rois=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          datasetLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          fileset=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       ACQUISITIONDATE =  "ome.model.core.Image_acquisitionDate"
       ARCHIVED =  "ome.model.core.Image_archived"
       PARTIAL =  "ome.model.core.Image_partial"
@@ -86,10 +129,26 @@ class ImageI(_omero_model.Image):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ImageI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -174,8 +233,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._acquisitionDate
 
-      def setAcquisitionDate(self, _acquisitionDate, current = None):
+      def setAcquisitionDate(self, _acquisitionDate, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.acquisitionDate.wrapper is not None:
+              if _acquisitionDate is not None:
+                  _acquisitionDate = self._field_info.acquisitionDate.wrapper(_acquisitionDate)
           self._acquisitionDate = _acquisitionDate
           pass
 
@@ -187,8 +249,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._archived
 
-      def setArchived(self, _archived, current = None):
+      def setArchived(self, _archived, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.archived.wrapper is not None:
+              if _archived is not None:
+                  _archived = self._field_info.archived.wrapper(_archived)
           self._archived = _archived
           pass
 
@@ -200,8 +265,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._partial
 
-      def setPartial(self, _partial, current = None):
+      def setPartial(self, _partial, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.partial.wrapper is not None:
+              if _partial is not None:
+                  _partial = self._field_info.partial.wrapper(_partial)
           self._partial = _partial
           pass
 
@@ -213,8 +281,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._format
 
-      def setFormat(self, _format, current = None):
+      def setFormat(self, _format, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.format.wrapper is not None:
+              if _format is not None:
+                  _format = self._field_info.format.wrapper(_format)
           self._format = _format
           pass
 
@@ -226,8 +297,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._imagingEnvironment
 
-      def setImagingEnvironment(self, _imagingEnvironment, current = None):
+      def setImagingEnvironment(self, _imagingEnvironment, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.imagingEnvironment.wrapper is not None:
+              if _imagingEnvironment is not None:
+                  _imagingEnvironment = self._field_info.imagingEnvironment.wrapper(_imagingEnvironment)
           self._imagingEnvironment = _imagingEnvironment
           pass
 
@@ -239,8 +313,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._objectiveSettings
 
-      def setObjectiveSettings(self, _objectiveSettings, current = None):
+      def setObjectiveSettings(self, _objectiveSettings, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.objectiveSettings.wrapper is not None:
+              if _objectiveSettings is not None:
+                  _objectiveSettings = self._field_info.objectiveSettings.wrapper(_objectiveSettings)
           self._objectiveSettings = _objectiveSettings
           pass
 
@@ -252,8 +329,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._instrument
 
-      def setInstrument(self, _instrument, current = None):
+      def setInstrument(self, _instrument, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.instrument.wrapper is not None:
+              if _instrument is not None:
+                  _instrument = self._field_info.instrument.wrapper(_instrument)
           self._instrument = _instrument
           pass
 
@@ -265,8 +345,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._stageLabel
 
-      def setStageLabel(self, _stageLabel, current = None):
+      def setStageLabel(self, _stageLabel, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.stageLabel.wrapper is not None:
+              if _stageLabel is not None:
+                  _stageLabel = self._field_info.stageLabel.wrapper(_stageLabel)
           self._stageLabel = _stageLabel
           pass
 
@@ -278,8 +361,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._experiment
 
-      def setExperiment(self, _experiment, current = None):
+      def setExperiment(self, _experiment, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.experiment.wrapper is not None:
+              if _experiment is not None:
+                  _experiment = self._field_info.experiment.wrapper(_experiment)
           self._experiment = _experiment
           pass
 
@@ -291,8 +377,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._pixelsSeq
 
-      def _setPixels(self, _pixels, current = None):
+      def _setPixels(self, _pixels, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixelsSeq.wrapper is not None:
+              if _pixels is not None:
+                  _pixels = self._field_info.pixelsSeq.wrapper(_pixels)
           self._pixelsSeq = _pixels
           self.checkUnloadedProperty(_pixels,'pixelsLoaded')
 
@@ -369,10 +458,13 @@ class ImageI(_omero_model.Image):
           if not self._pixelsLoaded: self.throwNullCollectionException("pixelsSeq")
           return self._pixelsSeq[index]
 
-      def setPixels(self, index, element, current = None):
+      def setPixels(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._pixelsLoaded: self.throwNullCollectionException("pixelsSeq")
           old = self._pixelsSeq[index]
+          if wrap and self._field_info.pixelsSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.pixelsSeq.wrapper(_pixels)
           self._pixelsSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setImage( self )
@@ -400,8 +492,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._wellSamplesSeq
 
-      def _setWellSamples(self, _wellSamples, current = None):
+      def _setWellSamples(self, _wellSamples, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wellSamplesSeq.wrapper is not None:
+              if _wellSamples is not None:
+                  _wellSamples = self._field_info.wellSamplesSeq.wrapper(_wellSamples)
           self._wellSamplesSeq = _wellSamples
           self.checkUnloadedProperty(_wellSamples,'wellSamplesLoaded')
 
@@ -481,8 +576,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._roisSeq
 
-      def _setRois(self, _rois, current = None):
+      def _setRois(self, _rois, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.roisSeq.wrapper is not None:
+              if _rois is not None:
+                  _rois = self._field_info.roisSeq.wrapper(_rois)
           self._roisSeq = _rois
           self.checkUnloadedProperty(_rois,'roisLoaded')
 
@@ -562,8 +660,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._datasetLinksSeq
 
-      def _setDatasetLinks(self, _datasetLinks, current = None):
+      def _setDatasetLinks(self, _datasetLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.datasetLinksSeq.wrapper is not None:
+              if _datasetLinks is not None:
+                  _datasetLinks = self._field_info.datasetLinksSeq.wrapper(_datasetLinks)
           self._datasetLinksSeq = _datasetLinks
           self.checkUnloadedProperty(_datasetLinks,'datasetLinksLoaded')
 
@@ -691,8 +792,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._fileset
 
-      def setFileset(self, _fileset, current = None):
+      def setFileset(self, _fileset, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.fileset.wrapper is not None:
+              if _fileset is not None:
+                  _fileset = self._field_info.fileset.wrapper(_fileset)
           self._fileset = _fileset
           pass
 
@@ -704,8 +808,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -829,8 +936,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -842,8 +952,11 @@ class ImageI(_omero_model.Image):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -866,6 +979,8 @@ class ImageI(_omero_model.Image):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized
