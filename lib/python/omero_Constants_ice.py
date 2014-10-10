@@ -33,6 +33,8 @@ _M_omero.constants.GLACIER2PORT = 4064
 
 _M_omero.constants.MESSAGESIZEMAX = 65536
 
+_M_omero.constants.DEFAULTBATCHSIZE = 2000
+
 _M_omero.constants.DEFAULTBLOCKSIZE = 5000000
 
 _M_omero.constants.CLIENTTHREADPOOLSIZE = 5

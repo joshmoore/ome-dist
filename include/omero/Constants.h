@@ -48,6 +48,8 @@ const ::Ice::Int GLACIER2PORT = 4064;
 
 const ::Ice::Int MESSAGESIZEMAX = 65536;
 
+const ::Ice::Int DEFAULTBATCHSIZE = 2000;
+
 const ::Ice::Int DEFAULTBLOCKSIZE = 5000000;
 
 const ::Ice::Int CLIENTTHREADPOOLSIZE = 5;

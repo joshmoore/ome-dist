@@ -13,11 +13,42 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_OriginalFile_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class OriginalFileI(_omero_model.OriginalFile):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "pixelsFileMaps",
+          "path",
+          "size",
+          "atime",
+          "mtime",
+          "ctime",
+          "hasher",
+          "hash",
+          "mimetype",
+          "annotationLinks",
+          "name",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          pixelsFileMaps=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          path=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          size=_field_info_data(wrapper=omero.rtypes.rlong, nullable=True),
+          atime=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          mtime=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          ctime=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          hasher=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          hash=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          mimetype=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       PIXELSFILEMAPS =  "ome.model.core.OriginalFile_pixelsFileMaps"
       PATH =  "ome.model.core.OriginalFile_path"
       SIZE =  "ome.model.core.OriginalFile_size"
@@ -59,10 +90,26 @@ class OriginalFileI(_omero_model.OriginalFile):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(OriginalFileI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -141,8 +188,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._pixelsFileMapsSeq
 
-      def _setPixelsFileMaps(self, _pixelsFileMaps, current = None):
+      def _setPixelsFileMaps(self, _pixelsFileMaps, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixelsFileMapsSeq.wrapper is not None:
+              if _pixelsFileMaps is not None:
+                  _pixelsFileMaps = self._field_info.pixelsFileMapsSeq.wrapper(_pixelsFileMaps)
           self._pixelsFileMapsSeq = _pixelsFileMaps
           self.checkUnloadedProperty(_pixelsFileMaps,'pixelsFileMapsLoaded')
 
@@ -270,8 +320,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._path
 
-      def setPath(self, _path, current = None):
+      def setPath(self, _path, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.path.wrapper is not None:
+              if _path is not None:
+                  _path = self._field_info.path.wrapper(_path)
           self._path = _path
           pass
 
@@ -283,8 +336,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._size
 
-      def setSize(self, _size, current = None):
+      def setSize(self, _size, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.size.wrapper is not None:
+              if _size is not None:
+                  _size = self._field_info.size.wrapper(_size)
           self._size = _size
           pass
 
@@ -296,8 +352,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._atime
 
-      def setAtime(self, _atime, current = None):
+      def setAtime(self, _atime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.atime.wrapper is not None:
+              if _atime is not None:
+                  _atime = self._field_info.atime.wrapper(_atime)
           self._atime = _atime
           pass
 
@@ -309,8 +368,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._mtime
 
-      def setMtime(self, _mtime, current = None):
+      def setMtime(self, _mtime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.mtime.wrapper is not None:
+              if _mtime is not None:
+                  _mtime = self._field_info.mtime.wrapper(_mtime)
           self._mtime = _mtime
           pass
 
@@ -322,8 +384,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._ctime
 
-      def setCtime(self, _ctime, current = None):
+      def setCtime(self, _ctime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.ctime.wrapper is not None:
+              if _ctime is not None:
+                  _ctime = self._field_info.ctime.wrapper(_ctime)
           self._ctime = _ctime
           pass
 
@@ -335,8 +400,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._hasher
 
-      def setHasher(self, _hasher, current = None):
+      def setHasher(self, _hasher, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.hasher.wrapper is not None:
+              if _hasher is not None:
+                  _hasher = self._field_info.hasher.wrapper(_hasher)
           self._hasher = _hasher
           pass
 
@@ -348,8 +416,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._hash
 
-      def setHash(self, _hash, current = None):
+      def setHash(self, _hash, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.hash.wrapper is not None:
+              if _hash is not None:
+                  _hash = self._field_info.hash.wrapper(_hash)
           self._hash = _hash
           pass
 
@@ -361,8 +432,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._mimetype
 
-      def setMimetype(self, _mimetype, current = None):
+      def setMimetype(self, _mimetype, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.mimetype.wrapper is not None:
+              if _mimetype is not None:
+                  _mimetype = self._field_info.mimetype.wrapper(_mimetype)
           self._mimetype = _mimetype
           pass
 
@@ -374,8 +448,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -499,8 +576,11 @@ class OriginalFileI(_omero_model.OriginalFile):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -523,6 +603,8 @@ class OriginalFileI(_omero_model.OriginalFile):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

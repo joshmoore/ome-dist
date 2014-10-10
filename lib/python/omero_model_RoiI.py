@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Roi_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class RoiI(_omero_model.Roi):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "shapes",
+          "image",
+          "source",
+          "namespaces",
+          "keywords",
+          "annotationLinks",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          shapes=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          image=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          source=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          namespaces=_field_info_data(wrapper=None, nullable=True),
+
+          keywords=_field_info_data(wrapper=None, nullable=True),
+
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       SHAPES =  "ome.model.roi.Roi_shapes"
       IMAGE =  "ome.model.roi.Roi_image"
       SOURCE =  "ome.model.roi.Roi_source"
@@ -55,10 +80,26 @@ class RoiI(_omero_model.Roi):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(RoiI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -133,8 +174,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._shapesSeq
 
-      def _setShapes(self, _shapes, current = None):
+      def _setShapes(self, _shapes, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.shapesSeq.wrapper is not None:
+              if _shapes is not None:
+                  _shapes = self._field_info.shapesSeq.wrapper(_shapes)
           self._shapesSeq = _shapes
           self.checkUnloadedProperty(_shapes,'shapesLoaded')
 
@@ -211,10 +255,13 @@ class RoiI(_omero_model.Roi):
           if not self._shapesLoaded: self.throwNullCollectionException("shapesSeq")
           return self._shapesSeq[index]
 
-      def setShape(self, index, element, current = None):
+      def setShape(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._shapesLoaded: self.throwNullCollectionException("shapesSeq")
           old = self._shapesSeq[index]
+          if wrap and self._field_info.shapesSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.shapesSeq.wrapper(_shapes)
           self._shapesSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setRoi( self )
@@ -242,8 +289,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._image
 
-      def setImage(self, _image, current = None):
+      def setImage(self, _image, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.image.wrapper is not None:
+              if _image is not None:
+                  _image = self._field_info.image.wrapper(_image)
           self._image = _image
           pass
 
@@ -255,8 +305,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._source
 
-      def setSource(self, _source, current = None):
+      def setSource(self, _source, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.source.wrapper is not None:
+              if _source is not None:
+                  _source = self._field_info.source.wrapper(_source)
           self._source = _source
           pass
 
@@ -268,8 +321,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._namespaces
 
-      def setNamespaces(self, _namespaces, current = None):
+      def setNamespaces(self, _namespaces, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.namespaces.wrapper is not None:
+              if _namespaces is not None:
+                  _namespaces = self._field_info.namespaces.wrapper(_namespaces)
           self._namespaces = _namespaces
           pass
 
@@ -281,8 +337,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._keywords
 
-      def setKeywords(self, _keywords, current = None):
+      def setKeywords(self, _keywords, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.keywords.wrapper is not None:
+              if _keywords is not None:
+                  _keywords = self._field_info.keywords.wrapper(_keywords)
           self._keywords = _keywords
           pass
 
@@ -294,8 +353,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -419,8 +481,11 @@ class RoiI(_omero_model.Roi):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -443,6 +508,8 @@ class RoiI(_omero_model.Roi):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

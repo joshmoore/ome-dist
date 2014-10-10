@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Event_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class EventI(_omero_model.Event):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "status",
+          "time",
+          "experimenter",
+          "experimenterGroup",
+          "type",
+          "containingEvent",
+          "logs",
+          "session",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          status=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          time=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          experimenter=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          experimenterGroup=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          type=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          containingEvent=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          logs=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          session=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       STATUS =  "ome.model.meta.Event_status"
       TIME =  "ome.model.meta.Event_time"
       EXPERIMENTER =  "ome.model.meta.Event_experimenter"
@@ -49,10 +74,26 @@ class EventI(_omero_model.Event):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(EventI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -119,8 +160,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._status
 
-      def setStatus(self, _status, current = None):
+      def setStatus(self, _status, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.status.wrapper is not None:
+              if _status is not None:
+                  _status = self._field_info.status.wrapper(_status)
           self._status = _status
           pass
 
@@ -132,8 +176,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._time
 
-      def setTime(self, _time, current = None):
+      def setTime(self, _time, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.time.wrapper is not None:
+              if _time is not None:
+                  _time = self._field_info.time.wrapper(_time)
           self._time = _time
           pass
 
@@ -145,8 +192,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._experimenter
 
-      def setExperimenter(self, _experimenter, current = None):
+      def setExperimenter(self, _experimenter, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.experimenter.wrapper is not None:
+              if _experimenter is not None:
+                  _experimenter = self._field_info.experimenter.wrapper(_experimenter)
           self._experimenter = _experimenter
           pass
 
@@ -158,8 +208,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._experimenterGroup
 
-      def setExperimenterGroup(self, _experimenterGroup, current = None):
+      def setExperimenterGroup(self, _experimenterGroup, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.experimenterGroup.wrapper is not None:
+              if _experimenterGroup is not None:
+                  _experimenterGroup = self._field_info.experimenterGroup.wrapper(_experimenterGroup)
           self._experimenterGroup = _experimenterGroup
           pass
 
@@ -171,8 +224,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -184,8 +240,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._containingEvent
 
-      def setContainingEvent(self, _containingEvent, current = None):
+      def setContainingEvent(self, _containingEvent, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.containingEvent.wrapper is not None:
+              if _containingEvent is not None:
+                  _containingEvent = self._field_info.containingEvent.wrapper(_containingEvent)
           self._containingEvent = _containingEvent
           pass
 
@@ -197,8 +256,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._logsSeq
 
-      def _setLogs(self, _logs, current = None):
+      def _setLogs(self, _logs, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.logsSeq.wrapper is not None:
+              if _logs is not None:
+                  _logs = self._field_info.logsSeq.wrapper(_logs)
           self._logsSeq = _logs
           self.checkUnloadedProperty(_logs,'logsLoaded')
 
@@ -276,8 +338,11 @@ class EventI(_omero_model.Event):
           self.errorIfUnloaded()
           return self._session
 
-      def setSession(self, _session, current = None):
+      def setSession(self, _session, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.session.wrapper is not None:
+              if _session is not None:
+                  _session = self._field_info.session.wrapper(_session)
           self._session = _session
           pass
 
@@ -300,6 +365,8 @@ class EventI(_omero_model.Event):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

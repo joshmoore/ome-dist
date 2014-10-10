@@ -13,11 +13,38 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_RenderingDef_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class RenderingDefI(_omero_model.RenderingDef):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "pixels",
+          "defaultZ",
+          "defaultT",
+          "model",
+          "waveRendering",
+          "name",
+          "compression",
+          "quantization",
+          "spatialDomainEnhancement",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          pixels=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          defaultZ=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          defaultT=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          model=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          waveRendering=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          compression=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          quantization=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          spatialDomainEnhancement=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       PIXELS =  "ome.model.display.RenderingDef_pixels"
       DEFAULTZ =  "ome.model.display.RenderingDef_defaultZ"
       DEFAULTT =  "ome.model.display.RenderingDef_defaultT"
@@ -57,10 +84,26 @@ class RenderingDefI(_omero_model.RenderingDef):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(RenderingDefI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -137,8 +180,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._pixels
 
-      def setPixels(self, _pixels, current = None):
+      def setPixels(self, _pixels, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixels.wrapper is not None:
+              if _pixels is not None:
+                  _pixels = self._field_info.pixels.wrapper(_pixels)
           self._pixels = _pixels
           pass
 
@@ -150,8 +196,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._defaultZ
 
-      def setDefaultZ(self, _defaultZ, current = None):
+      def setDefaultZ(self, _defaultZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.defaultZ.wrapper is not None:
+              if _defaultZ is not None:
+                  _defaultZ = self._field_info.defaultZ.wrapper(_defaultZ)
           self._defaultZ = _defaultZ
           pass
 
@@ -163,8 +212,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._defaultT
 
-      def setDefaultT(self, _defaultT, current = None):
+      def setDefaultT(self, _defaultT, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.defaultT.wrapper is not None:
+              if _defaultT is not None:
+                  _defaultT = self._field_info.defaultT.wrapper(_defaultT)
           self._defaultT = _defaultT
           pass
 
@@ -176,8 +228,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._model
 
-      def setModel(self, _model, current = None):
+      def setModel(self, _model, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.model.wrapper is not None:
+              if _model is not None:
+                  _model = self._field_info.model.wrapper(_model)
           self._model = _model
           pass
 
@@ -189,8 +244,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._waveRenderingSeq
 
-      def _setWaveRendering(self, _waveRendering, current = None):
+      def _setWaveRendering(self, _waveRendering, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.waveRenderingSeq.wrapper is not None:
+              if _waveRendering is not None:
+                  _waveRendering = self._field_info.waveRenderingSeq.wrapper(_waveRendering)
           self._waveRenderingSeq = _waveRendering
           self.checkUnloadedProperty(_waveRendering,'waveRenderingLoaded')
 
@@ -267,10 +325,13 @@ class RenderingDefI(_omero_model.RenderingDef):
           if not self._waveRenderingLoaded: self.throwNullCollectionException("waveRenderingSeq")
           return self._waveRenderingSeq[index]
 
-      def setChannelBinding(self, index, element, current = None):
+      def setChannelBinding(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._waveRenderingLoaded: self.throwNullCollectionException("waveRenderingSeq")
           old = self._waveRenderingSeq[index]
+          if wrap and self._field_info.waveRenderingSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.waveRenderingSeq.wrapper(_waveRendering)
           self._waveRenderingSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setRenderingDef( self )
@@ -298,8 +359,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -311,8 +375,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._compression
 
-      def setCompression(self, _compression, current = None):
+      def setCompression(self, _compression, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.compression.wrapper is not None:
+              if _compression is not None:
+                  _compression = self._field_info.compression.wrapper(_compression)
           self._compression = _compression
           pass
 
@@ -324,8 +391,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._quantization
 
-      def setQuantization(self, _quantization, current = None):
+      def setQuantization(self, _quantization, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.quantization.wrapper is not None:
+              if _quantization is not None:
+                  _quantization = self._field_info.quantization.wrapper(_quantization)
           self._quantization = _quantization
           pass
 
@@ -337,8 +407,11 @@ class RenderingDefI(_omero_model.RenderingDef):
           self.errorIfUnloaded()
           return self._spatialDomainEnhancementSeq
 
-      def _setSpatialDomainEnhancement(self, _spatialDomainEnhancement, current = None):
+      def _setSpatialDomainEnhancement(self, _spatialDomainEnhancement, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.spatialDomainEnhancementSeq.wrapper is not None:
+              if _spatialDomainEnhancement is not None:
+                  _spatialDomainEnhancement = self._field_info.spatialDomainEnhancementSeq.wrapper(_spatialDomainEnhancement)
           self._spatialDomainEnhancementSeq = _spatialDomainEnhancement
           self.checkUnloadedProperty(_spatialDomainEnhancement,'spatialDomainEnhancementLoaded')
 
@@ -415,10 +488,13 @@ class RenderingDefI(_omero_model.RenderingDef):
           if not self._spatialDomainEnhancementLoaded: self.throwNullCollectionException("spatialDomainEnhancementSeq")
           return self._spatialDomainEnhancementSeq[index]
 
-      def setCodomainMapContext(self, index, element, current = None):
+      def setCodomainMapContext(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._spatialDomainEnhancementLoaded: self.throwNullCollectionException("spatialDomainEnhancementSeq")
           old = self._spatialDomainEnhancementSeq[index]
+          if wrap and self._field_info.spatialDomainEnhancementSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.spatialDomainEnhancementSeq.wrapper(_spatialDomainEnhancement)
           self._spatialDomainEnhancementSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setRenderingDef( self )
@@ -457,6 +533,8 @@ class RenderingDefI(_omero_model.RenderingDef):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -1188,6 +1188,33 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_saveCurrentSettings> AMD_RenderingEngine_saveCurrentSettingsPtr;
 
+class AMI_RenderingEngine_saveAsNewSettings : public ::IceInternal::OutgoingAsync
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+    virtual void ice_exception(const ::Ice::Exception&) = 0;
+
+    bool __invoke(const ::omero::api::RenderingEnginePrx&, const ::Ice::Context*);
+
+protected:
+
+    virtual void __response(bool);
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_RenderingEngine_saveAsNewSettings> AMI_RenderingEngine_saveAsNewSettingsPtr;
+
+class AMD_RenderingEngine_saveAsNewSettings : virtual public ::IceUtil::Shared
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+    virtual void ice_exception(const ::std::exception&) = 0;
+    virtual void ice_exception() = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_saveAsNewSettings> AMD_RenderingEngine_saveAsNewSettingsPtr;
+
 class AMI_RenderingEngine_resetDefaults : public ::IceInternal::OutgoingAsync
 {
 public:
@@ -1241,6 +1268,33 @@ public:
 };
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_resetDefaultsNoSave> AMD_RenderingEngine_resetDefaultsNoSavePtr;
+
+class AMI_RenderingEngine_resetDefaultsSettings : public ::IceInternal::OutgoingAsync
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+    virtual void ice_exception(const ::Ice::Exception&) = 0;
+
+    bool __invoke(const ::omero::api::RenderingEnginePrx&, bool, const ::Ice::Context*);
+
+protected:
+
+    virtual void __response(bool);
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_RenderingEngine_resetDefaultsSettings> AMI_RenderingEngine_resetDefaultsSettingsPtr;
+
+class AMD_RenderingEngine_resetDefaultsSettings : virtual public ::IceUtil::Shared
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+    virtual void ice_exception(const ::std::exception&) = 0;
+    virtual void ice_exception() = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_resetDefaultsSettings> AMD_RenderingEngine_resetDefaultsSettingsPtr;
 
 class AMI_RenderingEngine_setCompressionLevel : public ::IceInternal::OutgoingAsync
 {
@@ -1830,6 +1884,17 @@ public:
     virtual void ice_exception();
 };
 
+class AMD_RenderingEngine_saveAsNewSettings : public ::omero::api::AMD_RenderingEngine_saveAsNewSettings, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_RenderingEngine_saveAsNewSettings(::IceInternal::Incoming&);
+
+    virtual void ice_response(::Ice::Long);
+    virtual void ice_exception(const ::std::exception&);
+    virtual void ice_exception();
+};
+
 class AMD_RenderingEngine_resetDefaults : public ::omero::api::AMD_RenderingEngine_resetDefaults, public ::IceInternal::IncomingAsync
 {
 public:
@@ -1848,6 +1913,17 @@ public:
     AMD_RenderingEngine_resetDefaultsNoSave(::IceInternal::Incoming&);
 
     virtual void ice_response();
+    virtual void ice_exception(const ::std::exception&);
+    virtual void ice_exception();
+};
+
+class AMD_RenderingEngine_resetDefaultsSettings : public ::omero::api::AMD_RenderingEngine_resetDefaultsSettings, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_RenderingEngine_resetDefaultsSettings(::IceInternal::Incoming&);
+
+    virtual void ice_response(::Ice::Long);
     virtual void ice_exception(const ::std::exception&);
     virtual void ice_exception();
 };
@@ -2606,11 +2682,28 @@ public:
     bool saveCurrentSettings_async(const ::omero::api::AMI_RenderingEngine_saveCurrentSettingsPtr&);
     bool saveCurrentSettings_async(const ::omero::api::AMI_RenderingEngine_saveCurrentSettingsPtr&, const ::Ice::Context&);
 
-    void resetDefaults()
+    ::Ice::Long saveAsNewSettings()
+    {
+        return saveAsNewSettings(0);
+    }
+    ::Ice::Long saveAsNewSettings(const ::Ice::Context& __ctx)
+    {
+        return saveAsNewSettings(&__ctx);
+    }
+    
+private:
+
+    ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+    
+public:
+    bool saveAsNewSettings_async(const ::omero::api::AMI_RenderingEngine_saveAsNewSettingsPtr&);
+    bool saveAsNewSettings_async(const ::omero::api::AMI_RenderingEngine_saveAsNewSettingsPtr&, const ::Ice::Context&);
+
+    ICE_DEPRECATED_API void resetDefaults()
     {
         resetDefaults(0);
     }
-    void resetDefaults(const ::Ice::Context& __ctx)
+    ICE_DEPRECATED_API void resetDefaults(const ::Ice::Context& __ctx)
     {
         resetDefaults(&__ctx);
     }
@@ -2623,11 +2716,11 @@ public:
     bool resetDefaults_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsPtr&);
     bool resetDefaults_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsPtr&, const ::Ice::Context&);
 
-    void resetDefaultsNoSave()
+    ICE_DEPRECATED_API void resetDefaultsNoSave()
     {
         resetDefaultsNoSave(0);
     }
-    void resetDefaultsNoSave(const ::Ice::Context& __ctx)
+    ICE_DEPRECATED_API void resetDefaultsNoSave(const ::Ice::Context& __ctx)
     {
         resetDefaultsNoSave(&__ctx);
     }
@@ -2639,6 +2732,23 @@ private:
 public:
     bool resetDefaultsNoSave_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsNoSavePtr&);
     bool resetDefaultsNoSave_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Context&);
+
+    ::Ice::Long resetDefaultsSettings(bool save)
+    {
+        return resetDefaultsSettings(save, 0);
+    }
+    ::Ice::Long resetDefaultsSettings(bool save, const ::Ice::Context& __ctx)
+    {
+        return resetDefaultsSettings(save, &__ctx);
+    }
+    
+private:
+
+    ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
+    
+public:
+    bool resetDefaultsSettings_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsSettingsPtr&, bool);
+    bool resetDefaultsSettings_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsSettingsPtr&, bool, const ::Ice::Context&);
 
     void setCompressionLevel(::Ice::Float percentage)
     {
@@ -3023,9 +3133,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*) = 0;
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*) = 0;
+
     virtual void resetDefaults(const ::Ice::Context*) = 0;
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*) = 0;
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*) = 0;
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*) = 0;
 
@@ -3138,9 +3252,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*);
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+
     virtual void resetDefaults(const ::Ice::Context*);
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*);
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*);
 
@@ -3253,9 +3371,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*);
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+
     virtual void resetDefaults(const ::Ice::Context*);
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*);
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*);
 
@@ -3414,11 +3536,17 @@ public:
     virtual void saveCurrentSettings_async(const ::omero::api::AMD_RenderingEngine_saveCurrentSettingsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___saveCurrentSettings(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void resetDefaults_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void saveAsNewSettings_async(const ::omero::api::AMD_RenderingEngine_saveAsNewSettingsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___saveAsNewSettings(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    ICE_DEPRECATED_API virtual void resetDefaults_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___resetDefaults(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void resetDefaultsNoSave_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ICE_DEPRECATED_API virtual void resetDefaultsNoSave_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___resetDefaultsNoSave(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void resetDefaultsSettings_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsSettingsPtr&, bool, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___resetDefaultsSettings(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void setCompressionLevel_async(const ::omero::api::AMD_RenderingEngine_setCompressionLevelPtr&, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___setCompressionLevel(::IceInternal::Incoming&, const ::Ice::Current&);

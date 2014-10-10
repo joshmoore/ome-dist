@@ -348,6 +348,33 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_ILdap_getSetting> AMD_ILdap_getSettingPtr;
 
+class AMI_ILdap_createUser : public ::IceInternal::OutgoingAsync
+{
+public:
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&) = 0;
+    virtual void ice_exception(const ::Ice::Exception&) = 0;
+
+    bool __invoke(const ::omero::api::ILdapPrx&, const ::std::string&, const ::Ice::Context*);
+
+protected:
+
+    virtual void __response(bool);
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_ILdap_createUser> AMI_ILdap_createUserPtr;
+
+class AMD_ILdap_createUser : virtual public ::IceUtil::Shared
+{
+public:
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&) = 0;
+    virtual void ice_exception(const ::std::exception&) = 0;
+    virtual void ice_exception() = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_ILdap_createUser> AMD_ILdap_createUserPtr;
+
 }
 
 }
@@ -456,6 +483,17 @@ public:
     AMD_ILdap_getSetting(::IceInternal::Incoming&);
 
     virtual void ice_response(bool);
+    virtual void ice_exception(const ::std::exception&);
+    virtual void ice_exception();
+};
+
+class AMD_ILdap_createUser : public ::omero::api::AMD_ILdap_createUser, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_ILdap_createUser(::IceInternal::Incoming&);
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&);
     virtual void ice_exception(const ::std::exception&);
     virtual void ice_exception();
 };
@@ -631,6 +669,23 @@ private:
 public:
     bool getSetting_async(const ::omero::api::AMI_ILdap_getSettingPtr&);
     bool getSetting_async(const ::omero::api::AMI_ILdap_getSettingPtr&, const ::Ice::Context&);
+
+    ::omero::model::ExperimenterPtr createUser(const ::std::string& username)
+    {
+        return createUser(username, 0);
+    }
+    ::omero::model::ExperimenterPtr createUser(const ::std::string& username, const ::Ice::Context& __ctx)
+    {
+        return createUser(username, &__ctx);
+    }
+    
+private:
+
+    ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
+    
+public:
+    bool createUser_async(const ::omero::api::AMI_ILdap_createUserPtr&, const ::std::string&);
+    bool createUser_async(const ::omero::api::AMI_ILdap_createUserPtr&, const ::std::string&, const ::Ice::Context&);
     
     ::IceInternal::ProxyHandle<ILdap> ice_context(const ::Ice::Context& __context) const
     {
@@ -867,6 +922,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*) = 0;
 
     virtual bool getSetting(const ::Ice::Context*) = 0;
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*) = 0;
 };
 
 }
@@ -906,6 +963,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*);
 
     virtual bool getSetting(const ::Ice::Context*);
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -945,6 +1004,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*);
 
     virtual bool getSetting(const ::Ice::Context*);
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -999,6 +1060,9 @@ public:
 
     virtual void getSetting_async(const ::omero::api::AMD_ILdap_getSettingPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getSetting(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void createUser_async(const ::omero::api::AMD_ILdap_createUserPtr&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___createUser(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 

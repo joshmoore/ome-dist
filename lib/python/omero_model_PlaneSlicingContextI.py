@@ -13,11 +13,32 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_PlaneSlicingContext_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "upperLimit",
+          "lowerLimit",
+          "planeSelected",
+          "planePrevious",
+          "constant",
+          "renderingDef",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          upperLimit=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          lowerLimit=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          planeSelected=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          planePrevious=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          constant=_field_info_data(wrapper=omero.rtypes.rbool, nullable=False),
+          renderingDef=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       UPPERLIMIT =  "ome.model.display.PlaneSlicingContext_upperLimit"
       LOWERLIMIT =  "ome.model.display.PlaneSlicingContext_lowerLimit"
       PLANESELECTED =  "ome.model.display.PlaneSlicingContext_planeSelected"
@@ -40,10 +61,26 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(PlaneSlicingContextI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -117,8 +154,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._upperLimit
 
-      def setUpperLimit(self, _upperLimit, current = None):
+      def setUpperLimit(self, _upperLimit, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.upperLimit.wrapper is not None:
+              if _upperLimit is not None:
+                  _upperLimit = self._field_info.upperLimit.wrapper(_upperLimit)
           self._upperLimit = _upperLimit
           pass
 
@@ -130,8 +170,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._lowerLimit
 
-      def setLowerLimit(self, _lowerLimit, current = None):
+      def setLowerLimit(self, _lowerLimit, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lowerLimit.wrapper is not None:
+              if _lowerLimit is not None:
+                  _lowerLimit = self._field_info.lowerLimit.wrapper(_lowerLimit)
           self._lowerLimit = _lowerLimit
           pass
 
@@ -143,8 +186,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._planeSelected
 
-      def setPlaneSelected(self, _planeSelected, current = None):
+      def setPlaneSelected(self, _planeSelected, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.planeSelected.wrapper is not None:
+              if _planeSelected is not None:
+                  _planeSelected = self._field_info.planeSelected.wrapper(_planeSelected)
           self._planeSelected = _planeSelected
           pass
 
@@ -156,8 +202,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._planePrevious
 
-      def setPlanePrevious(self, _planePrevious, current = None):
+      def setPlanePrevious(self, _planePrevious, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.planePrevious.wrapper is not None:
+              if _planePrevious is not None:
+                  _planePrevious = self._field_info.planePrevious.wrapper(_planePrevious)
           self._planePrevious = _planePrevious
           pass
 
@@ -169,8 +218,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._constant
 
-      def setConstant(self, _constant, current = None):
+      def setConstant(self, _constant, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.constant.wrapper is not None:
+              if _constant is not None:
+                  _constant = self._field_info.constant.wrapper(_constant)
           self._constant = _constant
           pass
 
@@ -182,8 +234,11 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           self.errorIfUnloaded()
           return self._renderingDef
 
-      def setRenderingDef(self, _renderingDef, current = None):
+      def setRenderingDef(self, _renderingDef, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.renderingDef.wrapper is not None:
+              if _renderingDef is not None:
+                  _renderingDef = self._field_info.renderingDef.wrapper(_renderingDef)
           self._renderingDef = _renderingDef
           pass
 
@@ -206,6 +261,8 @@ class PlaneSlicingContextI(_omero_model.PlaneSlicingContext):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

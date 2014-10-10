@@ -13,11 +13,26 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_QuantumDef_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class QuantumDefI(_omero_model.QuantumDef):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "cdStart",
+          "cdEnd",
+          "bitResolution",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          cdStart=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          cdEnd=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          bitResolution=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       CDSTART =  "ome.model.display.QuantumDef_cdStart"
       CDEND =  "ome.model.display.QuantumDef_cdEnd"
       BITRESOLUTION =  "ome.model.display.QuantumDef_bitResolution"
@@ -37,10 +52,26 @@ class QuantumDefI(_omero_model.QuantumDef):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(QuantumDefI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -111,8 +142,11 @@ class QuantumDefI(_omero_model.QuantumDef):
           self.errorIfUnloaded()
           return self._cdStart
 
-      def setCdStart(self, _cdStart, current = None):
+      def setCdStart(self, _cdStart, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cdStart.wrapper is not None:
+              if _cdStart is not None:
+                  _cdStart = self._field_info.cdStart.wrapper(_cdStart)
           self._cdStart = _cdStart
           pass
 
@@ -124,8 +158,11 @@ class QuantumDefI(_omero_model.QuantumDef):
           self.errorIfUnloaded()
           return self._cdEnd
 
-      def setCdEnd(self, _cdEnd, current = None):
+      def setCdEnd(self, _cdEnd, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cdEnd.wrapper is not None:
+              if _cdEnd is not None:
+                  _cdEnd = self._field_info.cdEnd.wrapper(_cdEnd)
           self._cdEnd = _cdEnd
           pass
 
@@ -137,8 +174,11 @@ class QuantumDefI(_omero_model.QuantumDef):
           self.errorIfUnloaded()
           return self._bitResolution
 
-      def setBitResolution(self, _bitResolution, current = None):
+      def setBitResolution(self, _bitResolution, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.bitResolution.wrapper is not None:
+              if _bitResolution is not None:
+                  _bitResolution = self._field_info.bitResolution.wrapper(_bitResolution)
           self._bitResolution = _bitResolution
           pass
 
@@ -161,6 +201,8 @@ class QuantumDefI(_omero_model.QuantumDef):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ExperimenterGroup_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ExperimenterGroupI(_omero_model.ExperimenterGroup):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "name",
+          "groupExperimenterMap",
+          "annotationLinks",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          groupExperimenterMap=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       NAME =  "ome.model.meta.ExperimenterGroup_name"
       GROUPEXPERIMENTERMAP =  "ome.model.meta.ExperimenterGroup_groupExperimenterMap"
       ANNOTATIONLINKS =  "ome.model.meta.ExperimenterGroup_annotationLinks"
@@ -52,10 +69,26 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ExperimenterGroupI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -127,8 +160,11 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -140,8 +176,11 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
           self.errorIfUnloaded()
           return self._groupExperimenterMapSeq
 
-      def _setGroupExperimenterMap(self, _groupExperimenterMap, current = None):
+      def _setGroupExperimenterMap(self, _groupExperimenterMap, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.groupExperimenterMapSeq.wrapper is not None:
+              if _groupExperimenterMap is not None:
+                  _groupExperimenterMap = self._field_info.groupExperimenterMapSeq.wrapper(_groupExperimenterMap)
           self._groupExperimenterMapSeq = _groupExperimenterMap
           self.checkUnloadedProperty(_groupExperimenterMap,'groupExperimenterMapLoaded')
 
@@ -266,8 +305,11 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -391,8 +433,11 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -415,6 +460,8 @@ class ExperimenterGroupI(_omero_model.ExperimenterGroup):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

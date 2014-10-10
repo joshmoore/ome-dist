@@ -74,9 +74,9 @@ class Process;
 
 class ScriptProcess;
 
-class ProcessorCallback;
-
 class Processor;
+
+class ProcessorCallback;
 
 class InteractiveProcessor;
 
@@ -132,13 +132,13 @@ class ScriptProcess;
 bool operator==(const ScriptProcess&, const ScriptProcess&);
 bool operator<(const ScriptProcess&, const ScriptProcess&);
 
-class ProcessorCallback;
-bool operator==(const ProcessorCallback&, const ProcessorCallback&);
-bool operator<(const ProcessorCallback&, const ProcessorCallback&);
-
 class Processor;
 bool operator==(const Processor&, const Processor&);
 bool operator<(const Processor&, const Processor&);
+
+class ProcessorCallback;
+bool operator==(const ProcessorCallback&, const ProcessorCallback&);
+bool operator<(const ProcessorCallback&, const ProcessorCallback&);
 
 class InteractiveProcessor;
 bool operator==(const InteractiveProcessor&, const InteractiveProcessor&);
@@ -181,11 +181,11 @@ namespace IceInternal
 ::Ice::Object* upCast(::omero::grid::ScriptProcess*);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ScriptProcess*);
 
-::Ice::Object* upCast(::omero::grid::ProcessorCallback*);
-::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ProcessorCallback*);
-
 ::Ice::Object* upCast(::omero::grid::Processor*);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::Processor*);
+
+::Ice::Object* upCast(::omero::grid::ProcessorCallback*);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::ProcessorCallback*);
 
 ::Ice::Object* upCast(::omero::grid::InteractiveProcessor*);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::grid::InteractiveProcessor*);
@@ -258,17 +258,17 @@ typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ScriptProcess> Scri
 void __read(::IceInternal::BasicStream*, ScriptProcessPrx&);
 void __patch__ScriptProcessPtr(void*, ::Ice::ObjectPtr&);
 
-typedef ::IceInternal::Handle< ::omero::grid::ProcessorCallback> ProcessorCallbackPtr;
-typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback> ProcessorCallbackPrx;
-
-void __read(::IceInternal::BasicStream*, ProcessorCallbackPrx&);
-void __patch__ProcessorCallbackPtr(void*, ::Ice::ObjectPtr&);
-
 typedef ::IceInternal::Handle< ::omero::grid::Processor> ProcessorPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::Processor> ProcessorPrx;
 
 void __read(::IceInternal::BasicStream*, ProcessorPrx&);
 void __patch__ProcessorPtr(void*, ::Ice::ObjectPtr&);
+
+typedef ::IceInternal::Handle< ::omero::grid::ProcessorCallback> ProcessorCallbackPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::ProcessorCallback> ProcessorCallbackPrx;
+
+void __read(::IceInternal::BasicStream*, ProcessorCallbackPrx&);
+void __patch__ProcessorCallbackPtr(void*, ::Ice::ObjectPtr&);
 
 typedef ::IceInternal::Handle< ::omero::grid::InteractiveProcessor> InteractiveProcessorPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::grid::InteractiveProcessor> InteractiveProcessorPrx;
@@ -2936,18 +2936,33 @@ class ProcessorCallback : virtual public ::IceProxy::Ice::Object
 {
 public:
 
-    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn)
+    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn)
     {
-        isAccepted(accepted, sessionUuid, processorConn, 0);
+        isAccepted(accepted, sessionUuid, procConn, 0);
     }
-    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& processorConn, const ::Ice::Context& __ctx)
+    void isAccepted(bool accepted, const ::std::string& sessionUuid, const ::std::string& procConn, const ::Ice::Context& __ctx)
     {
-        isAccepted(accepted, sessionUuid, processorConn, &__ctx);
+        isAccepted(accepted, sessionUuid, procConn, &__ctx);
     }
     
 private:
 
     void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    
+public:
+
+    void isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy)
+    {
+        isProxyAccepted(accepted, sessionUuid, procProxy, 0);
+    }
+    void isProxyAccepted(bool accepted, const ::std::string& sessionUuid, const ::omero::grid::ProcessorPrx& procProxy, const ::Ice::Context& __ctx)
+    {
+        isProxyAccepted(accepted, sessionUuid, procProxy, &__ctx);
+    }
+    
+private:
+
+    void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*);
     
 public:
 
@@ -3859,6 +3874,8 @@ public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*) = 0;
 
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*) = 0;
+
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*) = 0;
 };
 
@@ -4005,6 +4022,8 @@ class ProcessorCallback : virtual public ::IceDelegate::omero::grid::ProcessorCa
 public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*);
 };
@@ -4154,6 +4173,8 @@ class ProcessorCallback : virtual public ::IceDelegate::omero::grid::ProcessorCa
 public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Context*);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Context*);
 };
@@ -4621,6 +4642,9 @@ public:
 
     virtual void isAccepted(bool, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___isAccepted(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void isProxyAccepted(bool, const ::std::string&, const ::omero::grid::ProcessorPrx&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___isProxyAccepted(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void responseRunning(const ::omero::api::LongList&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___responseRunning(::IceInternal::Incoming&, const ::Ice::Current&);

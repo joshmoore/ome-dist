@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_LightSettings_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class LightSettingsI(_omero_model.LightSettings):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "attenuation",
+          "wavelength",
+          "lightSource",
+          "microbeamManipulation",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          attenuation=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          wavelength=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          lightSource=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          microbeamManipulation=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       ATTENUATION =  "ome.model.acquisition.LightSettings_attenuation"
       WAVELENGTH =  "ome.model.acquisition.LightSettings_wavelength"
       LIGHTSOURCE =  "ome.model.acquisition.LightSettings_lightSource"
@@ -38,10 +55,26 @@ class LightSettingsI(_omero_model.LightSettings):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(LightSettingsI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -113,8 +146,11 @@ class LightSettingsI(_omero_model.LightSettings):
           self.errorIfUnloaded()
           return self._attenuation
 
-      def setAttenuation(self, _attenuation, current = None):
+      def setAttenuation(self, _attenuation, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.attenuation.wrapper is not None:
+              if _attenuation is not None:
+                  _attenuation = self._field_info.attenuation.wrapper(_attenuation)
           self._attenuation = _attenuation
           pass
 
@@ -126,8 +162,11 @@ class LightSettingsI(_omero_model.LightSettings):
           self.errorIfUnloaded()
           return self._wavelength
 
-      def setWavelength(self, _wavelength, current = None):
+      def setWavelength(self, _wavelength, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.wavelength.wrapper is not None:
+              if _wavelength is not None:
+                  _wavelength = self._field_info.wavelength.wrapper(_wavelength)
           self._wavelength = _wavelength
           pass
 
@@ -139,8 +178,11 @@ class LightSettingsI(_omero_model.LightSettings):
           self.errorIfUnloaded()
           return self._lightSource
 
-      def setLightSource(self, _lightSource, current = None):
+      def setLightSource(self, _lightSource, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lightSource.wrapper is not None:
+              if _lightSource is not None:
+                  _lightSource = self._field_info.lightSource.wrapper(_lightSource)
           self._lightSource = _lightSource
           pass
 
@@ -152,8 +194,11 @@ class LightSettingsI(_omero_model.LightSettings):
           self.errorIfUnloaded()
           return self._microbeamManipulation
 
-      def setMicrobeamManipulation(self, _microbeamManipulation, current = None):
+      def setMicrobeamManipulation(self, _microbeamManipulation, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.microbeamManipulation.wrapper is not None:
+              if _microbeamManipulation is not None:
+                  _microbeamManipulation = self._field_info.microbeamManipulation.wrapper(_microbeamManipulation)
           self._microbeamManipulation = _microbeamManipulation
           pass
 
@@ -176,6 +221,8 @@ class LightSettingsI(_omero_model.LightSettings):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

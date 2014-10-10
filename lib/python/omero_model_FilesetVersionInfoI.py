@@ -13,11 +13,34 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_FilesetVersionInfo_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "bioformatsReader",
+          "bioformatsVersion",
+          "omeroVersion",
+          "osArchitecture",
+          "osName",
+          "osVersion",
+          "locale",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          bioformatsReader=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          bioformatsVersion=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          omeroVersion=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          osArchitecture=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          osName=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          osVersion=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          locale=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       BIOFORMATSREADER =  "ome.model.fs.FilesetVersionInfo_bioformatsReader"
       BIOFORMATSVERSION =  "ome.model.fs.FilesetVersionInfo_bioformatsVersion"
       OMEROVERSION =  "ome.model.fs.FilesetVersionInfo_omeroVersion"
@@ -41,10 +64,26 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(FilesetVersionInfoI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -119,8 +158,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._bioformatsReader
 
-      def setBioformatsReader(self, _bioformatsReader, current = None):
+      def setBioformatsReader(self, _bioformatsReader, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.bioformatsReader.wrapper is not None:
+              if _bioformatsReader is not None:
+                  _bioformatsReader = self._field_info.bioformatsReader.wrapper(_bioformatsReader)
           self._bioformatsReader = _bioformatsReader
           pass
 
@@ -132,8 +174,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._bioformatsVersion
 
-      def setBioformatsVersion(self, _bioformatsVersion, current = None):
+      def setBioformatsVersion(self, _bioformatsVersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.bioformatsVersion.wrapper is not None:
+              if _bioformatsVersion is not None:
+                  _bioformatsVersion = self._field_info.bioformatsVersion.wrapper(_bioformatsVersion)
           self._bioformatsVersion = _bioformatsVersion
           pass
 
@@ -145,8 +190,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._omeroVersion
 
-      def setOmeroVersion(self, _omeroVersion, current = None):
+      def setOmeroVersion(self, _omeroVersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.omeroVersion.wrapper is not None:
+              if _omeroVersion is not None:
+                  _omeroVersion = self._field_info.omeroVersion.wrapper(_omeroVersion)
           self._omeroVersion = _omeroVersion
           pass
 
@@ -158,8 +206,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._osArchitecture
 
-      def setOsArchitecture(self, _osArchitecture, current = None):
+      def setOsArchitecture(self, _osArchitecture, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.osArchitecture.wrapper is not None:
+              if _osArchitecture is not None:
+                  _osArchitecture = self._field_info.osArchitecture.wrapper(_osArchitecture)
           self._osArchitecture = _osArchitecture
           pass
 
@@ -171,8 +222,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._osName
 
-      def setOsName(self, _osName, current = None):
+      def setOsName(self, _osName, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.osName.wrapper is not None:
+              if _osName is not None:
+                  _osName = self._field_info.osName.wrapper(_osName)
           self._osName = _osName
           pass
 
@@ -184,8 +238,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._osVersion
 
-      def setOsVersion(self, _osVersion, current = None):
+      def setOsVersion(self, _osVersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.osVersion.wrapper is not None:
+              if _osVersion is not None:
+                  _osVersion = self._field_info.osVersion.wrapper(_osVersion)
           self._osVersion = _osVersion
           pass
 
@@ -197,8 +254,11 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           self.errorIfUnloaded()
           return self._locale
 
-      def setLocale(self, _locale, current = None):
+      def setLocale(self, _locale, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.locale.wrapper is not None:
+              if _locale is not None:
+                  _locale = self._field_info.locale.wrapper(_locale)
           self._locale = _locale
           pass
 
@@ -221,6 +281,8 @@ class FilesetVersionInfoI(_omero_model.FilesetVersionInfo):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

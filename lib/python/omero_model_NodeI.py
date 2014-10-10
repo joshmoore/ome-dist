@@ -13,11 +13,34 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Node_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class NodeI(_omero_model.Node):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "sessions",
+          "uuid",
+          "conn",
+          "up",
+          "down",
+          "scale",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          sessions=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          uuid=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          conn=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          up=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          down=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          scale=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       SESSIONS =  "ome.model.meta.Node_sessions"
       UUID =  "ome.model.meta.Node_uuid"
       CONN =  "ome.model.meta.Node_conn"
@@ -55,10 +78,26 @@ class NodeI(_omero_model.Node):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(NodeI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -133,8 +172,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._sessionsSeq
 
-      def _setSessions(self, _sessions, current = None):
+      def _setSessions(self, _sessions, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sessionsSeq.wrapper is not None:
+              if _sessions is not None:
+                  _sessions = self._field_info.sessionsSeq.wrapper(_sessions)
           self._sessionsSeq = _sessions
           self.checkUnloadedProperty(_sessions,'sessionsLoaded')
 
@@ -214,8 +256,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._uuid
 
-      def setUuid(self, _uuid, current = None):
+      def setUuid(self, _uuid, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.uuid.wrapper is not None:
+              if _uuid is not None:
+                  _uuid = self._field_info.uuid.wrapper(_uuid)
           self._uuid = _uuid
           pass
 
@@ -227,8 +272,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._conn
 
-      def setConn(self, _conn, current = None):
+      def setConn(self, _conn, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.conn.wrapper is not None:
+              if _conn is not None:
+                  _conn = self._field_info.conn.wrapper(_conn)
           self._conn = _conn
           pass
 
@@ -240,8 +288,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._up
 
-      def setUp(self, _up, current = None):
+      def setUp(self, _up, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.up.wrapper is not None:
+              if _up is not None:
+                  _up = self._field_info.up.wrapper(_up)
           self._up = _up
           pass
 
@@ -253,8 +304,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._down
 
-      def setDown(self, _down, current = None):
+      def setDown(self, _down, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.down.wrapper is not None:
+              if _down is not None:
+                  _down = self._field_info.down.wrapper(_down)
           self._down = _down
           pass
 
@@ -266,8 +320,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._scale
 
-      def setScale(self, _scale, current = None):
+      def setScale(self, _scale, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.scale.wrapper is not None:
+              if _scale is not None:
+                  _scale = self._field_info.scale.wrapper(_scale)
           self._scale = _scale
           pass
 
@@ -279,8 +336,11 @@ class NodeI(_omero_model.Node):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -415,6 +475,8 @@ class NodeI(_omero_model.Node):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

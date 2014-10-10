@@ -13,11 +13,24 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ReverseIntensityContext_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ReverseIntensityContextI(_omero_model.ReverseIntensityContext):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "reverse",
+          "renderingDef",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          reverse=_field_info_data(wrapper=omero.rtypes.rbool, nullable=False),
+          renderingDef=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       REVERSE =  "ome.model.display.ReverseIntensityContext_reverse"
       RENDERINGDEF =  "ome.model.display.ReverseIntensityContext_renderingDef"
       DETAILS =  "ome.model.display.ReverseIntensityContext_details"
@@ -36,10 +49,26 @@ class ReverseIntensityContextI(_omero_model.ReverseIntensityContext):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ReverseIntensityContextI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -109,8 +138,11 @@ class ReverseIntensityContextI(_omero_model.ReverseIntensityContext):
           self.errorIfUnloaded()
           return self._reverse
 
-      def setReverse(self, _reverse, current = None):
+      def setReverse(self, _reverse, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reverse.wrapper is not None:
+              if _reverse is not None:
+                  _reverse = self._field_info.reverse.wrapper(_reverse)
           self._reverse = _reverse
           pass
 
@@ -122,8 +154,11 @@ class ReverseIntensityContextI(_omero_model.ReverseIntensityContext):
           self.errorIfUnloaded()
           return self._renderingDef
 
-      def setRenderingDef(self, _renderingDef, current = None):
+      def setRenderingDef(self, _renderingDef, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.renderingDef.wrapper is not None:
+              if _renderingDef is not None:
+                  _renderingDef = self._field_info.renderingDef.wrapper(_renderingDef)
           self._renderingDef = _renderingDef
           pass
 
@@ -146,6 +181,8 @@ class ReverseIntensityContextI(_omero_model.ReverseIntensityContext):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

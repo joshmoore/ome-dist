@@ -13,11 +13,24 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_FilesetAnnotationLink_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class FilesetAnnotationLinkI(_omero_model.FilesetAnnotationLink):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "parent",
+          "child",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          parent=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          child=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       PARENT =  "ome.model.annotations.FilesetAnnotationLink_parent"
       CHILD =  "ome.model.annotations.FilesetAnnotationLink_child"
       DETAILS =  "ome.model.annotations.FilesetAnnotationLink_details"
@@ -36,10 +49,26 @@ class FilesetAnnotationLinkI(_omero_model.FilesetAnnotationLink):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(FilesetAnnotationLinkI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -109,8 +138,11 @@ class FilesetAnnotationLinkI(_omero_model.FilesetAnnotationLink):
           self.errorIfUnloaded()
           return self._parent
 
-      def setParent(self, _parent, current = None):
+      def setParent(self, _parent, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.parent.wrapper is not None:
+              if _parent is not None:
+                  _parent = self._field_info.parent.wrapper(_parent)
           self._parent = _parent
           pass
 
@@ -122,8 +154,11 @@ class FilesetAnnotationLinkI(_omero_model.FilesetAnnotationLink):
           self.errorIfUnloaded()
           return self._child
 
-      def setChild(self, _child, current = None):
+      def setChild(self, _child, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.child.wrapper is not None:
+              if _child is not None:
+                  _child = self._field_info.child.wrapper(_child)
           self._child = _child
           pass
 
@@ -152,6 +187,8 @@ class FilesetAnnotationLinkI(_omero_model.FilesetAnnotationLink):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,34 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_WellSample_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class WellSampleI(_omero_model.WellSample):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "posX",
+          "posY",
+          "timepoint",
+          "plateAcquisition",
+          "well",
+          "image",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          posX=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          posY=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          timepoint=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          plateAcquisition=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          well=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          image=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       POSX =  "ome.model.screen.WellSample_posX"
       POSY =  "ome.model.screen.WellSample_posY"
       TIMEPOINT =  "ome.model.screen.WellSample_timepoint"
@@ -48,10 +71,26 @@ class WellSampleI(_omero_model.WellSample):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(WellSampleI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -126,8 +165,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._posX
 
-      def setPosX(self, _posX, current = None):
+      def setPosX(self, _posX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.posX.wrapper is not None:
+              if _posX is not None:
+                  _posX = self._field_info.posX.wrapper(_posX)
           self._posX = _posX
           pass
 
@@ -139,8 +181,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._posY
 
-      def setPosY(self, _posY, current = None):
+      def setPosY(self, _posY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.posY.wrapper is not None:
+              if _posY is not None:
+                  _posY = self._field_info.posY.wrapper(_posY)
           self._posY = _posY
           pass
 
@@ -152,8 +197,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._timepoint
 
-      def setTimepoint(self, _timepoint, current = None):
+      def setTimepoint(self, _timepoint, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.timepoint.wrapper is not None:
+              if _timepoint is not None:
+                  _timepoint = self._field_info.timepoint.wrapper(_timepoint)
           self._timepoint = _timepoint
           pass
 
@@ -165,8 +213,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._plateAcquisition
 
-      def setPlateAcquisition(self, _plateAcquisition, current = None):
+      def setPlateAcquisition(self, _plateAcquisition, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.plateAcquisition.wrapper is not None:
+              if _plateAcquisition is not None:
+                  _plateAcquisition = self._field_info.plateAcquisition.wrapper(_plateAcquisition)
           self._plateAcquisition = _plateAcquisition
           pass
 
@@ -178,8 +229,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._well
 
-      def setWell(self, _well, current = None):
+      def setWell(self, _well, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.well.wrapper is not None:
+              if _well is not None:
+                  _well = self._field_info.well.wrapper(_well)
           self._well = _well
           pass
 
@@ -191,8 +245,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._image
 
-      def setImage(self, _image, current = None):
+      def setImage(self, _image, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.image.wrapper is not None:
+              if _image is not None:
+                  _image = self._field_info.image.wrapper(_image)
           self._image = _image
           pass
 
@@ -204,8 +261,11 @@ class WellSampleI(_omero_model.WellSample):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -340,6 +400,8 @@ class WellSampleI(_omero_model.WellSample):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

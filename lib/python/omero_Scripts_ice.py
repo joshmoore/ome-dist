@@ -667,6 +667,10 @@ if not _M_omero.grid.__dict__.has_key('ScriptProcess'):
     _M_omero.grid.ScriptProcessPrx = ScriptProcessPrx
     del ScriptProcessPrx
 
+if not _M_omero.grid.__dict__.has_key('Processor'):
+    _M_omero.grid._t_Processor = IcePy.declareClass('::omero::grid::Processor')
+    _M_omero.grid._t_ProcessorPrx = IcePy.declareProxy('::omero::grid::Processor')
+
 if not _M_omero.grid.__dict__.has_key('ProcessorCallback'):
     _M_omero.grid.ProcessorCallback = Ice.createTempClass()
     class ProcessorCallback(Ice.Object):
@@ -687,7 +691,8 @@ if not _M_omero.grid.__dict__.has_key('ProcessorCallback'):
         #
         # Operation signatures.
         #
-        # def isAccepted(self, accepted, sessionUuid, processorConn, current=None):
+        # def isAccepted(self, accepted, sessionUuid, procConn, current=None):
+        # def isProxyAccepted(self, accepted, sessionUuid, procProxy, current=None):
         # def responseRunning(self, jobIds, current=None):
 
         def __str__(self):
@@ -698,8 +703,11 @@ if not _M_omero.grid.__dict__.has_key('ProcessorCallback'):
     _M_omero.grid.ProcessorCallbackPrx = Ice.createTempClass()
     class ProcessorCallbackPrx(Ice.ObjectPrx):
 
-        def isAccepted(self, accepted, sessionUuid, processorConn, _ctx=None):
-            return _M_omero.grid.ProcessorCallback._op_isAccepted.invoke(self, ((accepted, sessionUuid, processorConn), _ctx))
+        def isAccepted(self, accepted, sessionUuid, procConn, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isAccepted.invoke(self, ((accepted, sessionUuid, procConn), _ctx))
+
+        def isProxyAccepted(self, accepted, sessionUuid, procProxy, _ctx=None):
+            return _M_omero.grid.ProcessorCallback._op_isProxyAccepted.invoke(self, ((accepted, sessionUuid, procProxy), _ctx))
 
         def responseRunning(self, jobIds, _ctx=None):
             return _M_omero.grid.ProcessorCallback._op_responseRunning.invoke(self, ((jobIds, ), _ctx))
@@ -718,6 +726,7 @@ if not _M_omero.grid.__dict__.has_key('ProcessorCallback'):
     ProcessorCallback.ice_type = _M_omero.grid._t_ProcessorCallback
 
     ProcessorCallback._op_isAccepted = IcePy.Operation('isAccepted', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, (), (((), IcePy._t_bool), ((), IcePy._t_string), ((), IcePy._t_string)), (), None, ())
+    ProcessorCallback._op_isProxyAccepted = IcePy.Operation('isProxyAccepted', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, (), (((), IcePy._t_bool), ((), IcePy._t_string), ((), _M_omero.grid._t_ProcessorPrx)), (), None, ())
     ProcessorCallback._op_responseRunning = IcePy.Operation('responseRunning', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, (), (((), _M_omero.api._t_LongList),), (), None, ())
 
     _M_omero.grid.ProcessorCallback = ProcessorCallback
