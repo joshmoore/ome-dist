@@ -1,0 +1,36 @@
+set -e
+set -u
+set -x
+
+BASE=$(pwd)
+BRANCH=$1
+shift
+
+test -e $BRANCH && {
+    echo $BRANCH exists
+    exit 2
+}
+mkdir $BRANCH
+cd $BRANCH
+git init
+cd ..
+
+for x in $@
+do
+  ZIP=$x
+  LOC=$(dirname $ZIP)
+  ZIP=$(basename $ZIP)
+  MD5=$(md5sum $LOC/$ZIP | cut -b1-32)
+  DIR=$BASE/${ZIP%.zip}
+  test -e $DIR || unzip -d $BASE $LOC/$ZIP
+  mv $BRANCH/.git $DIR/
+  cd $DIR
+  git submodule add git://github.com/ome/scripts.git lib/scripts || {
+    git checkout .gitmodules
+    git add lib/scripts
+  }
+  git add .
+  git commit -m "$ZIP (md5: $MD5)"
+  mv .git $BASE/$BRANCH/
+  cd $BASE
+done
