@@ -56,6 +56,8 @@ _M_omero.model.enums.ChecksumAlgorithmMurmur3128 = "Murmur3-128"
 
 _M_omero.model.enums.ChecksumAlgorithmSHA1160 = "SHA1-160"
 
+_M_omero.model.enums.ChecksumAlgorithmFileSize64 = "File-Size-64"
+
 # End of module omero.model.enums
 
 __name__ = 'omero.model'

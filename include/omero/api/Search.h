@@ -1024,6 +1024,33 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_Search_byFullText> AMD_Search_byFullTextPtr;
 
+class AMI_Search_byLuceneQueryBuilder : public ::IceInternal::OutgoingAsync
+{
+public:
+
+    virtual void ice_response() = 0;
+    virtual void ice_exception(const ::Ice::Exception&) = 0;
+
+    bool __invoke(const ::omero::api::SearchPrx&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+
+protected:
+
+    virtual void __response(bool);
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_Search_byLuceneQueryBuilder> AMI_Search_byLuceneQueryBuilderPtr;
+
+class AMD_Search_byLuceneQueryBuilder : virtual public ::IceUtil::Shared
+{
+public:
+
+    virtual void ice_response() = 0;
+    virtual void ice_exception(const ::std::exception&) = 0;
+    virtual void ice_exception() = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_Search_byLuceneQueryBuilder> AMD_Search_byLuceneQueryBuilderPtr;
+
 class AMI_Search_bySimilarTerms : public ::IceInternal::OutgoingAsync
 {
 public:
@@ -1789,6 +1816,17 @@ public:
     virtual void ice_exception();
 };
 
+class AMD_Search_byLuceneQueryBuilder : public ::omero::api::AMD_Search_byLuceneQueryBuilder, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_Search_byLuceneQueryBuilder(::IceInternal::Incoming&);
+
+    virtual void ice_response();
+    virtual void ice_exception(const ::std::exception&);
+    virtual void ice_exception();
+};
+
 class AMD_Search_bySimilarTerms : public ::omero::api::AMD_Search_bySimilarTerms, public ::IceInternal::IncomingAsync
 {
 public:
@@ -2540,6 +2578,23 @@ public:
     bool byFullText_async(const ::omero::api::AMI_Search_byFullTextPtr&, const ::std::string&);
     bool byFullText_async(const ::omero::api::AMI_Search_byFullTextPtr&, const ::std::string&, const ::Ice::Context&);
 
+    void byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query)
+    {
+        byLuceneQueryBuilder(fields, from, to, dateType, query, 0);
+    }
+    void byLuceneQueryBuilder(const ::std::string& fields, const ::std::string& from, const ::std::string& to, const ::std::string& dateType, const ::std::string& query, const ::Ice::Context& __ctx)
+    {
+        byLuceneQueryBuilder(fields, from, to, dateType, query, &__ctx);
+    }
+    
+private:
+
+    void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    
+public:
+    bool byLuceneQueryBuilder_async(const ::omero::api::AMI_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&);
+    bool byLuceneQueryBuilder_async(const ::omero::api::AMI_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context&);
+
     void bySimilarTerms(const ::omero::api::StringSet& terms)
     {
         bySimilarTerms(terms, 0);
@@ -3064,6 +3119,8 @@ public:
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*) = 0;
 
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*) = 0;
+
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*) = 0;
 
     virtual void byHqlQuery(const ::std::string&, const ::omero::sys::ParametersPtr&, const ::Ice::Context*) = 0;
@@ -3181,6 +3238,8 @@ public:
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*);
 
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
+
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*);
 
     virtual void byHqlQuery(const ::std::string&, const ::omero::sys::ParametersPtr&, const ::Ice::Context*);
@@ -3297,6 +3356,8 @@ public:
     virtual void byTagForGroups(const ::std::string&, const ::Ice::Context*);
 
     virtual void byFullText(const ::std::string&, const ::Ice::Context*);
+
+    virtual void byLuceneQueryBuilder(const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Context*);
 
     virtual void bySimilarTerms(const ::omero::api::StringSet&, const ::Ice::Context*);
 
@@ -3454,6 +3515,9 @@ public:
 
     virtual void byFullText_async(const ::omero::api::AMD_Search_byFullTextPtr&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___byFullText(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void byLuceneQueryBuilder_async(const ::omero::api::AMD_Search_byLuceneQueryBuilderPtr&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___byLuceneQueryBuilder(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void bySimilarTerms_async(const ::omero::api::AMD_Search_bySimilarTermsPtr&, const ::omero::api::StringSet&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___bySimilarTerms(::IceInternal::Incoming&, const ::Ice::Current&);

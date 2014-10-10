@@ -22,6 +22,7 @@ module omero {
         const string ChecksumAlgorithmMurmur332 = "Murmur3-32";
         const string ChecksumAlgorithmMurmur3128 = "Murmur3-128";
         const string ChecksumAlgorithmSHA1160 = "SHA1-160";
+        const string ChecksumAlgorithmFileSize64 = "File-Size-64";
     };
 
     class Details;
