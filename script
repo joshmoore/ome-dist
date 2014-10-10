@@ -6,14 +6,16 @@ BASE=$(pwd)
 BRANCH=$1
 shift
 
+git checkout $BRANCH
+
 test -e $BRANCH && {
     echo $BRANCH exists
-    exit 2
+} || {
+  mkdir $BRANCH
+  cd $BRANCH
+  git init
+  cd ..
 }
-mkdir $BRANCH
-cd $BRANCH
-git init
-cd ..
 
 for x in $@
 do
@@ -34,3 +36,6 @@ do
   mv .git $BASE/$BRANCH/
   cd $BASE
 done
+
+git fetch $BRANCH
+git ff $BRANCH/master
