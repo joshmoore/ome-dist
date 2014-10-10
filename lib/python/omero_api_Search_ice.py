@@ -170,6 +170,9 @@ if 'Search' not in _M_omero.api.__dict__:
         def byFullText_async(self, _cb, query, current=None):
             pass
 
+        def byLuceneQueryBuilder_async(self, _cb, fields, _from, to, dateType, query, current=None):
+            pass
+
         def bySimilarTerms_async(self, _cb, terms, current=None):
             pass
 
@@ -628,6 +631,18 @@ if 'Search' not in _M_omero.api.__dict__:
         def byFullText_async(self, _cb, query, _ctx=None):
             return _M_omero.api.Search._op_byFullText.invokeAsync(self, (_cb, (query, ), _ctx))
 
+        def byLuceneQueryBuilder(self, fields, _from, to, dateType, query, _ctx=None):
+            return _M_omero.api.Search._op_byLuceneQueryBuilder.invoke(self, ((fields, _from, to, dateType, query), _ctx))
+
+        def begin_byLuceneQueryBuilder(self, fields, _from, to, dateType, query, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.api.Search._op_byLuceneQueryBuilder.begin(self, ((fields, _from, to, dateType, query), _response, _ex, _sent, _ctx))
+
+        def end_byLuceneQueryBuilder(self, _r):
+            return _M_omero.api.Search._op_byLuceneQueryBuilder.end(self, _r)
+
+        def byLuceneQueryBuilder_async(self, _cb, fields, _from, to, dateType, query, _ctx=None):
+            return _M_omero.api.Search._op_byLuceneQueryBuilder.invokeAsync(self, (_cb, (fields, _from, to, dateType, query), _ctx))
+
         def bySimilarTerms(self, terms, _ctx=None):
             return _M_omero.api.Search._op_bySimilarTerms.invoke(self, ((terms, ), _ctx))
 
@@ -843,6 +858,7 @@ if 'Search' not in _M_omero.api.__dict__:
     Search._op_byGroupForTags = IcePy.Operation('byGroupForTags', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0),), (), None, (_M_omero._t_ServerError,))
     Search._op_byTagForGroups = IcePy.Operation('byTagForGroups', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0),), (), None, (_M_omero._t_ServerError,))
     Search._op_byFullText = IcePy.Operation('byFullText', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0),), (), None, (_M_omero._t_ServerError,))
+    Search._op_byLuceneQueryBuilder = IcePy.Operation('byLuceneQueryBuilder', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0), ((), IcePy._t_string, False, 0), ((), IcePy._t_string, False, 0), ((), IcePy._t_string, False, 0), ((), IcePy._t_string, False, 0)), (), None, (_M_omero._t_ServerError,))
     Search._op_bySimilarTerms = IcePy.Operation('bySimilarTerms', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), _M_omero.api._t_StringSet, False, 0),), (), None, (_M_omero._t_ServerError,))
     Search._op_byHqlQuery = IcePy.Operation('byHqlQuery', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), IcePy._t_string, False, 0), ((), _M_omero.sys._t_Parameters, False, 0)), (), None, (_M_omero._t_ServerError,))
     Search._op_bySomeMustNone = IcePy.Operation('bySomeMustNone', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, None, (), (((), _M_omero.api._t_StringSet, False, 0), ((), _M_omero.api._t_StringSet, False, 0), ((), _M_omero.api._t_StringSet, False, 0)), (), None, (_M_omero._t_ServerError,))
