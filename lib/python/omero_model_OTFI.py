@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_OTF_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class OTFI(_omero_model.OTF):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "sizeX",
+          "sizeY",
+          "opticalAxisAveraged",
+          "pixelsType",
+          "path",
+          "filterSet",
+          "objective",
+          "instrument",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          sizeX=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sizeY=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          opticalAxisAveraged=_field_info_data(wrapper=omero.rtypes.rbool, nullable=False),
+          pixelsType=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          path=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          filterSet=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          objective=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          instrument=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       SIZEX =  "ome.model.acquisition.OTF_sizeX"
       SIZEY =  "ome.model.acquisition.OTF_sizeY"
       OPTICALAXISAVERAGED =  "ome.model.acquisition.OTF_opticalAxisAveraged"
@@ -42,10 +67,26 @@ class OTFI(_omero_model.OTF):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(OTFI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -121,8 +162,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._sizeX
 
-      def setSizeX(self, _sizeX, current = None):
+      def setSizeX(self, _sizeX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeX.wrapper is not None:
+              if _sizeX is not None:
+                  _sizeX = self._field_info.sizeX.wrapper(_sizeX)
           self._sizeX = _sizeX
           pass
 
@@ -134,8 +178,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._sizeY
 
-      def setSizeY(self, _sizeY, current = None):
+      def setSizeY(self, _sizeY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeY.wrapper is not None:
+              if _sizeY is not None:
+                  _sizeY = self._field_info.sizeY.wrapper(_sizeY)
           self._sizeY = _sizeY
           pass
 
@@ -147,8 +194,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._opticalAxisAveraged
 
-      def setOpticalAxisAveraged(self, _opticalAxisAveraged, current = None):
+      def setOpticalAxisAveraged(self, _opticalAxisAveraged, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.opticalAxisAveraged.wrapper is not None:
+              if _opticalAxisAveraged is not None:
+                  _opticalAxisAveraged = self._field_info.opticalAxisAveraged.wrapper(_opticalAxisAveraged)
           self._opticalAxisAveraged = _opticalAxisAveraged
           pass
 
@@ -160,8 +210,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._pixelsType
 
-      def setPixelsType(self, _pixelsType, current = None):
+      def setPixelsType(self, _pixelsType, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixelsType.wrapper is not None:
+              if _pixelsType is not None:
+                  _pixelsType = self._field_info.pixelsType.wrapper(_pixelsType)
           self._pixelsType = _pixelsType
           pass
 
@@ -173,8 +226,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._path
 
-      def setPath(self, _path, current = None):
+      def setPath(self, _path, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.path.wrapper is not None:
+              if _path is not None:
+                  _path = self._field_info.path.wrapper(_path)
           self._path = _path
           pass
 
@@ -186,8 +242,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._filterSet
 
-      def setFilterSet(self, _filterSet, current = None):
+      def setFilterSet(self, _filterSet, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.filterSet.wrapper is not None:
+              if _filterSet is not None:
+                  _filterSet = self._field_info.filterSet.wrapper(_filterSet)
           self._filterSet = _filterSet
           pass
 
@@ -199,8 +258,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._objective
 
-      def setObjective(self, _objective, current = None):
+      def setObjective(self, _objective, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.objective.wrapper is not None:
+              if _objective is not None:
+                  _objective = self._field_info.objective.wrapper(_objective)
           self._objective = _objective
           pass
 
@@ -212,8 +274,11 @@ class OTFI(_omero_model.OTF):
           self.errorIfUnloaded()
           return self._instrument
 
-      def setInstrument(self, _instrument, current = None):
+      def setInstrument(self, _instrument, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.instrument.wrapper is not None:
+              if _instrument is not None:
+                  _instrument = self._field_info.instrument.wrapper(_instrument)
           self._instrument = _instrument
           pass
 
@@ -236,6 +301,8 @@ class OTFI(_omero_model.OTF):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

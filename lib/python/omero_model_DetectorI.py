@@ -13,11 +13,42 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Detector_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class DetectorI(_omero_model.Detector):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "manufacturer",
+          "model",
+          "lotNumber",
+          "serialNumber",
+          "voltage",
+          "gain",
+          "offsetValue",
+          "zoom",
+          "amplificationGain",
+          "type",
+          "instrument",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          manufacturer=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          model=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          lotNumber=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          serialNumber=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          voltage=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          gain=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          offsetValue=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          zoom=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          amplificationGain=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          type=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          instrument=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       MANUFACTURER =  "ome.model.acquisition.Detector_manufacturer"
       MODEL =  "ome.model.acquisition.Detector_model"
       LOTNUMBER =  "ome.model.acquisition.Detector_lotNumber"
@@ -45,10 +76,26 @@ class DetectorI(_omero_model.Detector):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(DetectorI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -127,8 +174,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._manufacturer
 
-      def setManufacturer(self, _manufacturer, current = None):
+      def setManufacturer(self, _manufacturer, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.manufacturer.wrapper is not None:
+              if _manufacturer is not None:
+                  _manufacturer = self._field_info.manufacturer.wrapper(_manufacturer)
           self._manufacturer = _manufacturer
           pass
 
@@ -140,8 +190,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._model
 
-      def setModel(self, _model, current = None):
+      def setModel(self, _model, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.model.wrapper is not None:
+              if _model is not None:
+                  _model = self._field_info.model.wrapper(_model)
           self._model = _model
           pass
 
@@ -153,8 +206,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._lotNumber
 
-      def setLotNumber(self, _lotNumber, current = None):
+      def setLotNumber(self, _lotNumber, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lotNumber.wrapper is not None:
+              if _lotNumber is not None:
+                  _lotNumber = self._field_info.lotNumber.wrapper(_lotNumber)
           self._lotNumber = _lotNumber
           pass
 
@@ -166,8 +222,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._serialNumber
 
-      def setSerialNumber(self, _serialNumber, current = None):
+      def setSerialNumber(self, _serialNumber, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.serialNumber.wrapper is not None:
+              if _serialNumber is not None:
+                  _serialNumber = self._field_info.serialNumber.wrapper(_serialNumber)
           self._serialNumber = _serialNumber
           pass
 
@@ -179,8 +238,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._voltage
 
-      def setVoltage(self, _voltage, current = None):
+      def setVoltage(self, _voltage, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.voltage.wrapper is not None:
+              if _voltage is not None:
+                  _voltage = self._field_info.voltage.wrapper(_voltage)
           self._voltage = _voltage
           pass
 
@@ -192,8 +254,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._gain
 
-      def setGain(self, _gain, current = None):
+      def setGain(self, _gain, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.gain.wrapper is not None:
+              if _gain is not None:
+                  _gain = self._field_info.gain.wrapper(_gain)
           self._gain = _gain
           pass
 
@@ -205,8 +270,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._offsetValue
 
-      def setOffsetValue(self, _offsetValue, current = None):
+      def setOffsetValue(self, _offsetValue, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.offsetValue.wrapper is not None:
+              if _offsetValue is not None:
+                  _offsetValue = self._field_info.offsetValue.wrapper(_offsetValue)
           self._offsetValue = _offsetValue
           pass
 
@@ -218,8 +286,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._zoom
 
-      def setZoom(self, _zoom, current = None):
+      def setZoom(self, _zoom, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.zoom.wrapper is not None:
+              if _zoom is not None:
+                  _zoom = self._field_info.zoom.wrapper(_zoom)
           self._zoom = _zoom
           pass
 
@@ -231,8 +302,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._amplificationGain
 
-      def setAmplificationGain(self, _amplificationGain, current = None):
+      def setAmplificationGain(self, _amplificationGain, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.amplificationGain.wrapper is not None:
+              if _amplificationGain is not None:
+                  _amplificationGain = self._field_info.amplificationGain.wrapper(_amplificationGain)
           self._amplificationGain = _amplificationGain
           pass
 
@@ -244,8 +318,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -257,8 +334,11 @@ class DetectorI(_omero_model.Detector):
           self.errorIfUnloaded()
           return self._instrument
 
-      def setInstrument(self, _instrument, current = None):
+      def setInstrument(self, _instrument, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.instrument.wrapper is not None:
+              if _instrument is not None:
+                  _instrument = self._field_info.instrument.wrapper(_instrument)
           self._instrument = _instrument
           pass
 
@@ -281,6 +361,8 @@ class DetectorI(_omero_model.Detector):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

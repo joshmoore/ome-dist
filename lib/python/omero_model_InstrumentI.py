@@ -13,11 +13,36 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Instrument_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class InstrumentI(_omero_model.Instrument):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "microscope",
+          "detector",
+          "objective",
+          "lightSource",
+          "filter",
+          "dichroic",
+          "filterSet",
+          "otf",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          microscope=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          detector=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          objective=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          lightSource=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          filter=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          dichroic=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          filterSet=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          otf=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       MICROSCOPE =  "ome.model.acquisition.Instrument_microscope"
       DETECTOR =  "ome.model.acquisition.Instrument_detector"
       OBJECTIVE =  "ome.model.acquisition.Instrument_objective"
@@ -91,10 +116,26 @@ class InstrumentI(_omero_model.Instrument):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(InstrumentI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -170,8 +211,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._microscope
 
-      def setMicroscope(self, _microscope, current = None):
+      def setMicroscope(self, _microscope, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.microscope.wrapper is not None:
+              if _microscope is not None:
+                  _microscope = self._field_info.microscope.wrapper(_microscope)
           self._microscope = _microscope
           pass
 
@@ -183,8 +227,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._detectorSeq
 
-      def _setDetector(self, _detector, current = None):
+      def _setDetector(self, _detector, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.detectorSeq.wrapper is not None:
+              if _detector is not None:
+                  _detector = self._field_info.detectorSeq.wrapper(_detector)
           self._detectorSeq = _detector
           self.checkUnloadedProperty(_detector,'detectorLoaded')
 
@@ -264,8 +311,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._objectiveSeq
 
-      def _setObjective(self, _objective, current = None):
+      def _setObjective(self, _objective, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.objectiveSeq.wrapper is not None:
+              if _objective is not None:
+                  _objective = self._field_info.objectiveSeq.wrapper(_objective)
           self._objectiveSeq = _objective
           self.checkUnloadedProperty(_objective,'objectiveLoaded')
 
@@ -345,8 +395,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._lightSourceSeq
 
-      def _setLightSource(self, _lightSource, current = None):
+      def _setLightSource(self, _lightSource, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lightSourceSeq.wrapper is not None:
+              if _lightSource is not None:
+                  _lightSource = self._field_info.lightSourceSeq.wrapper(_lightSource)
           self._lightSourceSeq = _lightSource
           self.checkUnloadedProperty(_lightSource,'lightSourceLoaded')
 
@@ -426,8 +479,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._filterSeq
 
-      def _setFilter(self, _filter, current = None):
+      def _setFilter(self, _filter, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.filterSeq.wrapper is not None:
+              if _filter is not None:
+                  _filter = self._field_info.filterSeq.wrapper(_filter)
           self._filterSeq = _filter
           self.checkUnloadedProperty(_filter,'filterLoaded')
 
@@ -507,8 +563,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._dichroicSeq
 
-      def _setDichroic(self, _dichroic, current = None):
+      def _setDichroic(self, _dichroic, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.dichroicSeq.wrapper is not None:
+              if _dichroic is not None:
+                  _dichroic = self._field_info.dichroicSeq.wrapper(_dichroic)
           self._dichroicSeq = _dichroic
           self.checkUnloadedProperty(_dichroic,'dichroicLoaded')
 
@@ -588,8 +647,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._filterSetSeq
 
-      def _setFilterSet(self, _filterSet, current = None):
+      def _setFilterSet(self, _filterSet, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.filterSetSeq.wrapper is not None:
+              if _filterSet is not None:
+                  _filterSet = self._field_info.filterSetSeq.wrapper(_filterSet)
           self._filterSetSeq = _filterSet
           self.checkUnloadedProperty(_filterSet,'filterSetLoaded')
 
@@ -669,8 +731,11 @@ class InstrumentI(_omero_model.Instrument):
           self.errorIfUnloaded()
           return self._otfSeq
 
-      def _setOtf(self, _otf, current = None):
+      def _setOtf(self, _otf, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.otfSeq.wrapper is not None:
+              if _otf is not None:
+                  _otf = self._field_info.otfSeq.wrapper(_otf)
           self._otfSeq = _otf
           self.checkUnloadedProperty(_otf,'otfLoaded')
 
@@ -761,6 +826,8 @@ class InstrumentI(_omero_model.Instrument):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

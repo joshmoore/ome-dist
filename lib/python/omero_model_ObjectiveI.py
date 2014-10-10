@@ -13,11 +13,44 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Objective_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ObjectiveI(_omero_model.Objective):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "manufacturer",
+          "model",
+          "lotNumber",
+          "serialNumber",
+          "nominalMagnification",
+          "calibratedMagnification",
+          "lensNA",
+          "immersion",
+          "correction",
+          "workingDistance",
+          "iris",
+          "instrument",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          manufacturer=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          model=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          lotNumber=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          serialNumber=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          nominalMagnification=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          calibratedMagnification=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          lensNA=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          immersion=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          correction=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          workingDistance=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          iris=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          instrument=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       MANUFACTURER =  "ome.model.acquisition.Objective_manufacturer"
       MODEL =  "ome.model.acquisition.Objective_model"
       LOTNUMBER =  "ome.model.acquisition.Objective_lotNumber"
@@ -46,10 +79,26 @@ class ObjectiveI(_omero_model.Objective):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ObjectiveI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -129,8 +178,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._manufacturer
 
-      def setManufacturer(self, _manufacturer, current = None):
+      def setManufacturer(self, _manufacturer, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.manufacturer.wrapper is not None:
+              if _manufacturer is not None:
+                  _manufacturer = self._field_info.manufacturer.wrapper(_manufacturer)
           self._manufacturer = _manufacturer
           pass
 
@@ -142,8 +194,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._model
 
-      def setModel(self, _model, current = None):
+      def setModel(self, _model, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.model.wrapper is not None:
+              if _model is not None:
+                  _model = self._field_info.model.wrapper(_model)
           self._model = _model
           pass
 
@@ -155,8 +210,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._lotNumber
 
-      def setLotNumber(self, _lotNumber, current = None):
+      def setLotNumber(self, _lotNumber, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lotNumber.wrapper is not None:
+              if _lotNumber is not None:
+                  _lotNumber = self._field_info.lotNumber.wrapper(_lotNumber)
           self._lotNumber = _lotNumber
           pass
 
@@ -168,8 +226,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._serialNumber
 
-      def setSerialNumber(self, _serialNumber, current = None):
+      def setSerialNumber(self, _serialNumber, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.serialNumber.wrapper is not None:
+              if _serialNumber is not None:
+                  _serialNumber = self._field_info.serialNumber.wrapper(_serialNumber)
           self._serialNumber = _serialNumber
           pass
 
@@ -181,8 +242,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._nominalMagnification
 
-      def setNominalMagnification(self, _nominalMagnification, current = None):
+      def setNominalMagnification(self, _nominalMagnification, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.nominalMagnification.wrapper is not None:
+              if _nominalMagnification is not None:
+                  _nominalMagnification = self._field_info.nominalMagnification.wrapper(_nominalMagnification)
           self._nominalMagnification = _nominalMagnification
           pass
 
@@ -194,8 +258,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._calibratedMagnification
 
-      def setCalibratedMagnification(self, _calibratedMagnification, current = None):
+      def setCalibratedMagnification(self, _calibratedMagnification, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.calibratedMagnification.wrapper is not None:
+              if _calibratedMagnification is not None:
+                  _calibratedMagnification = self._field_info.calibratedMagnification.wrapper(_calibratedMagnification)
           self._calibratedMagnification = _calibratedMagnification
           pass
 
@@ -207,8 +274,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._lensNA
 
-      def setLensNA(self, _lensNA, current = None):
+      def setLensNA(self, _lensNA, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lensNA.wrapper is not None:
+              if _lensNA is not None:
+                  _lensNA = self._field_info.lensNA.wrapper(_lensNA)
           self._lensNA = _lensNA
           pass
 
@@ -220,8 +290,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._immersion
 
-      def setImmersion(self, _immersion, current = None):
+      def setImmersion(self, _immersion, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.immersion.wrapper is not None:
+              if _immersion is not None:
+                  _immersion = self._field_info.immersion.wrapper(_immersion)
           self._immersion = _immersion
           pass
 
@@ -233,8 +306,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._correction
 
-      def setCorrection(self, _correction, current = None):
+      def setCorrection(self, _correction, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.correction.wrapper is not None:
+              if _correction is not None:
+                  _correction = self._field_info.correction.wrapper(_correction)
           self._correction = _correction
           pass
 
@@ -246,8 +322,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._workingDistance
 
-      def setWorkingDistance(self, _workingDistance, current = None):
+      def setWorkingDistance(self, _workingDistance, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.workingDistance.wrapper is not None:
+              if _workingDistance is not None:
+                  _workingDistance = self._field_info.workingDistance.wrapper(_workingDistance)
           self._workingDistance = _workingDistance
           pass
 
@@ -259,8 +338,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._iris
 
-      def setIris(self, _iris, current = None):
+      def setIris(self, _iris, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.iris.wrapper is not None:
+              if _iris is not None:
+                  _iris = self._field_info.iris.wrapper(_iris)
           self._iris = _iris
           pass
 
@@ -272,8 +354,11 @@ class ObjectiveI(_omero_model.Objective):
           self.errorIfUnloaded()
           return self._instrument
 
-      def setInstrument(self, _instrument, current = None):
+      def setInstrument(self, _instrument, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.instrument.wrapper is not None:
+              if _instrument is not None:
+                  _instrument = self._field_info.instrument.wrapper(_instrument)
           self._instrument = _instrument
           pass
 
@@ -296,6 +381,8 @@ class ObjectiveI(_omero_model.Objective):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

@@ -13,11 +13,44 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Session_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class SessionI(_omero_model.Session):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "node",
+          "uuid",
+          "owner",
+          "timeToIdle",
+          "timeToLive",
+          "started",
+          "closed",
+          "message",
+          "defaultEventType",
+          "userAgent",
+          "events",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          node=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          uuid=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          owner=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          timeToIdle=_field_info_data(wrapper=omero.rtypes.rlong, nullable=False),
+          timeToLive=_field_info_data(wrapper=omero.rtypes.rlong, nullable=False),
+          started=_field_info_data(wrapper=omero.rtypes.rtime, nullable=False),
+          closed=_field_info_data(wrapper=omero.rtypes.rtime, nullable=True),
+          message=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          defaultEventType=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          userAgent=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          events=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       NODE =  "ome.model.meta.Session_node"
       UUID =  "ome.model.meta.Session_uuid"
       OWNER =  "ome.model.meta.Session_owner"
@@ -60,10 +93,26 @@ class SessionI(_omero_model.Session):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(SessionI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -143,8 +192,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._node
 
-      def setNode(self, _node, current = None):
+      def setNode(self, _node, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.node.wrapper is not None:
+              if _node is not None:
+                  _node = self._field_info.node.wrapper(_node)
           self._node = _node
           pass
 
@@ -156,8 +208,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._uuid
 
-      def setUuid(self, _uuid, current = None):
+      def setUuid(self, _uuid, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.uuid.wrapper is not None:
+              if _uuid is not None:
+                  _uuid = self._field_info.uuid.wrapper(_uuid)
           self._uuid = _uuid
           pass
 
@@ -169,8 +224,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._owner
 
-      def setOwner(self, _owner, current = None):
+      def setOwner(self, _owner, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.owner.wrapper is not None:
+              if _owner is not None:
+                  _owner = self._field_info.owner.wrapper(_owner)
           self._owner = _owner
           pass
 
@@ -182,8 +240,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._timeToIdle
 
-      def setTimeToIdle(self, _timeToIdle, current = None):
+      def setTimeToIdle(self, _timeToIdle, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.timeToIdle.wrapper is not None:
+              if _timeToIdle is not None:
+                  _timeToIdle = self._field_info.timeToIdle.wrapper(_timeToIdle)
           self._timeToIdle = _timeToIdle
           pass
 
@@ -195,8 +256,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._timeToLive
 
-      def setTimeToLive(self, _timeToLive, current = None):
+      def setTimeToLive(self, _timeToLive, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.timeToLive.wrapper is not None:
+              if _timeToLive is not None:
+                  _timeToLive = self._field_info.timeToLive.wrapper(_timeToLive)
           self._timeToLive = _timeToLive
           pass
 
@@ -208,8 +272,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._started
 
-      def setStarted(self, _started, current = None):
+      def setStarted(self, _started, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.started.wrapper is not None:
+              if _started is not None:
+                  _started = self._field_info.started.wrapper(_started)
           self._started = _started
           pass
 
@@ -221,8 +288,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._closed
 
-      def setClosed(self, _closed, current = None):
+      def setClosed(self, _closed, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.closed.wrapper is not None:
+              if _closed is not None:
+                  _closed = self._field_info.closed.wrapper(_closed)
           self._closed = _closed
           pass
 
@@ -234,8 +304,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._message
 
-      def setMessage(self, _message, current = None):
+      def setMessage(self, _message, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.message.wrapper is not None:
+              if _message is not None:
+                  _message = self._field_info.message.wrapper(_message)
           self._message = _message
           pass
 
@@ -247,8 +320,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._defaultEventType
 
-      def setDefaultEventType(self, _defaultEventType, current = None):
+      def setDefaultEventType(self, _defaultEventType, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.defaultEventType.wrapper is not None:
+              if _defaultEventType is not None:
+                  _defaultEventType = self._field_info.defaultEventType.wrapper(_defaultEventType)
           self._defaultEventType = _defaultEventType
           pass
 
@@ -260,8 +336,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._userAgent
 
-      def setUserAgent(self, _userAgent, current = None):
+      def setUserAgent(self, _userAgent, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.userAgent.wrapper is not None:
+              if _userAgent is not None:
+                  _userAgent = self._field_info.userAgent.wrapper(_userAgent)
           self._userAgent = _userAgent
           pass
 
@@ -273,8 +352,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._eventsSeq
 
-      def _setEvents(self, _events, current = None):
+      def _setEvents(self, _events, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.eventsSeq.wrapper is not None:
+              if _events is not None:
+                  _events = self._field_info.eventsSeq.wrapper(_events)
           self._eventsSeq = _events
           self.checkUnloadedProperty(_events,'eventsLoaded')
 
@@ -354,8 +436,11 @@ class SessionI(_omero_model.Session):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -490,6 +575,8 @@ class SessionI(_omero_model.Session):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

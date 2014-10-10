@@ -13,11 +13,68 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Pixels_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class PixelsI(_omero_model.Pixels):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "image",
+          "relatedTo",
+          "pixelsType",
+          "significantBits",
+          "sizeX",
+          "sizeY",
+          "sizeZ",
+          "sizeC",
+          "sizeT",
+          "sha1",
+          "dimensionOrder",
+          "physicalSizeX",
+          "physicalSizeY",
+          "physicalSizeZ",
+          "waveStart",
+          "waveIncrement",
+          "timeIncrement",
+          "methodology",
+          "planeInfo",
+          "pixelsFileMaps",
+          "channels",
+          "settings",
+          "thumbnails",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          image=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          relatedTo=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          pixelsType=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          significantBits=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          sizeX=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sizeY=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sizeZ=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sizeC=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sizeT=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          sha1=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          dimensionOrder=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          physicalSizeX=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          physicalSizeY=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          physicalSizeZ=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          waveStart=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          waveIncrement=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          timeIncrement=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          methodology=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          planeInfo=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          pixelsFileMaps=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          channels=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          settings=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          thumbnails=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       IMAGE =  "ome.model.core.Pixels_image"
       RELATEDTO =  "ome.model.core.Pixels_relatedTo"
       PIXELSTYPE =  "ome.model.core.Pixels_pixelsType"
@@ -100,10 +157,26 @@ class PixelsI(_omero_model.Pixels):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(PixelsI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -195,8 +268,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._image
 
-      def setImage(self, _image, current = None):
+      def setImage(self, _image, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.image.wrapper is not None:
+              if _image is not None:
+                  _image = self._field_info.image.wrapper(_image)
           self._image = _image
           pass
 
@@ -208,8 +284,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._relatedTo
 
-      def setRelatedTo(self, _relatedTo, current = None):
+      def setRelatedTo(self, _relatedTo, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.relatedTo.wrapper is not None:
+              if _relatedTo is not None:
+                  _relatedTo = self._field_info.relatedTo.wrapper(_relatedTo)
           self._relatedTo = _relatedTo
           pass
 
@@ -221,8 +300,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._pixelsType
 
-      def setPixelsType(self, _pixelsType, current = None):
+      def setPixelsType(self, _pixelsType, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixelsType.wrapper is not None:
+              if _pixelsType is not None:
+                  _pixelsType = self._field_info.pixelsType.wrapper(_pixelsType)
           self._pixelsType = _pixelsType
           pass
 
@@ -234,8 +316,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._significantBits
 
-      def setSignificantBits(self, _significantBits, current = None):
+      def setSignificantBits(self, _significantBits, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.significantBits.wrapper is not None:
+              if _significantBits is not None:
+                  _significantBits = self._field_info.significantBits.wrapper(_significantBits)
           self._significantBits = _significantBits
           pass
 
@@ -247,8 +332,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sizeX
 
-      def setSizeX(self, _sizeX, current = None):
+      def setSizeX(self, _sizeX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeX.wrapper is not None:
+              if _sizeX is not None:
+                  _sizeX = self._field_info.sizeX.wrapper(_sizeX)
           self._sizeX = _sizeX
           pass
 
@@ -260,8 +348,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sizeY
 
-      def setSizeY(self, _sizeY, current = None):
+      def setSizeY(self, _sizeY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeY.wrapper is not None:
+              if _sizeY is not None:
+                  _sizeY = self._field_info.sizeY.wrapper(_sizeY)
           self._sizeY = _sizeY
           pass
 
@@ -273,8 +364,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sizeZ
 
-      def setSizeZ(self, _sizeZ, current = None):
+      def setSizeZ(self, _sizeZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeZ.wrapper is not None:
+              if _sizeZ is not None:
+                  _sizeZ = self._field_info.sizeZ.wrapper(_sizeZ)
           self._sizeZ = _sizeZ
           pass
 
@@ -286,8 +380,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sizeC
 
-      def setSizeC(self, _sizeC, current = None):
+      def setSizeC(self, _sizeC, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeC.wrapper is not None:
+              if _sizeC is not None:
+                  _sizeC = self._field_info.sizeC.wrapper(_sizeC)
           self._sizeC = _sizeC
           pass
 
@@ -299,8 +396,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sizeT
 
-      def setSizeT(self, _sizeT, current = None):
+      def setSizeT(self, _sizeT, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sizeT.wrapper is not None:
+              if _sizeT is not None:
+                  _sizeT = self._field_info.sizeT.wrapper(_sizeT)
           self._sizeT = _sizeT
           pass
 
@@ -312,8 +412,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._sha1
 
-      def setSha1(self, _sha1, current = None):
+      def setSha1(self, _sha1, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.sha1.wrapper is not None:
+              if _sha1 is not None:
+                  _sha1 = self._field_info.sha1.wrapper(_sha1)
           self._sha1 = _sha1
           pass
 
@@ -325,8 +428,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._dimensionOrder
 
-      def setDimensionOrder(self, _dimensionOrder, current = None):
+      def setDimensionOrder(self, _dimensionOrder, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.dimensionOrder.wrapper is not None:
+              if _dimensionOrder is not None:
+                  _dimensionOrder = self._field_info.dimensionOrder.wrapper(_dimensionOrder)
           self._dimensionOrder = _dimensionOrder
           pass
 
@@ -338,8 +444,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._physicalSizeX
 
-      def setPhysicalSizeX(self, _physicalSizeX, current = None):
+      def setPhysicalSizeX(self, _physicalSizeX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.physicalSizeX.wrapper is not None:
+              if _physicalSizeX is not None:
+                  _physicalSizeX = self._field_info.physicalSizeX.wrapper(_physicalSizeX)
           self._physicalSizeX = _physicalSizeX
           pass
 
@@ -351,8 +460,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._physicalSizeY
 
-      def setPhysicalSizeY(self, _physicalSizeY, current = None):
+      def setPhysicalSizeY(self, _physicalSizeY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.physicalSizeY.wrapper is not None:
+              if _physicalSizeY is not None:
+                  _physicalSizeY = self._field_info.physicalSizeY.wrapper(_physicalSizeY)
           self._physicalSizeY = _physicalSizeY
           pass
 
@@ -364,8 +476,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._physicalSizeZ
 
-      def setPhysicalSizeZ(self, _physicalSizeZ, current = None):
+      def setPhysicalSizeZ(self, _physicalSizeZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.physicalSizeZ.wrapper is not None:
+              if _physicalSizeZ is not None:
+                  _physicalSizeZ = self._field_info.physicalSizeZ.wrapper(_physicalSizeZ)
           self._physicalSizeZ = _physicalSizeZ
           pass
 
@@ -377,8 +492,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._waveStart
 
-      def setWaveStart(self, _waveStart, current = None):
+      def setWaveStart(self, _waveStart, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.waveStart.wrapper is not None:
+              if _waveStart is not None:
+                  _waveStart = self._field_info.waveStart.wrapper(_waveStart)
           self._waveStart = _waveStart
           pass
 
@@ -390,8 +508,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._waveIncrement
 
-      def setWaveIncrement(self, _waveIncrement, current = None):
+      def setWaveIncrement(self, _waveIncrement, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.waveIncrement.wrapper is not None:
+              if _waveIncrement is not None:
+                  _waveIncrement = self._field_info.waveIncrement.wrapper(_waveIncrement)
           self._waveIncrement = _waveIncrement
           pass
 
@@ -403,8 +524,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._timeIncrement
 
-      def setTimeIncrement(self, _timeIncrement, current = None):
+      def setTimeIncrement(self, _timeIncrement, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.timeIncrement.wrapper is not None:
+              if _timeIncrement is not None:
+                  _timeIncrement = self._field_info.timeIncrement.wrapper(_timeIncrement)
           self._timeIncrement = _timeIncrement
           pass
 
@@ -416,8 +540,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._methodology
 
-      def setMethodology(self, _methodology, current = None):
+      def setMethodology(self, _methodology, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.methodology.wrapper is not None:
+              if _methodology is not None:
+                  _methodology = self._field_info.methodology.wrapper(_methodology)
           self._methodology = _methodology
           pass
 
@@ -429,8 +556,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._planeInfoSeq
 
-      def _setPlaneInfo(self, _planeInfo, current = None):
+      def _setPlaneInfo(self, _planeInfo, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.planeInfoSeq.wrapper is not None:
+              if _planeInfo is not None:
+                  _planeInfo = self._field_info.planeInfoSeq.wrapper(_planeInfo)
           self._planeInfoSeq = _planeInfo
           self.checkUnloadedProperty(_planeInfo,'planeInfoLoaded')
 
@@ -510,8 +640,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._pixelsFileMapsSeq
 
-      def _setPixelsFileMaps(self, _pixelsFileMaps, current = None):
+      def _setPixelsFileMaps(self, _pixelsFileMaps, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixelsFileMapsSeq.wrapper is not None:
+              if _pixelsFileMaps is not None:
+                  _pixelsFileMaps = self._field_info.pixelsFileMapsSeq.wrapper(_pixelsFileMaps)
           self._pixelsFileMapsSeq = _pixelsFileMaps
           self.checkUnloadedProperty(_pixelsFileMaps,'pixelsFileMapsLoaded')
 
@@ -639,8 +772,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._channelsSeq
 
-      def _setChannels(self, _channels, current = None):
+      def _setChannels(self, _channels, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.channelsSeq.wrapper is not None:
+              if _channels is not None:
+                  _channels = self._field_info.channelsSeq.wrapper(_channels)
           self._channelsSeq = _channels
           self.checkUnloadedProperty(_channels,'channelsLoaded')
 
@@ -717,10 +853,13 @@ class PixelsI(_omero_model.Pixels):
           if not self._channelsLoaded: self.throwNullCollectionException("channelsSeq")
           return self._channelsSeq[index]
 
-      def setChannel(self, index, element, current = None):
+      def setChannel(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._channelsLoaded: self.throwNullCollectionException("channelsSeq")
           old = self._channelsSeq[index]
+          if wrap and self._field_info.channelsSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.channelsSeq.wrapper(_channels)
           self._channelsSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setPixels( self )
@@ -748,8 +887,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._settingsSeq
 
-      def _setSettings(self, _settings, current = None):
+      def _setSettings(self, _settings, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.settingsSeq.wrapper is not None:
+              if _settings is not None:
+                  _settings = self._field_info.settingsSeq.wrapper(_settings)
           self._settingsSeq = _settings
           self.checkUnloadedProperty(_settings,'settingsLoaded')
 
@@ -829,8 +971,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._thumbnailsSeq
 
-      def _setThumbnails(self, _thumbnails, current = None):
+      def _setThumbnails(self, _thumbnails, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.thumbnailsSeq.wrapper is not None:
+              if _thumbnails is not None:
+                  _thumbnails = self._field_info.thumbnailsSeq.wrapper(_thumbnails)
           self._thumbnailsSeq = _thumbnails
           self.checkUnloadedProperty(_thumbnails,'thumbnailsLoaded')
 
@@ -910,8 +1055,11 @@ class PixelsI(_omero_model.Pixels):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -1046,6 +1194,8 @@ class PixelsI(_omero_model.Pixels):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

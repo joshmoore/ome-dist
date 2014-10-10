@@ -428,6 +428,41 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_ILdap_getSetting> AMD_ILdap_getSettingPtr;
 
+class AMI_ILdap_createUser : public ::Ice::AMICallbackBase
+{
+public:
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&) = 0;
+
+    void __response(const ::omero::model::ExperimenterPtr& __ret)
+    {
+        ice_response(__ret);
+    }
+    void __exception(const ::Ice::Exception& ex)
+    {
+        ice_exception(ex);
+    }
+    void __sent(bool sentSynchronously)
+    {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        AMICallbackBase::__sent(sentSynchronously);
+#else
+        ::Ice::AMICallbackBase::__sent(sentSynchronously);
+#endif
+    }
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_ILdap_createUser> AMI_ILdap_createUserPtr;
+
+class AMD_ILdap_createUser : virtual public ::Ice::AMDCallback
+{
+public:
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&) = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_ILdap_createUser> AMD_ILdap_createUserPtr;
+
 }
 
 }
@@ -594,6 +629,23 @@ public:
 #endif
 };
 
+class AMD_ILdap_createUser : public ::omero::api::AMD_ILdap_createUser, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_ILdap_createUser(::IceInternal::Incoming&);
+
+    virtual void ice_response(const ::omero::model::ExperimenterPtr&);
+    virtual void ice_exception(const ::std::exception&);
+#if defined(__BCPLUSPLUS__)
+    // COMPILERFIX: Avoid compiler warnings with C++Builder 2010
+    virtual void ice_exception()
+    {
+        ::IceInternal::IncomingAsync::ice_exception();
+    }
+#endif
+};
+
 }
 
 }
@@ -632,6 +684,9 @@ typedef ::IceUtil::Handle< Callback_ILdap_setDN_Base> Callback_ILdap_setDNPtr;
 
 class Callback_ILdap_getSetting_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ILdap_getSetting_Base> Callback_ILdap_getSettingPtr;
+
+class Callback_ILdap_createUser_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ILdap_createUser_Base> Callback_ILdap_createUserPtr;
 
 }
 
@@ -1099,6 +1154,56 @@ private:
 public:
     bool getSetting_async(const ::omero::api::AMI_ILdap_getSettingPtr&);
     bool getSetting_async(const ::omero::api::AMI_ILdap_getSettingPtr&, const ::Ice::Context&);
+
+    ::omero::model::ExperimenterPtr createUser(const ::std::string& username)
+    {
+        return createUser(username, 0);
+    }
+    ::omero::model::ExperimenterPtr createUser(const ::std::string& username, const ::Ice::Context& __ctx)
+    {
+        return createUser(username, &__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username)
+    {
+        return begin_createUser(username, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username, const ::Ice::Context& __ctx)
+    {
+        return begin_createUser(username, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_createUser(username, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_createUser(username, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username, const ::omero::api::Callback_ILdap_createUserPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_createUser(username, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string& username, const ::Ice::Context& __ctx, const ::omero::api::Callback_ILdap_createUserPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_createUser(username, &__ctx, __del, __cookie);
+    }
+
+    ::omero::model::ExperimenterPtr end_createUser(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_createUser(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    bool createUser_async(const ::omero::api::AMI_ILdap_createUserPtr&, const ::std::string&);
+    bool createUser_async(const ::omero::api::AMI_ILdap_createUserPtr&, const ::std::string&, const ::Ice::Context&);
     
     ::IceInternal::ProxyHandle<ILdap> ice_context(const ::Ice::Context& __context) const
     {
@@ -1335,6 +1440,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*) = 0;
 
     virtual bool getSetting(const ::Ice::Context*) = 0;
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*) = 0;
 };
 
 }
@@ -1374,6 +1481,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*);
 
     virtual bool getSetting(const ::Ice::Context*);
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -1413,6 +1522,8 @@ public:
     virtual void setDN(const ::omero::RLongPtr&, const ::std::string&, const ::Ice::Context*);
 
     virtual bool getSetting(const ::Ice::Context*);
+
+    virtual ::omero::model::ExperimenterPtr createUser(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -1467,6 +1578,9 @@ public:
 
     virtual void getSetting_async(const ::omero::api::AMD_ILdap_getSettingPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getSetting(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void createUser_async(const ::omero::api::AMD_ILdap_createUserPtr&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___createUser(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -2563,6 +2677,122 @@ template<class T, typename CT> Callback_ILdap_getSettingPtr
 newCallback_ILdap_getSetting(T* instance, void (T::*cb)(bool, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_ILdap_getSetting<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_ILdap_createUser : public Callback_ILdap_createUser_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::omero::model::ExperimenterPtr&);
+
+    CallbackNC_ILdap_createUser(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::ILdapPrx __proxy = ::omero::api::ILdapPrx::uncheckedCast(__result->getProxy());
+        ::omero::model::ExperimenterPtr __ret;
+        try
+        {
+            __ret = __proxy->end_createUser(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret);
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_ILdap_createUserPtr
+newCallback_ILdap_createUser(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::omero::model::ExperimenterPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ILdap_createUser<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ILdap_createUserPtr
+newCallback_ILdap_createUser(T* instance, void (T::*cb)(const ::omero::model::ExperimenterPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ILdap_createUser<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_ILdap_createUser : public Callback_ILdap_createUser_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::omero::model::ExperimenterPtr&, const CT&);
+
+    Callback_ILdap_createUser(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::ILdapPrx __proxy = ::omero::api::ILdapPrx::uncheckedCast(__result->getProxy());
+        ::omero::model::ExperimenterPtr __ret;
+        try
+        {
+            __ret = __proxy->end_createUser(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_ILdap_createUserPtr
+newCallback_ILdap_createUser(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::omero::model::ExperimenterPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ILdap_createUser<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ILdap_createUserPtr
+newCallback_ILdap_createUser(T* instance, void (T::*cb)(const ::omero::model::ExperimenterPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ILdap_createUser<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

@@ -52,7 +52,7 @@ including examples of what a appropriate try/catch block would look like.
 
 All exceptions that are thrown by a remote call (any call on a *Prx instance)
 will be either a subclass of [Ice::UserException] or [Ice::LocalException].
- Figure 4.4 
+Inheritance Hierarchy for Exceptions
 from the Ice manual shows the entire exception hierarchy. The exceptions described in
 this file will subclass from [Ice::UserException]. Other Ice-runtime exceptions subclass
 from [Ice::LocalException].

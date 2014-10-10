@@ -13,11 +13,40 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_PlaneInfo_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class PlaneInfoI(_omero_model.PlaneInfo):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "pixels",
+          "theZ",
+          "theC",
+          "theT",
+          "deltaT",
+          "positionX",
+          "positionY",
+          "positionZ",
+          "exposureTime",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          pixels=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          theZ=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          theC=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          theT=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          deltaT=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          positionX=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          positionY=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          positionZ=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          exposureTime=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       PIXELS =  "ome.model.core.PlaneInfo_pixels"
       THEZ =  "ome.model.core.PlaneInfo_theZ"
       THEC =  "ome.model.core.PlaneInfo_theC"
@@ -51,10 +80,26 @@ class PlaneInfoI(_omero_model.PlaneInfo):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(PlaneInfoI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -132,8 +177,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._pixels
 
-      def setPixels(self, _pixels, current = None):
+      def setPixels(self, _pixels, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.pixels.wrapper is not None:
+              if _pixels is not None:
+                  _pixels = self._field_info.pixels.wrapper(_pixels)
           self._pixels = _pixels
           pass
 
@@ -145,8 +193,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._theZ
 
-      def setTheZ(self, _theZ, current = None):
+      def setTheZ(self, _theZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theZ.wrapper is not None:
+              if _theZ is not None:
+                  _theZ = self._field_info.theZ.wrapper(_theZ)
           self._theZ = _theZ
           pass
 
@@ -158,8 +209,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._theC
 
-      def setTheC(self, _theC, current = None):
+      def setTheC(self, _theC, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theC.wrapper is not None:
+              if _theC is not None:
+                  _theC = self._field_info.theC.wrapper(_theC)
           self._theC = _theC
           pass
 
@@ -171,8 +225,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._theT
 
-      def setTheT(self, _theT, current = None):
+      def setTheT(self, _theT, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.theT.wrapper is not None:
+              if _theT is not None:
+                  _theT = self._field_info.theT.wrapper(_theT)
           self._theT = _theT
           pass
 
@@ -184,8 +241,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._deltaT
 
-      def setDeltaT(self, _deltaT, current = None):
+      def setDeltaT(self, _deltaT, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.deltaT.wrapper is not None:
+              if _deltaT is not None:
+                  _deltaT = self._field_info.deltaT.wrapper(_deltaT)
           self._deltaT = _deltaT
           pass
 
@@ -197,8 +257,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._positionX
 
-      def setPositionX(self, _positionX, current = None):
+      def setPositionX(self, _positionX, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionX.wrapper is not None:
+              if _positionX is not None:
+                  _positionX = self._field_info.positionX.wrapper(_positionX)
           self._positionX = _positionX
           pass
 
@@ -210,8 +273,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._positionY
 
-      def setPositionY(self, _positionY, current = None):
+      def setPositionY(self, _positionY, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionY.wrapper is not None:
+              if _positionY is not None:
+                  _positionY = self._field_info.positionY.wrapper(_positionY)
           self._positionY = _positionY
           pass
 
@@ -223,8 +289,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._positionZ
 
-      def setPositionZ(self, _positionZ, current = None):
+      def setPositionZ(self, _positionZ, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.positionZ.wrapper is not None:
+              if _positionZ is not None:
+                  _positionZ = self._field_info.positionZ.wrapper(_positionZ)
           self._positionZ = _positionZ
           pass
 
@@ -236,8 +305,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._exposureTime
 
-      def setExposureTime(self, _exposureTime, current = None):
+      def setExposureTime(self, _exposureTime, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.exposureTime.wrapper is not None:
+              if _exposureTime is not None:
+                  _exposureTime = self._field_info.exposureTime.wrapper(_exposureTime)
           self._exposureTime = _exposureTime
           pass
 
@@ -249,8 +321,11 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -385,6 +460,8 @@ class PlaneInfoI(_omero_model.PlaneInfo):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

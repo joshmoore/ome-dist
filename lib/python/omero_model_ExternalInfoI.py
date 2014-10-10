@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ExternalInfo_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ExternalInfoI(_omero_model.ExternalInfo):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "entityId",
+          "entityType",
+          "lsid",
+          "uuid",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          entityId=_field_info_data(wrapper=omero.rtypes.rlong, nullable=False),
+          entityType=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          lsid=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          uuid=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       ENTITYID =  "ome.model.meta.ExternalInfo_entityId"
       ENTITYTYPE =  "ome.model.meta.ExternalInfo_entityType"
       LSID =  "ome.model.meta.ExternalInfo_lsid"
@@ -38,10 +55,26 @@ class ExternalInfoI(_omero_model.ExternalInfo):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ExternalInfoI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -104,8 +137,11 @@ class ExternalInfoI(_omero_model.ExternalInfo):
           self.errorIfUnloaded()
           return self._entityId
 
-      def setEntityId(self, _entityId, current = None):
+      def setEntityId(self, _entityId, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.entityId.wrapper is not None:
+              if _entityId is not None:
+                  _entityId = self._field_info.entityId.wrapper(_entityId)
           self._entityId = _entityId
           pass
 
@@ -117,8 +153,11 @@ class ExternalInfoI(_omero_model.ExternalInfo):
           self.errorIfUnloaded()
           return self._entityType
 
-      def setEntityType(self, _entityType, current = None):
+      def setEntityType(self, _entityType, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.entityType.wrapper is not None:
+              if _entityType is not None:
+                  _entityType = self._field_info.entityType.wrapper(_entityType)
           self._entityType = _entityType
           pass
 
@@ -130,8 +169,11 @@ class ExternalInfoI(_omero_model.ExternalInfo):
           self.errorIfUnloaded()
           return self._lsid
 
-      def setLsid(self, _lsid, current = None):
+      def setLsid(self, _lsid, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lsid.wrapper is not None:
+              if _lsid is not None:
+                  _lsid = self._field_info.lsid.wrapper(_lsid)
           self._lsid = _lsid
           pass
 
@@ -143,8 +185,11 @@ class ExternalInfoI(_omero_model.ExternalInfo):
           self.errorIfUnloaded()
           return self._uuid
 
-      def setUuid(self, _uuid, current = None):
+      def setUuid(self, _uuid, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.uuid.wrapper is not None:
+              if _uuid is not None:
+                  _uuid = self._field_info.uuid.wrapper(_uuid)
           self._uuid = _uuid
           pass
 
@@ -167,6 +212,8 @@ class ExternalInfoI(_omero_model.ExternalInfo):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

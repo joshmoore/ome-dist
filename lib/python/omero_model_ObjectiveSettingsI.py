@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ObjectiveSettings_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "correctionCollar",
+          "medium",
+          "refractiveIndex",
+          "objective",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          correctionCollar=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          medium=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          refractiveIndex=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          objective=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       CORRECTIONCOLLAR =  "ome.model.acquisition.ObjectiveSettings_correctionCollar"
       MEDIUM =  "ome.model.acquisition.ObjectiveSettings_medium"
       REFRACTIVEINDEX =  "ome.model.acquisition.ObjectiveSettings_refractiveIndex"
@@ -38,10 +55,26 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ObjectiveSettingsI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -113,8 +146,11 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
           self.errorIfUnloaded()
           return self._correctionCollar
 
-      def setCorrectionCollar(self, _correctionCollar, current = None):
+      def setCorrectionCollar(self, _correctionCollar, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.correctionCollar.wrapper is not None:
+              if _correctionCollar is not None:
+                  _correctionCollar = self._field_info.correctionCollar.wrapper(_correctionCollar)
           self._correctionCollar = _correctionCollar
           pass
 
@@ -126,8 +162,11 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
           self.errorIfUnloaded()
           return self._medium
 
-      def setMedium(self, _medium, current = None):
+      def setMedium(self, _medium, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.medium.wrapper is not None:
+              if _medium is not None:
+                  _medium = self._field_info.medium.wrapper(_medium)
           self._medium = _medium
           pass
 
@@ -139,8 +178,11 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
           self.errorIfUnloaded()
           return self._refractiveIndex
 
-      def setRefractiveIndex(self, _refractiveIndex, current = None):
+      def setRefractiveIndex(self, _refractiveIndex, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.refractiveIndex.wrapper is not None:
+              if _refractiveIndex is not None:
+                  _refractiveIndex = self._field_info.refractiveIndex.wrapper(_refractiveIndex)
           self._refractiveIndex = _refractiveIndex
           pass
 
@@ -152,8 +194,11 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
           self.errorIfUnloaded()
           return self._objective
 
-      def setObjective(self, _objective, current = None):
+      def setObjective(self, _objective, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.objective.wrapper is not None:
+              if _objective is not None:
+                  _objective = self._field_info.objective.wrapper(_objective)
           self._objective = _objective
           pass
 
@@ -176,6 +221,8 @@ class ObjectiveSettingsI(_omero_model.ObjectiveSettings):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

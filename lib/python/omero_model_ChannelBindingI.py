@@ -13,11 +13,42 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_ChannelBinding_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ChannelBindingI(_omero_model.ChannelBinding):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "renderingDef",
+          "family",
+          "coefficient",
+          "inputStart",
+          "inputEnd",
+          "active",
+          "noiseReduction",
+          "red",
+          "green",
+          "blue",
+          "alpha",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          renderingDef=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          family=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          coefficient=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=False),
+          inputStart=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=False),
+          inputEnd=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=False),
+          active=_field_info_data(wrapper=omero.rtypes.rbool, nullable=False),
+          noiseReduction=_field_info_data(wrapper=omero.rtypes.rbool, nullable=False),
+          red=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          green=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          blue=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          alpha=_field_info_data(wrapper=omero.rtypes.rint, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       RENDERINGDEF =  "ome.model.display.ChannelBinding_renderingDef"
       FAMILY =  "ome.model.display.ChannelBinding_family"
       COEFFICIENT =  "ome.model.display.ChannelBinding_coefficient"
@@ -45,10 +76,26 @@ class ChannelBindingI(_omero_model.ChannelBinding):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ChannelBindingI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -127,8 +174,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._renderingDef
 
-      def setRenderingDef(self, _renderingDef, current = None):
+      def setRenderingDef(self, _renderingDef, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.renderingDef.wrapper is not None:
+              if _renderingDef is not None:
+                  _renderingDef = self._field_info.renderingDef.wrapper(_renderingDef)
           self._renderingDef = _renderingDef
           pass
 
@@ -140,8 +190,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._family
 
-      def setFamily(self, _family, current = None):
+      def setFamily(self, _family, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.family.wrapper is not None:
+              if _family is not None:
+                  _family = self._field_info.family.wrapper(_family)
           self._family = _family
           pass
 
@@ -153,8 +206,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._coefficient
 
-      def setCoefficient(self, _coefficient, current = None):
+      def setCoefficient(self, _coefficient, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.coefficient.wrapper is not None:
+              if _coefficient is not None:
+                  _coefficient = self._field_info.coefficient.wrapper(_coefficient)
           self._coefficient = _coefficient
           pass
 
@@ -166,8 +222,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._inputStart
 
-      def setInputStart(self, _inputStart, current = None):
+      def setInputStart(self, _inputStart, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.inputStart.wrapper is not None:
+              if _inputStart is not None:
+                  _inputStart = self._field_info.inputStart.wrapper(_inputStart)
           self._inputStart = _inputStart
           pass
 
@@ -179,8 +238,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._inputEnd
 
-      def setInputEnd(self, _inputEnd, current = None):
+      def setInputEnd(self, _inputEnd, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.inputEnd.wrapper is not None:
+              if _inputEnd is not None:
+                  _inputEnd = self._field_info.inputEnd.wrapper(_inputEnd)
           self._inputEnd = _inputEnd
           pass
 
@@ -192,8 +254,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._active
 
-      def setActive(self, _active, current = None):
+      def setActive(self, _active, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.active.wrapper is not None:
+              if _active is not None:
+                  _active = self._field_info.active.wrapper(_active)
           self._active = _active
           pass
 
@@ -205,8 +270,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._noiseReduction
 
-      def setNoiseReduction(self, _noiseReduction, current = None):
+      def setNoiseReduction(self, _noiseReduction, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.noiseReduction.wrapper is not None:
+              if _noiseReduction is not None:
+                  _noiseReduction = self._field_info.noiseReduction.wrapper(_noiseReduction)
           self._noiseReduction = _noiseReduction
           pass
 
@@ -218,8 +286,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._red
 
-      def setRed(self, _red, current = None):
+      def setRed(self, _red, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.red.wrapper is not None:
+              if _red is not None:
+                  _red = self._field_info.red.wrapper(_red)
           self._red = _red
           pass
 
@@ -231,8 +302,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._green
 
-      def setGreen(self, _green, current = None):
+      def setGreen(self, _green, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.green.wrapper is not None:
+              if _green is not None:
+                  _green = self._field_info.green.wrapper(_green)
           self._green = _green
           pass
 
@@ -244,8 +318,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._blue
 
-      def setBlue(self, _blue, current = None):
+      def setBlue(self, _blue, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.blue.wrapper is not None:
+              if _blue is not None:
+                  _blue = self._field_info.blue.wrapper(_blue)
           self._blue = _blue
           pass
 
@@ -257,8 +334,11 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           self.errorIfUnloaded()
           return self._alpha
 
-      def setAlpha(self, _alpha, current = None):
+      def setAlpha(self, _alpha, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.alpha.wrapper is not None:
+              if _alpha is not None:
+                  _alpha = self._field_info.alpha.wrapper(_alpha)
           self._alpha = _alpha
           pass
 
@@ -281,6 +361,8 @@ class ChannelBindingI(_omero_model.ChannelBinding):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

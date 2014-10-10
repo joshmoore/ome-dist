@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_MicrobeamManipulation_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "type",
+          "lightSourceSettings",
+          "experiment",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          type=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          lightSourceSettings=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          experiment=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       TYPE =  "ome.model.experiment.MicrobeamManipulation_type"
       LIGHTSOURCESETTINGS =  "ome.model.experiment.MicrobeamManipulation_lightSourceSettings"
       EXPERIMENT =  "ome.model.experiment.MicrobeamManipulation_experiment"
@@ -45,10 +62,26 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(MicrobeamManipulationI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -120,8 +153,11 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -133,8 +169,11 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
           self.errorIfUnloaded()
           return self._lightSourceSettingsSeq
 
-      def _setLightSourceSettings(self, _lightSourceSettings, current = None):
+      def _setLightSourceSettings(self, _lightSourceSettings, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.lightSourceSettingsSeq.wrapper is not None:
+              if _lightSourceSettings is not None:
+                  _lightSourceSettings = self._field_info.lightSourceSettingsSeq.wrapper(_lightSourceSettings)
           self._lightSourceSettingsSeq = _lightSourceSettings
           self.checkUnloadedProperty(_lightSourceSettings,'lightSourceSettingsLoaded')
 
@@ -214,8 +253,11 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
           self.errorIfUnloaded()
           return self._experiment
 
-      def setExperiment(self, _experiment, current = None):
+      def setExperiment(self, _experiment, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.experiment.wrapper is not None:
+              if _experiment is not None:
+                  _experiment = self._field_info.experiment.wrapper(_experiment)
           self._experiment = _experiment
           pass
 
@@ -227,8 +269,11 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -251,6 +296,8 @@ class MicrobeamManipulationI(_omero_model.MicrobeamManipulation):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

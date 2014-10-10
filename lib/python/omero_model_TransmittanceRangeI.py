@@ -13,11 +13,30 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_TransmittanceRange_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class TransmittanceRangeI(_omero_model.TransmittanceRange):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "cutIn",
+          "cutOut",
+          "cutInTolerance",
+          "cutOutTolerance",
+          "transmittance",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          cutIn=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          cutOut=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          cutInTolerance=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          cutOutTolerance=_field_info_data(wrapper=omero.rtypes.rint, nullable=True),
+          transmittance=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       CUTIN =  "ome.model.acquisition.TransmittanceRange_cutIn"
       CUTOUT =  "ome.model.acquisition.TransmittanceRange_cutOut"
       CUTINTOLERANCE =  "ome.model.acquisition.TransmittanceRange_cutInTolerance"
@@ -39,10 +58,26 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(TransmittanceRangeI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -115,8 +150,11 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           self.errorIfUnloaded()
           return self._cutIn
 
-      def setCutIn(self, _cutIn, current = None):
+      def setCutIn(self, _cutIn, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cutIn.wrapper is not None:
+              if _cutIn is not None:
+                  _cutIn = self._field_info.cutIn.wrapper(_cutIn)
           self._cutIn = _cutIn
           pass
 
@@ -128,8 +166,11 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           self.errorIfUnloaded()
           return self._cutOut
 
-      def setCutOut(self, _cutOut, current = None):
+      def setCutOut(self, _cutOut, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cutOut.wrapper is not None:
+              if _cutOut is not None:
+                  _cutOut = self._field_info.cutOut.wrapper(_cutOut)
           self._cutOut = _cutOut
           pass
 
@@ -141,8 +182,11 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           self.errorIfUnloaded()
           return self._cutInTolerance
 
-      def setCutInTolerance(self, _cutInTolerance, current = None):
+      def setCutInTolerance(self, _cutInTolerance, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cutInTolerance.wrapper is not None:
+              if _cutInTolerance is not None:
+                  _cutInTolerance = self._field_info.cutInTolerance.wrapper(_cutInTolerance)
           self._cutInTolerance = _cutInTolerance
           pass
 
@@ -154,8 +198,11 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           self.errorIfUnloaded()
           return self._cutOutTolerance
 
-      def setCutOutTolerance(self, _cutOutTolerance, current = None):
+      def setCutOutTolerance(self, _cutOutTolerance, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.cutOutTolerance.wrapper is not None:
+              if _cutOutTolerance is not None:
+                  _cutOutTolerance = self._field_info.cutOutTolerance.wrapper(_cutOutTolerance)
           self._cutOutTolerance = _cutOutTolerance
           pass
 
@@ -167,8 +214,11 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           self.errorIfUnloaded()
           return self._transmittance
 
-      def setTransmittance(self, _transmittance, current = None):
+      def setTransmittance(self, _transmittance, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.transmittance.wrapper is not None:
+              if _transmittance is not None:
+                  _transmittance = self._field_info.transmittance.wrapper(_transmittance)
           self._transmittance = _transmittance
           pass
 
@@ -191,6 +241,8 @@ class TransmittanceRangeI(_omero_model.TransmittanceRange):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

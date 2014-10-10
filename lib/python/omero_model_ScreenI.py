@@ -13,11 +13,40 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Screen_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ScreenI(_omero_model.Screen):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "type",
+          "protocolIdentifier",
+          "protocolDescription",
+          "reagentSetIdentifier",
+          "reagentSetDescription",
+          "plateLinks",
+          "reagents",
+          "annotationLinks",
+          "name",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          type=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          protocolIdentifier=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          protocolDescription=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          reagentSetIdentifier=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          reagentSetDescription=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          plateLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          reagents=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       TYPE =  "ome.model.screen.Screen_type"
       PROTOCOLIDENTIFIER =  "ome.model.screen.Screen_protocolIdentifier"
       PROTOCOLDESCRIPTION =  "ome.model.screen.Screen_protocolDescription"
@@ -65,10 +94,26 @@ class ScreenI(_omero_model.Screen):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ScreenI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -146,8 +191,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -159,8 +207,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._protocolIdentifier
 
-      def setProtocolIdentifier(self, _protocolIdentifier, current = None):
+      def setProtocolIdentifier(self, _protocolIdentifier, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.protocolIdentifier.wrapper is not None:
+              if _protocolIdentifier is not None:
+                  _protocolIdentifier = self._field_info.protocolIdentifier.wrapper(_protocolIdentifier)
           self._protocolIdentifier = _protocolIdentifier
           pass
 
@@ -172,8 +223,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._protocolDescription
 
-      def setProtocolDescription(self, _protocolDescription, current = None):
+      def setProtocolDescription(self, _protocolDescription, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.protocolDescription.wrapper is not None:
+              if _protocolDescription is not None:
+                  _protocolDescription = self._field_info.protocolDescription.wrapper(_protocolDescription)
           self._protocolDescription = _protocolDescription
           pass
 
@@ -185,8 +239,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._reagentSetIdentifier
 
-      def setReagentSetIdentifier(self, _reagentSetIdentifier, current = None):
+      def setReagentSetIdentifier(self, _reagentSetIdentifier, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reagentSetIdentifier.wrapper is not None:
+              if _reagentSetIdentifier is not None:
+                  _reagentSetIdentifier = self._field_info.reagentSetIdentifier.wrapper(_reagentSetIdentifier)
           self._reagentSetIdentifier = _reagentSetIdentifier
           pass
 
@@ -198,8 +255,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._reagentSetDescription
 
-      def setReagentSetDescription(self, _reagentSetDescription, current = None):
+      def setReagentSetDescription(self, _reagentSetDescription, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reagentSetDescription.wrapper is not None:
+              if _reagentSetDescription is not None:
+                  _reagentSetDescription = self._field_info.reagentSetDescription.wrapper(_reagentSetDescription)
           self._reagentSetDescription = _reagentSetDescription
           pass
 
@@ -211,8 +271,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._plateLinksSeq
 
-      def _setPlateLinks(self, _plateLinks, current = None):
+      def _setPlateLinks(self, _plateLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.plateLinksSeq.wrapper is not None:
+              if _plateLinks is not None:
+                  _plateLinks = self._field_info.plateLinksSeq.wrapper(_plateLinks)
           self._plateLinksSeq = _plateLinks
           self.checkUnloadedProperty(_plateLinks,'plateLinksLoaded')
 
@@ -340,8 +403,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._reagentsSeq
 
-      def _setReagents(self, _reagents, current = None):
+      def _setReagents(self, _reagents, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.reagentsSeq.wrapper is not None:
+              if _reagents is not None:
+                  _reagents = self._field_info.reagentsSeq.wrapper(_reagents)
           self._reagentsSeq = _reagents
           self.checkUnloadedProperty(_reagents,'reagentsLoaded')
 
@@ -421,8 +487,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -546,8 +615,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -559,8 +631,11 @@ class ScreenI(_omero_model.Screen):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -583,6 +658,8 @@ class ScreenI(_omero_model.Screen):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

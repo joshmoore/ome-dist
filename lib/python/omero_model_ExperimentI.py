@@ -13,11 +13,26 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Experiment_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class ExperimentI(_omero_model.Experiment):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "type",
+          "microbeamManipulation",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          type=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          microbeamManipulation=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       TYPE =  "ome.model.experiment.Experiment_type"
       MICROBEAMMANIPULATION =  "ome.model.experiment.Experiment_microbeamManipulation"
       DESCRIPTION =  "ome.model.experiment.Experiment_description"
@@ -44,10 +59,26 @@ class ExperimentI(_omero_model.Experiment):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(ExperimentI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -118,8 +149,11 @@ class ExperimentI(_omero_model.Experiment):
           self.errorIfUnloaded()
           return self._type
 
-      def setType(self, _type, current = None):
+      def setType(self, _type, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.type.wrapper is not None:
+              if _type is not None:
+                  _type = self._field_info.type.wrapper(_type)
           self._type = _type
           pass
 
@@ -131,8 +165,11 @@ class ExperimentI(_omero_model.Experiment):
           self.errorIfUnloaded()
           return self._microbeamManipulationSeq
 
-      def _setMicrobeamManipulation(self, _microbeamManipulation, current = None):
+      def _setMicrobeamManipulation(self, _microbeamManipulation, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.microbeamManipulationSeq.wrapper is not None:
+              if _microbeamManipulation is not None:
+                  _microbeamManipulation = self._field_info.microbeamManipulationSeq.wrapper(_microbeamManipulation)
           self._microbeamManipulationSeq = _microbeamManipulation
           self.checkUnloadedProperty(_microbeamManipulation,'microbeamManipulationLoaded')
 
@@ -212,8 +249,11 @@ class ExperimentI(_omero_model.Experiment):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -236,6 +276,8 @@ class ExperimentI(_omero_model.Experiment):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

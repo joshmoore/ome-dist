@@ -13,11 +13,28 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_FileAnnotation_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class FileAnnotationI(_omero_model.FileAnnotation):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "file",
+          "ns",
+          "description",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          file=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          ns=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       FILE =  "ome.model.annotations.FileAnnotation_file"
       NS =  "ome.model.annotations.FileAnnotation_ns"
       DESCRIPTION =  "ome.model.annotations.FileAnnotation_description"
@@ -45,10 +62,26 @@ class FileAnnotationI(_omero_model.FileAnnotation):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(FileAnnotationI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -120,8 +153,11 @@ class FileAnnotationI(_omero_model.FileAnnotation):
           self.errorIfUnloaded()
           return self._file
 
-      def setFile(self, _file, current = None):
+      def setFile(self, _file, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.file.wrapper is not None:
+              if _file is not None:
+                  _file = self._field_info.file.wrapper(_file)
           self._file = _file
           pass
 
@@ -133,8 +169,11 @@ class FileAnnotationI(_omero_model.FileAnnotation):
           self.errorIfUnloaded()
           return self._ns
 
-      def setNs(self, _ns, current = None):
+      def setNs(self, _ns, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.ns.wrapper is not None:
+              if _ns is not None:
+                  _ns = self._field_info.ns.wrapper(_ns)
           self._ns = _ns
           pass
 
@@ -146,8 +185,11 @@ class FileAnnotationI(_omero_model.FileAnnotation):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -159,8 +201,11 @@ class FileAnnotationI(_omero_model.FileAnnotation):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -295,6 +340,8 @@ class FileAnnotationI(_omero_model.FileAnnotation):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

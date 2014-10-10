@@ -1516,6 +1516,41 @@ public:
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_saveCurrentSettings> AMD_RenderingEngine_saveCurrentSettingsPtr;
 
+class AMI_RenderingEngine_saveAsNewSettings : public ::Ice::AMICallbackBase
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+
+    void __response(::Ice::Long __ret)
+    {
+        ice_response(__ret);
+    }
+    void __exception(const ::Ice::Exception& ex)
+    {
+        ice_exception(ex);
+    }
+    void __sent(bool sentSynchronously)
+    {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        AMICallbackBase::__sent(sentSynchronously);
+#else
+        ::Ice::AMICallbackBase::__sent(sentSynchronously);
+#endif
+    }
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_RenderingEngine_saveAsNewSettings> AMI_RenderingEngine_saveAsNewSettingsPtr;
+
+class AMD_RenderingEngine_saveAsNewSettings : virtual public ::Ice::AMDCallback
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_saveAsNewSettings> AMD_RenderingEngine_saveAsNewSettingsPtr;
+
 class AMI_RenderingEngine_resetDefaults : public ::Ice::AMICallbackBase
 {
 public:
@@ -1585,6 +1620,41 @@ public:
 };
 
 typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_resetDefaultsNoSave> AMD_RenderingEngine_resetDefaultsNoSavePtr;
+
+class AMI_RenderingEngine_resetDefaultsSettings : public ::Ice::AMICallbackBase
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+
+    void __response(::Ice::Long __ret)
+    {
+        ice_response(__ret);
+    }
+    void __exception(const ::Ice::Exception& ex)
+    {
+        ice_exception(ex);
+    }
+    void __sent(bool sentSynchronously)
+    {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        AMICallbackBase::__sent(sentSynchronously);
+#else
+        ::Ice::AMICallbackBase::__sent(sentSynchronously);
+#endif
+    }
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMI_RenderingEngine_resetDefaultsSettings> AMI_RenderingEngine_resetDefaultsSettingsPtr;
+
+class AMD_RenderingEngine_resetDefaultsSettings : virtual public ::Ice::AMDCallback
+{
+public:
+
+    virtual void ice_response(::Ice::Long) = 0;
+};
+
+typedef ::IceUtil::Handle< ::omero::api::AMD_RenderingEngine_resetDefaultsSettings> AMD_RenderingEngine_resetDefaultsSettingsPtr;
 
 class AMI_RenderingEngine_setCompressionLevel : public ::Ice::AMICallbackBase
 {
@@ -2454,6 +2524,23 @@ public:
 #endif
 };
 
+class AMD_RenderingEngine_saveAsNewSettings : public ::omero::api::AMD_RenderingEngine_saveAsNewSettings, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_RenderingEngine_saveAsNewSettings(::IceInternal::Incoming&);
+
+    virtual void ice_response(::Ice::Long);
+    virtual void ice_exception(const ::std::exception&);
+#if defined(__BCPLUSPLUS__)
+    // COMPILERFIX: Avoid compiler warnings with C++Builder 2010
+    virtual void ice_exception()
+    {
+        ::IceInternal::IncomingAsync::ice_exception();
+    }
+#endif
+};
+
 class AMD_RenderingEngine_resetDefaults : public ::omero::api::AMD_RenderingEngine_resetDefaults, public ::IceInternal::IncomingAsync
 {
 public:
@@ -2478,6 +2565,23 @@ public:
     AMD_RenderingEngine_resetDefaultsNoSave(::IceInternal::Incoming&);
 
     virtual void ice_response();
+    virtual void ice_exception(const ::std::exception&);
+#if defined(__BCPLUSPLUS__)
+    // COMPILERFIX: Avoid compiler warnings with C++Builder 2010
+    virtual void ice_exception()
+    {
+        ::IceInternal::IncomingAsync::ice_exception();
+    }
+#endif
+};
+
+class AMD_RenderingEngine_resetDefaultsSettings : public ::omero::api::AMD_RenderingEngine_resetDefaultsSettings, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_RenderingEngine_resetDefaultsSettings(::IceInternal::Incoming&);
+
+    virtual void ice_response(::Ice::Long);
     virtual void ice_exception(const ::std::exception&);
 #if defined(__BCPLUSPLUS__)
     // COMPILERFIX: Avoid compiler warnings with C++Builder 2010
@@ -2705,11 +2809,17 @@ typedef ::IceUtil::Handle< Callback_RenderingEngine_removeCodomainMap_Base> Call
 class Callback_RenderingEngine_saveCurrentSettings_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RenderingEngine_saveCurrentSettings_Base> Callback_RenderingEngine_saveCurrentSettingsPtr;
 
+class Callback_RenderingEngine_saveAsNewSettings_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RenderingEngine_saveAsNewSettings_Base> Callback_RenderingEngine_saveAsNewSettingsPtr;
+
 class Callback_RenderingEngine_resetDefaults_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RenderingEngine_resetDefaults_Base> Callback_RenderingEngine_resetDefaultsPtr;
 
 class Callback_RenderingEngine_resetDefaultsNoSave_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RenderingEngine_resetDefaultsNoSave_Base> Callback_RenderingEngine_resetDefaultsNoSavePtr;
+
+class Callback_RenderingEngine_resetDefaultsSettings_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_RenderingEngine_resetDefaultsSettings_Base> Callback_RenderingEngine_resetDefaultsSettingsPtr;
 
 class Callback_RenderingEngine_setCompressionLevel_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_RenderingEngine_setCompressionLevel_Base> Callback_RenderingEngine_setCompressionLevelPtr;
@@ -4743,11 +4853,61 @@ public:
     bool saveCurrentSettings_async(const ::omero::api::AMI_RenderingEngine_saveCurrentSettingsPtr&);
     bool saveCurrentSettings_async(const ::omero::api::AMI_RenderingEngine_saveCurrentSettingsPtr&, const ::Ice::Context&);
 
-    void resetDefaults()
+    ::Ice::Long saveAsNewSettings()
+    {
+        return saveAsNewSettings(0);
+    }
+    ::Ice::Long saveAsNewSettings(const ::Ice::Context& __ctx)
+    {
+        return saveAsNewSettings(&__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings()
+    {
+        return begin_saveAsNewSettings(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::Ice::Context& __ctx)
+    {
+        return begin_saveAsNewSettings(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_saveAsNewSettings(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_saveAsNewSettings(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::omero::api::Callback_RenderingEngine_saveAsNewSettingsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_saveAsNewSettings(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::Ice::Context& __ctx, const ::omero::api::Callback_RenderingEngine_saveAsNewSettingsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_saveAsNewSettings(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::Long end_saveAsNewSettings(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_saveAsNewSettings(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    bool saveAsNewSettings_async(const ::omero::api::AMI_RenderingEngine_saveAsNewSettingsPtr&);
+    bool saveAsNewSettings_async(const ::omero::api::AMI_RenderingEngine_saveAsNewSettingsPtr&, const ::Ice::Context&);
+
+    ICE_DEPRECATED_API void resetDefaults()
     {
         resetDefaults(0);
     }
-    void resetDefaults(const ::Ice::Context& __ctx)
+    ICE_DEPRECATED_API void resetDefaults(const ::Ice::Context& __ctx)
     {
         resetDefaults(&__ctx);
     }
@@ -4793,11 +4953,11 @@ public:
     bool resetDefaults_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsPtr&);
     bool resetDefaults_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsPtr&, const ::Ice::Context&);
 
-    void resetDefaultsNoSave()
+    ICE_DEPRECATED_API void resetDefaultsNoSave()
     {
         resetDefaultsNoSave(0);
     }
-    void resetDefaultsNoSave(const ::Ice::Context& __ctx)
+    ICE_DEPRECATED_API void resetDefaultsNoSave(const ::Ice::Context& __ctx)
     {
         resetDefaultsNoSave(&__ctx);
     }
@@ -4842,6 +5002,56 @@ private:
 public:
     bool resetDefaultsNoSave_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsNoSavePtr&);
     bool resetDefaultsNoSave_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Context&);
+
+    ::Ice::Long resetDefaultsSettings(bool save)
+    {
+        return resetDefaultsSettings(save, 0);
+    }
+    ::Ice::Long resetDefaultsSettings(bool save, const ::Ice::Context& __ctx)
+    {
+        return resetDefaultsSettings(save, &__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save)
+    {
+        return begin_resetDefaultsSettings(save, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save, const ::Ice::Context& __ctx)
+    {
+        return begin_resetDefaultsSettings(save, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_resetDefaultsSettings(save, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_resetDefaultsSettings(save, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save, const ::omero::api::Callback_RenderingEngine_resetDefaultsSettingsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_resetDefaultsSettings(save, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool save, const ::Ice::Context& __ctx, const ::omero::api::Callback_RenderingEngine_resetDefaultsSettingsPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_resetDefaultsSettings(save, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::Long end_resetDefaultsSettings(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_resetDefaultsSettings(bool, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+    bool resetDefaultsSettings_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsSettingsPtr&, bool);
+    bool resetDefaultsSettings_async(const ::omero::api::AMI_RenderingEngine_resetDefaultsSettingsPtr&, bool, const ::Ice::Context&);
 
     void setCompressionLevel(::Ice::Float percentage)
     {
@@ -5391,9 +5601,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*) = 0;
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*) = 0;
+
     virtual void resetDefaults(const ::Ice::Context*) = 0;
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*) = 0;
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*) = 0;
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*) = 0;
 
@@ -5506,9 +5720,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*);
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+
     virtual void resetDefaults(const ::Ice::Context*);
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*);
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*);
 
@@ -5621,9 +5839,13 @@ public:
 
     virtual void saveCurrentSettings(const ::Ice::Context*);
 
+    virtual ::Ice::Long saveAsNewSettings(const ::Ice::Context*);
+
     virtual void resetDefaults(const ::Ice::Context*);
 
     virtual void resetDefaultsNoSave(const ::Ice::Context*);
+
+    virtual ::Ice::Long resetDefaultsSettings(bool, const ::Ice::Context*);
 
     virtual void setCompressionLevel(::Ice::Float, const ::Ice::Context*);
 
@@ -5782,11 +6004,17 @@ public:
     virtual void saveCurrentSettings_async(const ::omero::api::AMD_RenderingEngine_saveCurrentSettingsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___saveCurrentSettings(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void resetDefaults_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual void saveAsNewSettings_async(const ::omero::api::AMD_RenderingEngine_saveAsNewSettingsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___saveAsNewSettings(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    ICE_DEPRECATED_API virtual void resetDefaults_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsPtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___resetDefaults(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual void resetDefaultsNoSave_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ICE_DEPRECATED_API virtual void resetDefaultsNoSave_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsNoSavePtr&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___resetDefaultsNoSave(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void resetDefaultsSettings_async(const ::omero::api::AMD_RenderingEngine_resetDefaultsSettingsPtr&, bool, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___resetDefaultsSettings(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual void setCompressionLevel_async(const ::omero::api::AMD_RenderingEngine_setCompressionLevelPtr&, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___setCompressionLevel(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -10849,6 +11077,122 @@ newCallback_RenderingEngine_saveCurrentSettings(T* instance, void (T::*excb)(con
 }
 
 template<class T>
+class CallbackNC_RenderingEngine_saveAsNewSettings : public Callback_RenderingEngine_saveAsNewSettings_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Long);
+
+    CallbackNC_RenderingEngine_saveAsNewSettings(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::RenderingEnginePrx __proxy = ::omero::api::RenderingEnginePrx::uncheckedCast(__result->getProxy());
+        ::Ice::Long __ret;
+        try
+        {
+            __ret = __proxy->end_saveAsNewSettings(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret);
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_RenderingEngine_saveAsNewSettingsPtr
+newCallback_RenderingEngine_saveAsNewSettings(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Long), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RenderingEngine_saveAsNewSettings<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RenderingEngine_saveAsNewSettingsPtr
+newCallback_RenderingEngine_saveAsNewSettings(T* instance, void (T::*cb)(::Ice::Long), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RenderingEngine_saveAsNewSettings<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RenderingEngine_saveAsNewSettings : public Callback_RenderingEngine_saveAsNewSettings_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Long, const CT&);
+
+    Callback_RenderingEngine_saveAsNewSettings(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::RenderingEnginePrx __proxy = ::omero::api::RenderingEnginePrx::uncheckedCast(__result->getProxy());
+        ::Ice::Long __ret;
+        try
+        {
+            __ret = __proxy->end_saveAsNewSettings(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_RenderingEngine_saveAsNewSettingsPtr
+newCallback_RenderingEngine_saveAsNewSettings(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Long, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RenderingEngine_saveAsNewSettings<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RenderingEngine_saveAsNewSettingsPtr
+newCallback_RenderingEngine_saveAsNewSettings(T* instance, void (T::*cb)(::Ice::Long, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RenderingEngine_saveAsNewSettings<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
 class CallbackNC_RenderingEngine_resetDefaults : public Callback_RenderingEngine_resetDefaults_Base, public ::IceInternal::TwowayCallbackNC<T>
 {
 public:
@@ -11122,6 +11466,122 @@ template<class T, typename CT> Callback_RenderingEngine_resetDefaultsNoSavePtr
 newCallback_RenderingEngine_resetDefaultsNoSave(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_RenderingEngine_resetDefaultsNoSave<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_RenderingEngine_resetDefaultsSettings : public Callback_RenderingEngine_resetDefaultsSettings_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Long);
+
+    CallbackNC_RenderingEngine_resetDefaultsSettings(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::RenderingEnginePrx __proxy = ::omero::api::RenderingEnginePrx::uncheckedCast(__result->getProxy());
+        ::Ice::Long __ret;
+        try
+        {
+            __ret = __proxy->end_resetDefaultsSettings(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret);
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_RenderingEngine_resetDefaultsSettingsPtr
+newCallback_RenderingEngine_resetDefaultsSettings(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Long), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RenderingEngine_resetDefaultsSettings<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_RenderingEngine_resetDefaultsSettingsPtr
+newCallback_RenderingEngine_resetDefaultsSettings(T* instance, void (T::*cb)(::Ice::Long), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_RenderingEngine_resetDefaultsSettings<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_RenderingEngine_resetDefaultsSettings : public Callback_RenderingEngine_resetDefaultsSettings_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Long, const CT&);
+
+    Callback_RenderingEngine_resetDefaultsSettings(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::omero::api::RenderingEnginePrx __proxy = ::omero::api::RenderingEnginePrx::uncheckedCast(__result->getProxy());
+        ::Ice::Long __ret;
+        try
+        {
+            __ret = __proxy->end_resetDefaultsSettings(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_RenderingEngine_resetDefaultsSettingsPtr
+newCallback_RenderingEngine_resetDefaultsSettings(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Long, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RenderingEngine_resetDefaultsSettings<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_RenderingEngine_resetDefaultsSettingsPtr
+newCallback_RenderingEngine_resetDefaultsSettings(T* instance, void (T::*cb)(::Ice::Long, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_RenderingEngine_resetDefaultsSettings<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

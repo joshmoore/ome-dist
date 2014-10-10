@@ -13,11 +13,24 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_StatsInfo_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class StatsInfoI(_omero_model.StatsInfo):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "globalMin",
+          "globalMax",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          globalMin=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=False),
+          globalMax=_field_info_data(wrapper=omero.rtypes.rdouble, nullable=False),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       GLOBALMIN =  "ome.model.stats.StatsInfo_globalMin"
       GLOBALMAX =  "ome.model.stats.StatsInfo_globalMax"
       DETAILS =  "ome.model.stats.StatsInfo_details"
@@ -36,10 +49,26 @@ class StatsInfoI(_omero_model.StatsInfo):
       def _toggleCollectionsLoaded(self,load):
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(StatsInfoI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -109,8 +138,11 @@ class StatsInfoI(_omero_model.StatsInfo):
           self.errorIfUnloaded()
           return self._globalMin
 
-      def setGlobalMin(self, _globalMin, current = None):
+      def setGlobalMin(self, _globalMin, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.globalMin.wrapper is not None:
+              if _globalMin is not None:
+                  _globalMin = self._field_info.globalMin.wrapper(_globalMin)
           self._globalMin = _globalMin
           pass
 
@@ -122,8 +154,11 @@ class StatsInfoI(_omero_model.StatsInfo):
           self.errorIfUnloaded()
           return self._globalMax
 
-      def setGlobalMax(self, _globalMax, current = None):
+      def setGlobalMax(self, _globalMax, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.globalMax.wrapper is not None:
+              if _globalMax is not None:
+                  _globalMax = self._field_info.globalMax.wrapper(_globalMax)
           self._globalMax = _globalMax
           pass
 
@@ -146,6 +181,8 @@ class StatsInfoI(_omero_model.StatsInfo):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

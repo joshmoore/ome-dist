@@ -237,10 +237,16 @@ renderAsPackedInt should be used instead.'''
         def saveCurrentSettings_async(self, _cb, current=None):
             pass
 
+        def saveAsNewSettings_async(self, _cb, current=None):
+            pass
+
         def resetDefaults_async(self, _cb, current=None):
             pass
 
         def resetDefaultsNoSave_async(self, _cb, current=None):
+            pass
+
+        def resetDefaultsSettings_async(self, _cb, save, current=None):
             pass
 
         def setCompressionLevel_async(self, _cb, percentage, current=None):
@@ -754,6 +760,18 @@ renderAsPackedInt should be used instead.'''
         def saveCurrentSettings_async(self, _cb, _ctx=None):
             return _M_omero.api.RenderingEngine._op_saveCurrentSettings.invokeAsync(self, (_cb, (), _ctx))
 
+        def saveAsNewSettings(self, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_saveAsNewSettings.invoke(self, ((), _ctx))
+
+        def begin_saveAsNewSettings(self, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_saveAsNewSettings.begin(self, ((), _response, _ex, _sent, _ctx))
+
+        def end_saveAsNewSettings(self, _r):
+            return _M_omero.api.RenderingEngine._op_saveAsNewSettings.end(self, _r)
+
+        def saveAsNewSettings_async(self, _cb, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_saveAsNewSettings.invokeAsync(self, (_cb, (), _ctx))
+
         def resetDefaults(self, _ctx=None):
             return _M_omero.api.RenderingEngine._op_resetDefaults.invoke(self, ((), _ctx))
 
@@ -777,6 +795,18 @@ renderAsPackedInt should be used instead.'''
 
         def resetDefaultsNoSave_async(self, _cb, _ctx=None):
             return _M_omero.api.RenderingEngine._op_resetDefaultsNoSave.invokeAsync(self, (_cb, (), _ctx))
+
+        def resetDefaultsSettings(self, save, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_resetDefaultsSettings.invoke(self, ((save, ), _ctx))
+
+        def begin_resetDefaultsSettings(self, save, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_resetDefaultsSettings.begin(self, ((save, ), _response, _ex, _sent, _ctx))
+
+        def end_resetDefaultsSettings(self, _r):
+            return _M_omero.api.RenderingEngine._op_resetDefaultsSettings.end(self, _r)
+
+        def resetDefaultsSettings_async(self, _cb, save, _ctx=None):
+            return _M_omero.api.RenderingEngine._op_resetDefaultsSettings.invokeAsync(self, (_cb, (save, ), _ctx))
 
         def setCompressionLevel(self, percentage, _ctx=None):
             return _M_omero.api.RenderingEngine._op_setCompressionLevel.invoke(self, ((percentage, ), _ctx))
@@ -892,8 +922,12 @@ renderAsPackedInt should be used instead.'''
     RenderingEngine._op_updateCodomainMap = IcePy.Operation('updateCodomainMap', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (((), _M_omero.romio._t_CodomainMapContext),), (), None, (_M_omero._t_ServerError,))
     RenderingEngine._op_removeCodomainMap = IcePy.Operation('removeCodomainMap', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (((), _M_omero.romio._t_CodomainMapContext),), (), None, (_M_omero._t_ServerError,))
     RenderingEngine._op_saveCurrentSettings = IcePy.Operation('saveCurrentSettings', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), None, (_M_omero._t_ServerError,))
+    RenderingEngine._op_saveAsNewSettings = IcePy.Operation('saveAsNewSettings', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), IcePy._t_long, (_M_omero._t_ServerError,))
     RenderingEngine._op_resetDefaults = IcePy.Operation('resetDefaults', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), None, (_M_omero._t_ServerError,))
+    RenderingEngine._op_resetDefaults.deprecate("resetDefaults() is deprecated")
     RenderingEngine._op_resetDefaultsNoSave = IcePy.Operation('resetDefaultsNoSave', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), None, (_M_omero._t_ServerError,))
+    RenderingEngine._op_resetDefaultsNoSave.deprecate("resetDefaultsNoSave() is deprecated")
+    RenderingEngine._op_resetDefaultsSettings = IcePy.Operation('resetDefaultsSettings', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (((), IcePy._t_bool),), (), IcePy._t_long, (_M_omero._t_ServerError,))
     RenderingEngine._op_setCompressionLevel = IcePy.Operation('setCompressionLevel', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (((), IcePy._t_float),), (), None, (_M_omero._t_ServerError,))
     RenderingEngine._op_getCompressionLevel = IcePy.Operation('getCompressionLevel', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), IcePy._t_float, (_M_omero._t_ServerError,))
     RenderingEngine._op_isPixelsTypeSigned = IcePy.Operation('isPixelsTypeSigned', Ice.OperationMode.Normal, Ice.OperationMode.Normal, True, (), (), (), IcePy._t_bool, (_M_omero._t_ServerError,))

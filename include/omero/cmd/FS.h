@@ -65,6 +65,10 @@ class OriginalMetadataRequest;
 
 class OriginalMetadataResponse;
 
+class ManageImageBinaries;
+
+class ManageImageBinariesResponse;
+
 }
 
 }
@@ -85,6 +89,14 @@ class OriginalMetadataResponse;
 bool operator==(const OriginalMetadataResponse&, const OriginalMetadataResponse&);
 bool operator<(const OriginalMetadataResponse&, const OriginalMetadataResponse&);
 
+class ManageImageBinaries;
+bool operator==(const ManageImageBinaries&, const ManageImageBinaries&);
+bool operator<(const ManageImageBinaries&, const ManageImageBinaries&);
+
+class ManageImageBinariesResponse;
+bool operator==(const ManageImageBinariesResponse&, const ManageImageBinariesResponse&);
+bool operator<(const ManageImageBinariesResponse&, const ManageImageBinariesResponse&);
+
 }
 
 }
@@ -97,6 +109,12 @@ namespace IceInternal
 
 ::Ice::Object* upCast(::omero::cmd::OriginalMetadataResponse*);
 ::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::OriginalMetadataResponse*);
+
+::Ice::Object* upCast(::omero::cmd::ManageImageBinaries*);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::ManageImageBinaries*);
+
+::Ice::Object* upCast(::omero::cmd::ManageImageBinariesResponse*);
+::IceProxy::Ice::Object* upCast(::IceProxy::omero::cmd::ManageImageBinariesResponse*);
 
 }
 
@@ -117,6 +135,18 @@ typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::OriginalMetadataResp
 
 void __read(::IceInternal::BasicStream*, OriginalMetadataResponsePrx&);
 void __patch__OriginalMetadataResponsePtr(void*, ::Ice::ObjectPtr&);
+
+typedef ::IceInternal::Handle< ::omero::cmd::ManageImageBinaries> ManageImageBinariesPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinaries> ManageImageBinariesPrx;
+
+void __read(::IceInternal::BasicStream*, ManageImageBinariesPrx&);
+void __patch__ManageImageBinariesPtr(void*, ::Ice::ObjectPtr&);
+
+typedef ::IceInternal::Handle< ::omero::cmd::ManageImageBinariesResponse> ManageImageBinariesResponsePtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::omero::cmd::ManageImageBinariesResponse> ManageImageBinariesResponsePrx;
+
+void __read(::IceInternal::BasicStream*, ManageImageBinariesResponsePrx&);
+void __patch__ManageImageBinariesResponsePtr(void*, ::Ice::ObjectPtr&);
 
 }
 
@@ -552,6 +582,412 @@ private:
     virtual ::IceProxy::Ice::Object* __newInstance() const;
 };
 
+class ManageImageBinaries : virtual public ::IceProxy::omero::cmd::Request
+{
+public:
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_context(const ::Ice::Context& __context) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_context(__context).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_adapterId(const std::string& __id) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_adapterId(__id).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_endpoints(__endpoints).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_locatorCacheTimeout(int __timeout) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_locatorCacheTimeout(__timeout).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_connectionCached(bool __cached) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_connectionCached(__cached).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_endpointSelection(__est).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_secure(bool __secure) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_secure(__secure).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_preferSecure(bool __preferSecure) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_preferSecure(__preferSecure).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_router(__router).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_locator(__locator).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_collocationOptimized(bool __co) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_collocationOptimized(__co).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_twoway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_twoway().get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_twoway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_oneway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_oneway().get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_oneway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_batchOneway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_batchOneway().get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_datagram() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_datagram().get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_datagram().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_batchDatagram() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_batchDatagram().get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_compress(bool __compress) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_compress(__compress).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_timeout(int __timeout) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_timeout(__timeout).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinaries> ice_connectionId(const std::string& __id) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinaries*>(_Base::ice_connectionId(__id).get());
+    #else
+        return dynamic_cast<ManageImageBinaries*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    #endif
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+
+    virtual ::IceInternal::Handle< ::IceDelegateM::Ice::Object> __createDelegateM();
+    virtual ::IceInternal::Handle< ::IceDelegateD::Ice::Object> __createDelegateD();
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
+class ManageImageBinariesResponse : virtual public ::IceProxy::omero::cmd::Response
+{
+public:
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_context(const ::Ice::Context& __context) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_context(__context).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_context(__context).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_adapterId(const std::string& __id) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_adapterId(__id).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_adapterId(__id).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_endpoints(const ::Ice::EndpointSeq& __endpoints) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_endpoints(__endpoints).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_endpoints(__endpoints).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_locatorCacheTimeout(int __timeout) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_locatorCacheTimeout(__timeout).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_locatorCacheTimeout(__timeout).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_connectionCached(bool __cached) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_connectionCached(__cached).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_connectionCached(__cached).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_endpointSelection(::Ice::EndpointSelectionType __est) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_endpointSelection(__est).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_endpointSelection(__est).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_secure(bool __secure) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_secure(__secure).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_secure(__secure).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_preferSecure(bool __preferSecure) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_preferSecure(__preferSecure).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_preferSecure(__preferSecure).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_router(const ::Ice::RouterPrx& __router) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_router(__router).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_router(__router).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_locator(const ::Ice::LocatorPrx& __locator) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_locator(__locator).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_locator(__locator).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_collocationOptimized(bool __co) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_collocationOptimized(__co).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_collocationOptimized(__co).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_twoway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_twoway().get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_twoway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_oneway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_oneway().get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_oneway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_batchOneway() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_batchOneway().get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_batchOneway().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_datagram() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_datagram().get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_datagram().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_batchDatagram() const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_batchDatagram().get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_batchDatagram().get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_compress(bool __compress) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_compress(__compress).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_compress(__compress).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_timeout(int __timeout) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_timeout(__timeout).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_timeout(__timeout).get());
+    #endif
+    }
+    
+    ::IceInternal::ProxyHandle<ManageImageBinariesResponse> ice_connectionId(const std::string& __id) const
+    {
+    #if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+        typedef ::IceProxy::Ice::Object _Base;
+        return dynamic_cast<ManageImageBinariesResponse*>(_Base::ice_connectionId(__id).get());
+    #else
+        return dynamic_cast<ManageImageBinariesResponse*>(::IceProxy::Ice::Object::ice_connectionId(__id).get());
+    #endif
+    }
+    
+    static const ::std::string& ice_staticId();
+
+private: 
+
+    virtual ::IceInternal::Handle< ::IceDelegateM::Ice::Object> __createDelegateM();
+    virtual ::IceInternal::Handle< ::IceDelegateD::Ice::Object> __createDelegateD();
+    virtual ::IceProxy::Ice::Object* __newInstance() const;
+};
+
 }
 
 }
@@ -573,6 +1009,16 @@ public:
 };
 
 class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::Response
+{
+public:
+};
+
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::Response
 {
 public:
 };
@@ -604,6 +1050,18 @@ class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::Origi
 public:
 };
 
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::ManageImageBinaries,
+                            virtual public ::IceDelegateM::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::ManageImageBinariesResponse,
+                                    virtual public ::IceDelegateM::omero::cmd::Response
+{
+public:
+};
+
 }
 
 }
@@ -627,6 +1085,18 @@ public:
 
 class OriginalMetadataResponse : virtual public ::IceDelegate::omero::cmd::OriginalMetadataResponse,
                                  virtual public ::IceDelegateD::omero::cmd::Response
+{
+public:
+};
+
+class ManageImageBinaries : virtual public ::IceDelegate::omero::cmd::ManageImageBinaries,
+                            virtual public ::IceDelegateD::omero::cmd::Request
+{
+public:
+};
+
+class ManageImageBinariesResponse : virtual public ::IceDelegate::omero::cmd::ManageImageBinariesResponse,
+                                    virtual public ::IceDelegateD::omero::cmd::Response
 {
 public:
 };
@@ -752,6 +1222,120 @@ inline bool operator==(const OriginalMetadataResponse& l, const OriginalMetadata
 }
 
 inline bool operator<(const OriginalMetadataResponse& l, const OriginalMetadataResponse& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class ManageImageBinaries : public ::omero::cmd::Request
+{
+public:
+
+    typedef ManageImageBinariesPrx ProxyType;
+    typedef ManageImageBinariesPtr PointerType;
+    
+    ManageImageBinaries() {}
+    ManageImageBinaries(::Ice::Long, bool, bool);
+    virtual ::Ice::ObjectPtr ice_clone() const;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+
+    virtual void __write(::IceInternal::BasicStream*) const;
+    virtual void __read(::IceInternal::BasicStream*, bool);
+// COMPILERFIX: Stream API is not supported with VC++ 6
+#if !defined(_MSC_VER) || (_MSC_VER >= 1300)
+    virtual void __write(const ::Ice::OutputStreamPtr&) const;
+    virtual void __read(const ::Ice::InputStreamPtr&, bool);
+#endif
+
+    static const ::Ice::ObjectFactoryPtr& ice_factory();
+
+protected:
+
+    virtual ~ManageImageBinaries() {}
+
+public:
+
+    ::Ice::Long imageId;
+
+    bool togglePixels;
+
+    bool deletePyramid;
+};
+
+inline bool operator==(const ManageImageBinaries& l, const ManageImageBinaries& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const ManageImageBinaries& l, const ManageImageBinaries& r)
+{
+    return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
+}
+
+class ManageImageBinariesResponse : public ::omero::cmd::Response, private IceInternal::GCShared
+{
+public:
+
+    typedef ManageImageBinariesResponsePrx ProxyType;
+    typedef ManageImageBinariesResponsePtr PointerType;
+    
+    ManageImageBinariesResponse() {}
+    ManageImageBinariesResponse(const ::omero::RLongPtr&, const ::omero::api::LongList&, bool, bool, ::Ice::Long, ::Ice::Long, ::Ice::Long, ::Ice::Long);
+    virtual ::Ice::ObjectPtr ice_clone() const;
+
+    virtual bool ice_isA(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) const;
+    virtual ::std::vector< ::std::string> ice_ids(const ::Ice::Current& = ::Ice::Current()) const;
+    virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
+    static const ::std::string& ice_staticId();
+
+    virtual void __addObject(::IceInternal::GCCountMap&);
+    virtual bool __usesClasses();
+    virtual void __gcReachable(::IceInternal::GCCountMap&) const;
+    virtual void __gcClear();
+
+    virtual void __write(::IceInternal::BasicStream*) const;
+    virtual void __read(::IceInternal::BasicStream*, bool);
+// COMPILERFIX: Stream API is not supported with VC++ 6
+#if !defined(_MSC_VER) || (_MSC_VER >= 1300)
+    virtual void __write(const ::Ice::OutputStreamPtr&) const;
+    virtual void __read(const ::Ice::InputStreamPtr&, bool);
+#endif
+
+    static const ::Ice::ObjectFactoryPtr& ice_factory();
+
+protected:
+
+    virtual ~ManageImageBinariesResponse() {}
+
+public:
+
+    ::omero::RLongPtr filesetId;
+
+    ::omero::api::LongList archivedFiles;
+
+    bool pixelsPresent;
+
+    bool pyramidPresent;
+
+    ::Ice::Long archivedSize;
+
+    ::Ice::Long pixelSize;
+
+    ::Ice::Long pyramidSize;
+
+    ::Ice::Long thumbnailSize;
+};
+
+inline bool operator==(const ManageImageBinariesResponse& l, const ManageImageBinariesResponse& r)
+{
+    return static_cast<const ::Ice::Object&>(l) == static_cast<const ::Ice::Object&>(r);
+}
+
+inline bool operator<(const ManageImageBinariesResponse& l, const ManageImageBinariesResponse& r)
 {
     return static_cast<const ::Ice::Object&>(l) < static_cast<const ::Ice::Object&>(r);
 }

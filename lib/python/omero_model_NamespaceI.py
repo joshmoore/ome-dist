@@ -13,11 +13,33 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Namespace_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class NamespaceI(_omero_model.Namespace):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "keywords",
+          "multivalued",
+          "display",
+          "annotationLinks",
+          "name",
+          "description",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          keywords=_field_info_data(wrapper=None, nullable=True),
+
+          multivalued=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          display=_field_info_data(wrapper=omero.rtypes.rbool, nullable=True),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          name=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          description=_field_info_data(wrapper=omero.rtypes.rstring, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       KEYWORDS =  "ome.model.meta.Namespace_keywords"
       MULTIVALUED =  "ome.model.meta.Namespace_multivalued"
       DISPLAY =  "ome.model.meta.Namespace_display"
@@ -47,10 +69,26 @@ class NamespaceI(_omero_model.Namespace):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(NamespaceI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -124,8 +162,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._keywords
 
-      def setKeywords(self, _keywords, current = None):
+      def setKeywords(self, _keywords, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.keywords.wrapper is not None:
+              if _keywords is not None:
+                  _keywords = self._field_info.keywords.wrapper(_keywords)
           self._keywords = _keywords
           pass
 
@@ -137,8 +178,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._multivalued
 
-      def setMultivalued(self, _multivalued, current = None):
+      def setMultivalued(self, _multivalued, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.multivalued.wrapper is not None:
+              if _multivalued is not None:
+                  _multivalued = self._field_info.multivalued.wrapper(_multivalued)
           self._multivalued = _multivalued
           pass
 
@@ -150,8 +194,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._display
 
-      def setDisplay(self, _display, current = None):
+      def setDisplay(self, _display, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.display.wrapper is not None:
+              if _display is not None:
+                  _display = self._field_info.display.wrapper(_display)
           self._display = _display
           pass
 
@@ -163,8 +210,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -288,8 +338,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._name
 
-      def setName(self, _name, current = None):
+      def setName(self, _name, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.name.wrapper is not None:
+              if _name is not None:
+                  _name = self._field_info.name.wrapper(_name)
           self._name = _name
           pass
 
@@ -301,8 +354,11 @@ class NamespaceI(_omero_model.Namespace):
           self.errorIfUnloaded()
           return self._description
 
-      def setDescription(self, _description, current = None):
+      def setDescription(self, _description, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.description.wrapper is not None:
+              if _description is not None:
+                  _description = self._field_info.description.wrapper(_description)
           self._description = _description
           pass
 
@@ -325,6 +381,8 @@ class NamespaceI(_omero_model.Namespace):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized

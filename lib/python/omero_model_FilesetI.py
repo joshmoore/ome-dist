@@ -13,11 +13,30 @@ import omero
 IceImport.load("omero_model_DetailsI")
 IceImport.load("omero_model_Fileset_ice")
 from omero.rtypes import rlong
+from collections import namedtuple
 _omero = Ice.openModule("omero")
 _omero_model = Ice.openModule("omero.model")
 __name__ = "omero.model"
 class FilesetI(_omero_model.Fileset):
 
+      # Property Metadata
+      _field_info_data = namedtuple("FieldData", ["wrapper", "nullable"])
+      _field_info_type = namedtuple("FieldInfo", [
+          "usedFiles",
+          "images",
+          "jobLinks",
+          "templatePrefix",
+          "annotationLinks",
+          "details",
+      ])
+      _field_info = _field_info_type(
+          usedFiles=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          images=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          jobLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=False),
+          templatePrefix=_field_info_data(wrapper=omero.rtypes.rstring, nullable=False),
+          annotationLinks=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+          details=_field_info_data(wrapper=omero.proxy_to_instance, nullable=True),
+      )  # end _field_info
       USEDFILES =  "ome.model.fs.Fileset_usedFiles"
       IMAGES =  "ome.model.fs.Fileset_images"
       JOBLINKS =  "ome.model.fs.Fileset_jobLinks"
@@ -67,10 +86,26 @@ class FilesetI(_omero_model.Fileset):
 
           pass
 
-      def __init__(self, id = None, loaded = True):
+      def __init__(self, id=None, loaded=None):
           super(FilesetI, self).__init__()
-          # Relying on omero.rtypes.rlong's error-handling
-          self._id = rlong(id)
+          if id is not None and isinstance(id, (str, unicode)) and ":" in id:
+              parts = id.split(":")
+              if len(parts) != 2:
+                  raise Exception("Invalid proxy string: %s", id)
+              if parts[0] != self.__class__.__name__ and \
+                 parts[0]+"I" != self.__class__.__name__:
+                  raise Exception("Proxy class mismatch: %s<>%s" %
+                  (self.__class__.__name__, parts[0]))
+              self._id = rlong(parts[1])
+              if loaded is None:
+                  # If no loadedness was requested with
+                  # a proxy string, then assume False.
+                  loaded = False
+          else:
+              # Relying on omero.rtypes.rlong's error-handling
+              self._id = rlong(id)
+              if loaded is None:
+                  loaded = True  # Assume true as previously
           self._loaded = loaded
           if self._loaded:
              self._details = _omero_model.DetailsI()
@@ -143,8 +178,11 @@ class FilesetI(_omero_model.Fileset):
           self.errorIfUnloaded()
           return self._usedFilesSeq
 
-      def _setUsedFiles(self, _usedFiles, current = None):
+      def _setUsedFiles(self, _usedFiles, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.usedFilesSeq.wrapper is not None:
+              if _usedFiles is not None:
+                  _usedFiles = self._field_info.usedFilesSeq.wrapper(_usedFiles)
           self._usedFilesSeq = _usedFiles
           self.checkUnloadedProperty(_usedFiles,'usedFilesLoaded')
 
@@ -221,10 +259,13 @@ class FilesetI(_omero_model.Fileset):
           if not self._usedFilesLoaded: self.throwNullCollectionException("usedFilesSeq")
           return self._usedFilesSeq[index]
 
-      def setFilesetEntry(self, index, element, current = None):
+      def setFilesetEntry(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._usedFilesLoaded: self.throwNullCollectionException("usedFilesSeq")
           old = self._usedFilesSeq[index]
+          if wrap and self._field_info.usedFilesSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.usedFilesSeq.wrapper(_usedFiles)
           self._usedFilesSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setFileset( self )
@@ -252,8 +293,11 @@ class FilesetI(_omero_model.Fileset):
           self.errorIfUnloaded()
           return self._imagesSeq
 
-      def _setImages(self, _images, current = None):
+      def _setImages(self, _images, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.imagesSeq.wrapper is not None:
+              if _images is not None:
+                  _images = self._field_info.imagesSeq.wrapper(_images)
           self._imagesSeq = _images
           self.checkUnloadedProperty(_images,'imagesLoaded')
 
@@ -333,8 +377,11 @@ class FilesetI(_omero_model.Fileset):
           self.errorIfUnloaded()
           return self._jobLinksSeq
 
-      def _setJobLinks(self, _jobLinks, current = None):
+      def _setJobLinks(self, _jobLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.jobLinksSeq.wrapper is not None:
+              if _jobLinks is not None:
+                  _jobLinks = self._field_info.jobLinksSeq.wrapper(_jobLinks)
           self._jobLinksSeq = _jobLinks
           self.checkUnloadedProperty(_jobLinks,'jobLinksLoaded')
 
@@ -411,10 +458,13 @@ class FilesetI(_omero_model.Fileset):
           if not self._jobLinksLoaded: self.throwNullCollectionException("jobLinksSeq")
           return self._jobLinksSeq[index]
 
-      def setFilesetJobLink(self, index, element, current = None):
+      def setFilesetJobLink(self, index, element, current = None, wrap=False):
           self.errorIfUnloaded()
           if not self._jobLinksLoaded: self.throwNullCollectionException("jobLinksSeq")
           old = self._jobLinksSeq[index]
+          if wrap and self._field_info.jobLinksSeq.wrapper is not None:
+              if element is not None:
+                  element = self._field_info.jobLinksSeq.wrapper(_jobLinks)
           self._jobLinksSeq[index] =  element
           if element is not None and element.isLoaded():
               element.setParent( self )
@@ -486,8 +536,11 @@ class FilesetI(_omero_model.Fileset):
           self.errorIfUnloaded()
           return self._templatePrefix
 
-      def setTemplatePrefix(self, _templatePrefix, current = None):
+      def setTemplatePrefix(self, _templatePrefix, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.templatePrefix.wrapper is not None:
+              if _templatePrefix is not None:
+                  _templatePrefix = self._field_info.templatePrefix.wrapper(_templatePrefix)
           self._templatePrefix = _templatePrefix
           pass
 
@@ -499,8 +552,11 @@ class FilesetI(_omero_model.Fileset):
           self.errorIfUnloaded()
           return self._annotationLinksSeq
 
-      def _setAnnotationLinks(self, _annotationLinks, current = None):
+      def _setAnnotationLinks(self, _annotationLinks, current = None, wrap=False):
           self.errorIfUnloaded()
+          if wrap and self._field_info.annotationLinksSeq.wrapper is not None:
+              if _annotationLinks is not None:
+                  _annotationLinks = self._field_info.annotationLinksSeq.wrapper(_annotationLinks)
           self._annotationLinksSeq = _annotationLinks
           self.checkUnloadedProperty(_annotationLinks,'annotationLinksLoaded')
 
@@ -635,6 +691,8 @@ class FilesetI(_omero_model.Fileset):
           """
           Reroutes all access to object.field through object.getField() or object.isField()
           """
+          if "_" in name:  # Ice disallows underscores, so these should be treated normally.
+              return object.__getattribute__(self, name)
           field  = "_" + name
           capitalized = name[0].capitalize() + name[1:]
           getter = "get" + capitalized
