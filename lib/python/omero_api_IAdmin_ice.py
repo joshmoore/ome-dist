@@ -858,7 +858,7 @@ ServiceFactory.setSecurityPassword can be used.'''
     IAdmin._op_changeGroup = IcePy.Operation('changeGroup', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, (), (((), _M_omero.model._t_IObject), ((), IcePy._t_string)), (), None, (_M_omero._t_ServerError,))
     IAdmin._op_changeGroup.deprecate("changeGroup() is deprecated. use omero::cmd::Chgrp2() instead.")
     IAdmin._op_changePermissions = IcePy.Operation('changePermissions', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, (), (((), _M_omero.model._t_IObject), ((), _M_omero.model._t_Permissions)), (), None, (_M_omero._t_ServerError,))
-    IAdmin._op_changePermissions.deprecate("changePermissions() is deprecated. use omero::cmd::Chmod() instead.")
+    IAdmin._op_changePermissions.deprecate("changePermissions() is deprecated. use omero::cmd::Chmod2() instead.")
     IAdmin._op_moveToCommonSpace = IcePy.Operation('moveToCommonSpace', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, (), (((), _M_omero.api._t_IObjectList),), (), None, (_M_omero._t_ServerError,))
     IAdmin._op_changePassword = IcePy.Operation('changePassword', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, (), (((), _M_omero._t_RString),), (), None, (_M_omero._t_ServerError,))
     IAdmin._op_changePasswordWithOldPassword = IcePy.Operation('changePasswordWithOldPassword', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, (), (((), _M_omero._t_RString), ((), _M_omero._t_RString)), (), None, (_M_omero._t_ServerError,))

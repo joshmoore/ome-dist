@@ -115,6 +115,9 @@ if not _M_omero.api.__dict__.has_key('_t_ChecksumAlgorithmList'):
 if not _M_omero.api.__dict__.has_key('_t_NamedValueList'):
     _M_omero.api._t_NamedValueList = IcePy.defineSequence('::omero::api::NamedValueList', (), _M_omero.model._t_NamedValue)
 
+if not _M_omero.api.__dict__.has_key('_t_EventContextList'):
+    _M_omero.api._t_EventContextList = IcePy.defineSequence('::omero::api::EventContextList', (), _M_omero.sys._t_EventContext)
+
 if not _M_omero.api.__dict__.has_key('_t_BoolArray'):
     _M_omero.api._t_BoolArray = IcePy.defineSequence('::omero::api::BoolArray', (), IcePy._t_bool)
 
