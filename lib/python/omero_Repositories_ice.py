@@ -236,8 +236,8 @@ to treeList("/user_1/dir0") might look something like:
 
         def deletePaths(self, paths, recursively, force, current=None):
             '''Delete several individual paths. Internally, this converts
-each of the paths into an [omero::cmd::Delete] command and
-submits all of them via [omero::cmd::DoAll].
+all of the paths into a single [omero::cmd::Delete2] command
+and submits it.
 
 If a "recursively" is true, then directories will be searched
 and all of their contained files will be placed before them in
@@ -633,8 +633,8 @@ to treeList("/user_1/dir0") might look something like:
             return _M_omero.grid.Repository._op_treeList.invokeAsync(self, (_cb, (path, ), _ctx))
 
         '''Delete several individual paths. Internally, this converts
-each of the paths into an [omero::cmd::Delete] command and
-submits all of them via [omero::cmd::DoAll].
+all of the paths into a single [omero::cmd::Delete2] command
+and submits it.
 
 If a "recursively" is true, then directories will be searched
 and all of their contained files will be placed before them in
@@ -655,8 +655,8 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.invoke(self, ((paths, recursively, force), _ctx))
 
         '''Delete several individual paths. Internally, this converts
-each of the paths into an [omero::cmd::Delete] command and
-submits all of them via [omero::cmd::DoAll].
+all of the paths into a single [omero::cmd::Delete2] command
+and submits it.
 
 If a "recursively" is true, then directories will be searched
 and all of their contained files will be placed before them in
@@ -677,8 +677,8 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.begin(self, ((paths, recursively, force), _response, _ex, _sent, _ctx))
 
         '''Delete several individual paths. Internally, this converts
-each of the paths into an [omero::cmd::Delete] command and
-submits all of them via [omero::cmd::DoAll].
+all of the paths into a single [omero::cmd::Delete2] command
+and submits it.
 
 If a "recursively" is true, then directories will be searched
 and all of their contained files will be placed before them in
@@ -699,8 +699,8 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.end(self, _r)
 
         '''Delete several individual paths. Internally, this converts
-each of the paths into an [omero::cmd::Delete] command and
-submits all of them via [omero::cmd::DoAll].
+all of the paths into a single [omero::cmd::Delete2] command
+and submits it.
 
 If a "recursively" is true, then directories will be searched
 and all of their contained files will be placed before them in

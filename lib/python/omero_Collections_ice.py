@@ -114,6 +114,9 @@ if '_t_ChecksumAlgorithmList' not in _M_omero.api.__dict__:
 if '_t_NamedValueList' not in _M_omero.api.__dict__:
     _M_omero.api._t_NamedValueList = IcePy.defineSequence('::omero::api::NamedValueList', (), _M_omero.model._t_NamedValue)
 
+if '_t_EventContextList' not in _M_omero.api.__dict__:
+    _M_omero.api._t_EventContextList = IcePy.defineSequence('::omero::api::EventContextList', (), _M_omero.sys._t_EventContext)
+
 if '_t_BoolArray' not in _M_omero.api.__dict__:
     _M_omero.api._t_BoolArray = IcePy.defineSequence('::omero::api::BoolArray', (), IcePy._t_bool)
 

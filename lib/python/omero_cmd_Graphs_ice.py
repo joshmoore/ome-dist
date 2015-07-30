@@ -840,6 +840,105 @@ group.'''
     _M_omero.cmd.Chgrp2ResponsePrx = Chgrp2ResponsePrx
     del Chgrp2ResponsePrx
 
+if 'Chmod2' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.Chmod2 = Ice.createTempClass()
+    class Chmod2(_M_omero.cmd.GraphModify2):
+        '''Change the permissions on model objects.
+The user must be an administrator, the owner of the objects,
+or an owner of the objects' group.
+The only permitted target object type is ExperimenterGroup.'''
+        def __init__(self, targetObjects=None, childOptions=None, dryRun=False, permissions=''):
+            _M_omero.cmd.GraphModify2.__init__(self, targetObjects, childOptions, dryRun)
+            self.permissions = permissions
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::Chmod2', '::omero::cmd::GraphModify2', '::omero::cmd::Request')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::Chmod2'
+
+        def ice_staticId():
+            return '::omero::cmd::Chmod2'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_Chmod2)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.Chmod2Prx = Ice.createTempClass()
+    class Chmod2Prx(_M_omero.cmd.GraphModify2Prx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.Chmod2Prx.ice_checkedCast(proxy, '::omero::cmd::Chmod2', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.Chmod2Prx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_Chmod2Prx = IcePy.defineProxy('::omero::cmd::Chmod2', Chmod2Prx)
+
+    _M_omero.cmd._t_Chmod2 = IcePy.declareClass('::omero::cmd::Chmod2')
+
+    _M_omero.cmd._t_Chmod2 = IcePy.defineClass('::omero::cmd::Chmod2', Chmod2, -1, (), False, False, _M_omero.cmd._t_GraphModify2, (), (('permissions', (), IcePy._t_string, False, 0),))
+    Chmod2._ice_type = _M_omero.cmd._t_Chmod2
+
+    _M_omero.cmd.Chmod2 = Chmod2
+    del Chmod2
+
+    _M_omero.cmd.Chmod2Prx = Chmod2Prx
+    del Chmod2Prx
+
+if 'Chmod2Response' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.Chmod2Response = Ice.createTempClass()
+    class Chmod2Response(_M_omero.cmd.OK):
+        '''Result of changing the permissions on model objects.'''
+        def __init__(self, includedObjects=None, deletedObjects=None):
+            _M_omero.cmd.OK.__init__(self)
+            self.includedObjects = includedObjects
+            self.deletedObjects = deletedObjects
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::Chmod2Response', '::omero::cmd::OK', '::omero::cmd::Response')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::Chmod2Response'
+
+        def ice_staticId():
+            return '::omero::cmd::Chmod2Response'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_Chmod2Response)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.Chmod2ResponsePrx = Ice.createTempClass()
+    class Chmod2ResponsePrx(_M_omero.cmd.OKPrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.Chmod2ResponsePrx.ice_checkedCast(proxy, '::omero::cmd::Chmod2Response', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.Chmod2ResponsePrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_Chmod2ResponsePrx = IcePy.defineProxy('::omero::cmd::Chmod2Response', Chmod2ResponsePrx)
+
+    _M_omero.cmd._t_Chmod2Response = IcePy.defineClass('::omero::cmd::Chmod2Response', Chmod2Response, -1, (), False, False, _M_omero.cmd._t_OK, (), (
+        ('includedObjects', (), _M_omero.api._t_StringLongListMap, False, 0),
+        ('deletedObjects', (), _M_omero.api._t_StringLongListMap, False, 0)
+    ))
+    Chmod2Response._ice_type = _M_omero.cmd._t_Chmod2Response
+
+    _M_omero.cmd.Chmod2Response = Chmod2Response
+    del Chmod2Response
+
+    _M_omero.cmd.Chmod2ResponsePrx = Chmod2ResponsePrx
+    del Chmod2ResponsePrx
+
 if 'Chown2' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.Chown2 = Ice.createTempClass()
     class Chown2(_M_omero.cmd.GraphModify2):
