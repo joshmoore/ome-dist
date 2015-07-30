@@ -203,6 +203,8 @@ _M_omero.constants.namespaces.NSDOWNLOAD = "openmicroscopy.org/omero/scripts/res
 
 _M_omero.constants.namespaces.NSVIEW = "openmicroscopy.org/omero/scripts/results/view"
 
+_M_omero.constants.namespaces.NSDYNAMIC = "openmicroscopy.org/omero/scripts/job/dynamic"
+
 _M_omero.constants.namespaces.NSMODULO = "openmicroscopy.org/omero/dimension/modulo"
 
 # End of module omero.constants.namespaces

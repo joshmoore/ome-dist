@@ -943,8 +943,8 @@ if 'Chown2' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.Chown2 = Ice.createTempClass()
     class Chown2(_M_omero.cmd.GraphModify2):
         '''Change the ownership of model objects.
-The user must be either an administrator,
-or the owner of the objects with
+The user must be an administrator, or they
+must be an owner of the objects' group, with
 the target user a member of the objects' group.'''
         def __init__(self, targetObjects=None, childOptions=None, dryRun=False, userId=0):
             _M_omero.cmd.GraphModify2.__init__(self, targetObjects, childOptions, dryRun)
