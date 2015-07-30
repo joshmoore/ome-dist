@@ -100,6 +100,31 @@ if not _M_omero.api.__dict__.has_key('IQuery'):
             pass
 
         def projection_async(self, _cb, query, params, current=None):
+            '''Return a sequence of [omero::RType] sequences.
+
+Each element of the outer sequence is one row in the return value.
+Each element of the inner sequence is one column specified in the HQL.
+
+[omero::model::IObject] instances are returned wrapped in an [omero::rtype::RObject]
+instance. Primitives are mapped to the expected [omero::RType] subclass. Types without
+an [omero::RType] mapper if returned will throw an exception if present in the select
+except where a manual conversion is present on the server. This includes:
+
+[omero::model::Permissions] instances are serialized to an [omero::RMap]
+containing the keys: perms, canAnnotate, canEdit, canLink, canDelete
+
+The quantity types like [omero::model::Length] are serialized
+to an [omero::RMap] containing the keys: value, unit, symbol
+
+As with SQL, if an aggregation statement is used, a group by clause must be added.
+
+Examples:
+
+select i.name, i.description from Image i where i.name like '%.dv'
+
+select tag.textValue, tagset.textValue from TagAnnotation tag join tag.annotationLinks l join l.child tagset
+
+select p.pixelsType.value, count(p.id) from Pixel p group by p.pixelsType.value'''
             pass
 
         def refresh_async(self, _cb, iObject, current=None):
@@ -233,15 +258,115 @@ if not _M_omero.api.__dict__.has_key('IQuery'):
         def findAllByFullText_async(self, _cb, klass, query, params, _ctx=None):
             return _M_omero.api.IQuery._op_findAllByFullText.invokeAsync(self, (_cb, (klass, query, params), _ctx))
 
+        '''Return a sequence of [omero::RType] sequences.
+
+Each element of the outer sequence is one row in the return value.
+Each element of the inner sequence is one column specified in the HQL.
+
+[omero::model::IObject] instances are returned wrapped in an [omero::rtype::RObject]
+instance. Primitives are mapped to the expected [omero::RType] subclass. Types without
+an [omero::RType] mapper if returned will throw an exception if present in the select
+except where a manual conversion is present on the server. This includes:
+
+[omero::model::Permissions] instances are serialized to an [omero::RMap]
+containing the keys: perms, canAnnotate, canEdit, canLink, canDelete
+
+The quantity types like [omero::model::Length] are serialized
+to an [omero::RMap] containing the keys: value, unit, symbol
+
+As with SQL, if an aggregation statement is used, a group by clause must be added.
+
+Examples:
+
+select i.name, i.description from Image i where i.name like '%.dv'
+
+select tag.textValue, tagset.textValue from TagAnnotation tag join tag.annotationLinks l join l.child tagset
+
+select p.pixelsType.value, count(p.id) from Pixel p group by p.pixelsType.value'''
         def projection(self, query, params, _ctx=None):
             return _M_omero.api.IQuery._op_projection.invoke(self, ((query, params), _ctx))
 
+        '''Return a sequence of [omero::RType] sequences.
+
+Each element of the outer sequence is one row in the return value.
+Each element of the inner sequence is one column specified in the HQL.
+
+[omero::model::IObject] instances are returned wrapped in an [omero::rtype::RObject]
+instance. Primitives are mapped to the expected [omero::RType] subclass. Types without
+an [omero::RType] mapper if returned will throw an exception if present in the select
+except where a manual conversion is present on the server. This includes:
+
+[omero::model::Permissions] instances are serialized to an [omero::RMap]
+containing the keys: perms, canAnnotate, canEdit, canLink, canDelete
+
+The quantity types like [omero::model::Length] are serialized
+to an [omero::RMap] containing the keys: value, unit, symbol
+
+As with SQL, if an aggregation statement is used, a group by clause must be added.
+
+Examples:
+
+select i.name, i.description from Image i where i.name like '%.dv'
+
+select tag.textValue, tagset.textValue from TagAnnotation tag join tag.annotationLinks l join l.child tagset
+
+select p.pixelsType.value, count(p.id) from Pixel p group by p.pixelsType.value'''
         def begin_projection(self, query, params, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IQuery._op_projection.begin(self, ((query, params), _response, _ex, _sent, _ctx))
 
+        '''Return a sequence of [omero::RType] sequences.
+
+Each element of the outer sequence is one row in the return value.
+Each element of the inner sequence is one column specified in the HQL.
+
+[omero::model::IObject] instances are returned wrapped in an [omero::rtype::RObject]
+instance. Primitives are mapped to the expected [omero::RType] subclass. Types without
+an [omero::RType] mapper if returned will throw an exception if present in the select
+except where a manual conversion is present on the server. This includes:
+
+[omero::model::Permissions] instances are serialized to an [omero::RMap]
+containing the keys: perms, canAnnotate, canEdit, canLink, canDelete
+
+The quantity types like [omero::model::Length] are serialized
+to an [omero::RMap] containing the keys: value, unit, symbol
+
+As with SQL, if an aggregation statement is used, a group by clause must be added.
+
+Examples:
+
+select i.name, i.description from Image i where i.name like '%.dv'
+
+select tag.textValue, tagset.textValue from TagAnnotation tag join tag.annotationLinks l join l.child tagset
+
+select p.pixelsType.value, count(p.id) from Pixel p group by p.pixelsType.value'''
         def end_projection(self, _r):
             return _M_omero.api.IQuery._op_projection.end(self, _r)
 
+        '''Return a sequence of [omero::RType] sequences.
+
+Each element of the outer sequence is one row in the return value.
+Each element of the inner sequence is one column specified in the HQL.
+
+[omero::model::IObject] instances are returned wrapped in an [omero::rtype::RObject]
+instance. Primitives are mapped to the expected [omero::RType] subclass. Types without
+an [omero::RType] mapper if returned will throw an exception if present in the select
+except where a manual conversion is present on the server. This includes:
+
+[omero::model::Permissions] instances are serialized to an [omero::RMap]
+containing the keys: perms, canAnnotate, canEdit, canLink, canDelete
+
+The quantity types like [omero::model::Length] are serialized
+to an [omero::RMap] containing the keys: value, unit, symbol
+
+As with SQL, if an aggregation statement is used, a group by clause must be added.
+
+Examples:
+
+select i.name, i.description from Image i where i.name like '%.dv'
+
+select tag.textValue, tagset.textValue from TagAnnotation tag join tag.annotationLinks l join l.child tagset
+
+select p.pixelsType.value, count(p.id) from Pixel p group by p.pixelsType.value'''
         def projection_async(self, _cb, query, params, _ctx=None):
             return _M_omero.api.IQuery._op_projection.invokeAsync(self, (_cb, (query, params), _ctx))
 
