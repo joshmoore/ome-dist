@@ -1,4 +1,4 @@
 
-omero_version = "5.4.9-ice36-b101"
+omero_version = "5.4.10-ice36-b105"
 ice_compatibility = "3.6.4"
-build_year = "2018"
+build_year = "2019"
