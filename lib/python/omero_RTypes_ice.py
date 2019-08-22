@@ -734,7 +734,7 @@ if 'RArray' not in _M_omero.__dict__:
     class RArray(_M_omero.RCollection):
         '''RCollection mapped to an array on the server of a type given
 by a random member of the RTypeSeq. Only pass consistent arrays!
-homogenous lists.'''
+homogeneous lists.'''
         def __init__(self, _val=None):
             if Ice.getType(self) == _M_omero.RArray:
                 raise RuntimeError('omero.RArray is an abstract class')

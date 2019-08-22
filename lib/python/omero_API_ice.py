@@ -117,7 +117,7 @@ Create a new session via omero.client.createSession()'''
         def shutdownIn(self, milliseconds, current=None):
             '''Message that the server will be shutting down in the
 given number of milliseconds, after which all new and
-running method invocations will recieve a CancelledException.'''
+running method invocations will receive a CancelledException.'''
             pass
 
         def __str__(self):
@@ -178,25 +178,25 @@ Create a new session via omero.client.createSession()'''
 
         '''Message that the server will be shutting down in the
 given number of milliseconds, after which all new and
-running method invocations will recieve a CancelledException.'''
+running method invocations will receive a CancelledException.'''
         def shutdownIn(self, milliseconds, _ctx=None):
             return _M_omero.api.ClientCallback._op_shutdownIn.invoke(self, ((milliseconds, ), _ctx))
 
         '''Message that the server will be shutting down in the
 given number of milliseconds, after which all new and
-running method invocations will recieve a CancelledException.'''
+running method invocations will receive a CancelledException.'''
         def begin_shutdownIn(self, milliseconds, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.ClientCallback._op_shutdownIn.begin(self, ((milliseconds, ), _response, _ex, _sent, _ctx))
 
         '''Message that the server will be shutting down in the
 given number of milliseconds, after which all new and
-running method invocations will recieve a CancelledException.'''
+running method invocations will receive a CancelledException.'''
         def end_shutdownIn(self, _r):
             return _M_omero.api.ClientCallback._op_shutdownIn.end(self, _r)
 
         '''Message that the server will be shutting down in the
 given number of milliseconds, after which all new and
-running method invocations will recieve a CancelledException.'''
+running method invocations will receive a CancelledException.'''
         def shutdownIn_async(self, _cb, milliseconds, _ctx=None):
             return _M_omero.api.ClientCallback._op_shutdownIn.invokeAsync(self, (_cb, (milliseconds, ), _ctx))
 

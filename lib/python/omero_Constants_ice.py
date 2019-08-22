@@ -37,7 +37,7 @@ _M_omero.constants.GCINTERVAL = 60
 
 _M_omero.constants.GLACIER2PORT = 4064
 
-_M_omero.constants.MESSAGESIZEMAX = 65536
+_M_omero.constants.MESSAGESIZEMAX = 250000
 
 _M_omero.constants.DEFAULTBATCHSIZE = 2000
 
@@ -184,6 +184,8 @@ _M_omero.constants.namespaces.NSFSRENAME = "openmicroscopy.org/omero/fs/rename"
 _M_omero.constants.namespaces.NSMEASUREMENT = "openmicroscopy.org/omero/measurement"
 
 _M_omero.constants.namespaces.NSAUTOCLOSE = "openmicroscopy.org/omero/import/autoClose"
+
+_M_omero.constants.namespaces.NSTARGETTEMPLATE = "openmicroscopy.org/omero/import/targetTemplate"
 
 _M_omero.constants.namespaces.NSCOMPANIONFILE = "openmicroscopy.org/omero/import/companionFile"
 
