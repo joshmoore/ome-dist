@@ -13,4 +13,4 @@ import omero_cmd_Graphs_ice
 import omero_cmd_Mail_ice
 
 # Submodules:
-import graphs
+from . import graphs

@@ -8,4 +8,4 @@ Ice.updateModule("omero.constants.analysis")
 import omero_Constants_ice
 
 # Submodules:
-import flim
+from . import flim

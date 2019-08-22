@@ -9,14 +9,14 @@ import omero_Constants_ice
 import omero_api_MetadataStore_ice
 
 # Submodules:
-import cluster
-import annotation
-import data
-import metadata
-import namespaces
-import analysis
-import jobs
-import permissions
-import projection
-import topics
-import categories
+from . import cluster
+from . import annotation
+from . import data
+from . import metadata
+from . import namespaces
+from . import analysis
+from . import jobs
+from . import permissions
+from . import projection
+from . import topics
+from . import categories
