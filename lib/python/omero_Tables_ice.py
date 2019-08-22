@@ -221,6 +221,54 @@ if 'ImageColumn' not in _M_omero.grid.__dict__:
     _M_omero.grid.ImageColumnPrx = ImageColumnPrx
     del ImageColumnPrx
 
+if 'DatasetColumn' not in _M_omero.grid.__dict__:
+    _M_omero.grid.DatasetColumn = Ice.createTempClass()
+    class DatasetColumn(_M_omero.grid.Column):
+        def __init__(self, name='', description='', values=None):
+            _M_omero.grid.Column.__init__(self, name, description)
+            self.values = values
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::grid::Column', '::omero::grid::DatasetColumn')
+
+        def ice_id(self, current=None):
+            return '::omero::grid::DatasetColumn'
+
+        def ice_staticId():
+            return '::omero::grid::DatasetColumn'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.grid._t_DatasetColumn)
+
+        __repr__ = __str__
+
+    _M_omero.grid.DatasetColumnPrx = Ice.createTempClass()
+    class DatasetColumnPrx(_M_omero.grid.ColumnPrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.grid.DatasetColumnPrx.ice_checkedCast(proxy, '::omero::grid::DatasetColumn', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.grid.DatasetColumnPrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+        def ice_staticId():
+            return '::omero::grid::DatasetColumn'
+        ice_staticId = staticmethod(ice_staticId)
+
+    _M_omero.grid._t_DatasetColumnPrx = IcePy.defineProxy('::omero::grid::DatasetColumn', DatasetColumnPrx)
+
+    _M_omero.grid._t_DatasetColumn = IcePy.defineClass('::omero::grid::DatasetColumn', DatasetColumn, -1, (), False, False, _M_omero.grid._t_Column, (), (('values', (), _M_omero.api._t_LongArray, False, 0),))
+    DatasetColumn._ice_type = _M_omero.grid._t_DatasetColumn
+
+    _M_omero.grid.DatasetColumn = DatasetColumn
+    del DatasetColumn
+
+    _M_omero.grid.DatasetColumnPrx = DatasetColumnPrx
+    del DatasetColumnPrx
+
 if 'RoiColumn' not in _M_omero.grid.__dict__:
     _M_omero.grid.RoiColumn = Ice.createTempClass()
     class RoiColumn(_M_omero.grid.Column):
