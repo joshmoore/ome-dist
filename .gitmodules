@@ -1,0 +1,3 @@
+[submodule "lib/scripts"]
+	path = lib/scripts
+	url = git://github.com/ome/scripts.git
