@@ -506,7 +506,7 @@ if 'Chown2' not in _M_omero.cmd.__dict__:
         Members:
         userId -- The ID of the experimenter to which to give the model
         objects.
-        targetUsers -- The users who should have all their data targeted. Temporarily disabled.
+        targetUsers -- The users who should have all their data targeted.
         """
         def __init__(self, targetObjects=None, childOptions=None, dryRun=False, userId=0, targetUsers=None):
             _M_omero.cmd.GraphModify2.__init__(self, targetObjects, childOptions, dryRun)

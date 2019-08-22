@@ -51,6 +51,132 @@ __name__ = 'omero'
 # Start of module omero.cmd
 __name__ = 'omero.cmd'
 
+if 'FindPyramids' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.FindPyramids = Ice.createTempClass()
+    class FindPyramids(_M_omero.cmd.Request):
+        """
+        Requests all pyramids files. A FindPyramidsResponse
+        will be returned under normal conditions, otherwise a ERR
+        will be returned.
+        Members:
+        littleEndian -- Retrieves the pyramids with little endian true or false.
+        If unset, both will be retrieved.
+        importedAfter -- Retrieves the pyramids created after a specified time if set.
+        checkEmptyFile -- Retrieves the pyramids of length 0 if true
+        limit -- The maximum number of files to find. No limit will be applied
+        if set to 0 or to a negative value.
+        """
+        def __init__(self, littleEndian=None, importedAfter=None, checkEmptyFile=False, limit=0):
+            _M_omero.cmd.Request.__init__(self)
+            self.littleEndian = littleEndian
+            self.importedAfter = importedAfter
+            self.checkEmptyFile = checkEmptyFile
+            self.limit = limit
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::FindPyramids', '::omero::cmd::Request')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::FindPyramids'
+
+        def ice_staticId():
+            return '::omero::cmd::FindPyramids'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_FindPyramids)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.FindPyramidsPrx = Ice.createTempClass()
+    class FindPyramidsPrx(_M_omero.cmd.RequestPrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.FindPyramidsPrx.ice_checkedCast(proxy, '::omero::cmd::FindPyramids', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.FindPyramidsPrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+        def ice_staticId():
+            return '::omero::cmd::FindPyramids'
+        ice_staticId = staticmethod(ice_staticId)
+
+    _M_omero.cmd._t_FindPyramidsPrx = IcePy.defineProxy('::omero::cmd::FindPyramids', FindPyramidsPrx)
+
+    _M_omero.cmd._t_FindPyramids = IcePy.declareClass('::omero::cmd::FindPyramids')
+
+    _M_omero.cmd._t_FindPyramids = IcePy.defineClass('::omero::cmd::FindPyramids', FindPyramids, -1, (), False, False, _M_omero.cmd._t_Request, (), (
+        ('littleEndian', (), _M_omero._t_RBool, False, 0),
+        ('importedAfter', (), _M_omero._t_RTime, False, 0),
+        ('checkEmptyFile', (), IcePy._t_bool, False, 0),
+        ('limit', (), IcePy._t_long, False, 0)
+    ))
+    FindPyramids._ice_type = _M_omero.cmd._t_FindPyramids
+
+    _M_omero.cmd.FindPyramids = FindPyramids
+    del FindPyramids
+
+    _M_omero.cmd.FindPyramidsPrx = FindPyramidsPrx
+    del FindPyramidsPrx
+
+if 'FindPyramidsResponse' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.FindPyramidsResponse = Ice.createTempClass()
+    class FindPyramidsResponse(_M_omero.cmd.Response):
+        """
+        Returns the image Ids corresponding to the pyramid files.
+        A FindPyramidsResponse
+        will be returned under normal conditions, otherwise a ERR
+        will be returned.
+        Members:
+        pyramidFiles -- The image IDs corresponding to the pyramid
+        """
+        def __init__(self, pyramidFiles=None):
+            _M_omero.cmd.Response.__init__(self)
+            self.pyramidFiles = pyramidFiles
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::FindPyramidsResponse', '::omero::cmd::Response')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::FindPyramidsResponse'
+
+        def ice_staticId():
+            return '::omero::cmd::FindPyramidsResponse'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_FindPyramidsResponse)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.FindPyramidsResponsePrx = Ice.createTempClass()
+    class FindPyramidsResponsePrx(_M_omero.cmd.ResponsePrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.FindPyramidsResponsePrx.ice_checkedCast(proxy, '::omero::cmd::FindPyramidsResponse', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.FindPyramidsResponsePrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+        def ice_staticId():
+            return '::omero::cmd::FindPyramidsResponse'
+        ice_staticId = staticmethod(ice_staticId)
+
+    _M_omero.cmd._t_FindPyramidsResponsePrx = IcePy.defineProxy('::omero::cmd::FindPyramidsResponse', FindPyramidsResponsePrx)
+
+    _M_omero.cmd._t_FindPyramidsResponse = IcePy.defineClass('::omero::cmd::FindPyramidsResponse', FindPyramidsResponse, -1, (), False, False, _M_omero.cmd._t_Response, (), (('pyramidFiles', (), _M_omero.api._t_LongList, False, 0),))
+    FindPyramidsResponse._ice_type = _M_omero.cmd._t_FindPyramidsResponse
+
+    _M_omero.cmd.FindPyramidsResponse = FindPyramidsResponse
+    del FindPyramidsResponse
+
+    _M_omero.cmd.FindPyramidsResponsePrx = FindPyramidsResponsePrx
+    del FindPyramidsResponsePrx
+
 if 'OriginalMetadataRequest' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.OriginalMetadataRequest = Ice.createTempClass()
     class OriginalMetadataRequest(_M_omero.cmd.Request):
@@ -389,11 +515,12 @@ if 'ManageImageBinaries' not in _M_omero.cmd.__dict__:
         This command can be run multiple times with different settings
         to iteratively test if the migration is working.
         """
-        def __init__(self, imageId=0, togglePixels=False, deletePyramid=False):
+        def __init__(self, imageId=0, togglePixels=False, deletePyramid=False, deleteThumbnails=False):
             _M_omero.cmd.Request.__init__(self)
             self.imageId = imageId
             self.togglePixels = togglePixels
             self.deletePyramid = deletePyramid
+            self.deleteThumbnails = deleteThumbnails
 
         def ice_ids(self, current=None):
             return ('::Ice::Object', '::omero::cmd::ManageImageBinaries', '::omero::cmd::Request')
@@ -430,7 +557,8 @@ if 'ManageImageBinaries' not in _M_omero.cmd.__dict__:
     _M_omero.cmd._t_ManageImageBinaries = IcePy.defineClass('::omero::cmd::ManageImageBinaries', ManageImageBinaries, -1, (), False, False, _M_omero.cmd._t_Request, (), (
         ('imageId', (), IcePy._t_long, False, 0),
         ('togglePixels', (), IcePy._t_bool, False, 0),
-        ('deletePyramid', (), IcePy._t_bool, False, 0)
+        ('deletePyramid', (), IcePy._t_bool, False, 0),
+        ('deleteThumbnails', (), IcePy._t_bool, False, 0)
     ))
     ManageImageBinaries._ice_type = _M_omero.cmd._t_ManageImageBinaries
 
