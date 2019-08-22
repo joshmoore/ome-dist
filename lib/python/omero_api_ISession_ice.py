@@ -105,7 +105,6 @@ if 'ISession' not in _M_omero.api.__dict__:
             """
             Allows a user to open up another session for him/herself with the given
             defaults without needing to re-enter password.
-            TODO Review the security of this method.
             Arguments:
             _cb -- The asynchronous callback object.
             timeToLiveMilliseconds -- 
@@ -359,7 +358,6 @@ if 'ISession' not in _M_omero.api.__dict__:
         """
         Allows a user to open up another session for him/herself with the given
         defaults without needing to re-enter password.
-        TODO Review the security of this method.
         Arguments:
         timeToLiveMilliseconds -- 
         timeToIdleMilliseconds -- 
@@ -372,7 +370,6 @@ if 'ISession' not in _M_omero.api.__dict__:
         """
         Allows a user to open up another session for him/herself with the given
         defaults without needing to re-enter password.
-        TODO Review the security of this method.
         Arguments:
         timeToLiveMilliseconds -- 
         timeToIdleMilliseconds -- 
@@ -389,7 +386,6 @@ if 'ISession' not in _M_omero.api.__dict__:
         """
         Allows a user to open up another session for him/herself with the given
         defaults without needing to re-enter password.
-        TODO Review the security of this method.
         Arguments:
         timeToLiveMilliseconds -- 
         timeToIdleMilliseconds -- 
