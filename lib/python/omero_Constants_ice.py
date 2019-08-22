@@ -171,6 +171,34 @@ _M_omero.constants.data.NONAMESET = "NO_NAME_SET"
 
 __name__ = 'omero.constants'
 
+if 'LogLevel' not in _M_omero.constants.__dict__:
+    _M_omero.constants.LogLevel = Ice.createTempClass()
+    class LogLevel(Ice.EnumBase):
+        """
+        Log levels used by RawAccessRequest's {@code log} command for {@code path}.
+        """
+
+        def __init__(self, _n, _v):
+            Ice.EnumBase.__init__(self, _n, _v)
+
+        def valueOf(self, _n):
+            if _n in self._enumerators:
+                return self._enumerators[_n]
+            return None
+        valueOf = classmethod(valueOf)
+
+    LogLevel.Trace = LogLevel("Trace", 0)
+    LogLevel.Debug = LogLevel("Debug", 1)
+    LogLevel.Info = LogLevel("Info", 2)
+    LogLevel.Warn = LogLevel("Warn", 3)
+    LogLevel.Error = LogLevel("Error", 4)
+    LogLevel._enumerators = { 0:LogLevel.Trace, 1:LogLevel.Debug, 2:LogLevel.Info, 3:LogLevel.Warn, 4:LogLevel.Error }
+
+    _M_omero.constants._t_LogLevel = IcePy.defineEnum('::omero::constants::LogLevel', LogLevel, (), LogLevel._enumerators)
+
+    _M_omero.constants.LogLevel = LogLevel
+    del LogLevel
+
 # Start of module omero.constants.metadata
 _M_omero.constants.metadata = Ice.openModule('omero.constants.metadata')
 __name__ = 'omero.constants.metadata'
