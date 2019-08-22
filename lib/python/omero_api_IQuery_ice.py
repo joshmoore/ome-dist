@@ -162,7 +162,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
             Arguments:
             _cb -- The asynchronous callback object.
             klass -- type of entity to be searched
-            field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME
+            field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME
             value -- String used for search.
             current -- The Current object for the invocation.
             Throws:
@@ -179,7 +179,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
             Arguments:
             _cb -- The asynchronous callback object.
             klass -- type of entity to be searched. Not null.
-            field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME. Not null.
+            field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME. Not null.
             value -- String used for search. Not null.
             caseSensitive -- whether to use LIKE or ILIKE
             filter -- filters the result set. Can be null.
@@ -536,7 +536,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         of more than one result will result in an exception.
         Arguments:
         klass -- type of entity to be searched
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME
         value -- String used for search.
         _ctx -- The request context for the invocation.
         Returns: found entity or possibly null.
@@ -553,7 +553,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         of more than one result will result in an exception.
         Arguments:
         klass -- type of entity to be searched
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME
         value -- String used for search.
         _response -- The asynchronous response callback.
         _ex -- The asynchronous exception callback.
@@ -571,7 +571,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         of more than one result will result in an exception.
         Arguments:
         klass -- type of entity to be searched
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME
         value -- String used for search.
         Returns: found entity or possibly null.
         Throws:
@@ -587,7 +587,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         omero.sys.Filter instance.
         Arguments:
         klass -- type of entity to be searched. Not null.
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME. Not null.
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME. Not null.
         value -- String used for search. Not null.
         caseSensitive -- whether to use LIKE or ILIKE
         filter -- filters the result set. Can be null.
@@ -604,7 +604,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         omero.sys.Filter instance.
         Arguments:
         klass -- type of entity to be searched. Not null.
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME. Not null.
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME. Not null.
         value -- String used for search. Not null.
         caseSensitive -- whether to use LIKE or ILIKE
         filter -- filters the result set. Can be null.
@@ -624,7 +624,7 @@ if 'IQuery' not in _M_omero.api.__dict__:
         omero.sys.Filter instance.
         Arguments:
         klass -- type of entity to be searched. Not null.
-        field -- the name of the field, either as simple string or as public final static from the entity class, e.g. omero.model.Project#NAME. Not null.
+        field -- the name of the field, either as simple string or as public static final from the entity class, e.g. omero.model.Project#NAME. Not null.
         value -- String used for search. Not null.
         caseSensitive -- whether to use LIKE or ILIKE
         filter -- filters the result set. Can be null.

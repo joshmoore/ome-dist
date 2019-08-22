@@ -85,8 +85,8 @@ if 'ITimeline' not in _M_omero.api.__dict__:
         The methods which take a StringSet and a Parameters object, also
         have a bool merge argument. This argument defines whether or
         not the LIMIT applies to each object independently
-        (["a","b"] @ 100 == 200) or merges the lists together
-        chronologically (["a","b"] @ 100 merged == 100).
+        (\["a","b"] @ 100 == 200) or merges the lists together
+        chronologically (\["a","b"] @ 100 merged == 100).
         Time used
         Except for Image, IObject.details.updateEvent is used in all cases
         for determining most recent events. Images are compared via

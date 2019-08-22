@@ -267,7 +267,7 @@ if 'IContainer' not in _M_omero.api.__dict__:
             Arguments:
             _cb -- The asynchronous callback object.
             obj -- Can be unloaded.
-            collectionName -- public final static String from the IObject.class
+            collectionName -- public static final String from the IObject.class
             options -- Parameters. Unused.
             current -- The Current object for the invocation.
             """
@@ -803,7 +803,7 @@ if 'IContainer' not in _M_omero.api.__dict__:
         nulled in a previous query.
         Arguments:
         obj -- Can be unloaded.
-        collectionName -- public final static String from the IObject.class
+        collectionName -- public static final String from the IObject.class
         options -- Parameters. Unused.
         _ctx -- The request context for the invocation.
         Returns: An initialized collection.
@@ -817,7 +817,7 @@ if 'IContainer' not in _M_omero.api.__dict__:
         nulled in a previous query.
         Arguments:
         obj -- Can be unloaded.
-        collectionName -- public final static String from the IObject.class
+        collectionName -- public static final String from the IObject.class
         options -- Parameters. Unused.
         _response -- The asynchronous response callback.
         _ex -- The asynchronous exception callback.
@@ -834,7 +834,7 @@ if 'IContainer' not in _M_omero.api.__dict__:
         nulled in a previous query.
         Arguments:
         obj -- Can be unloaded.
-        collectionName -- public final static String from the IObject.class
+        collectionName -- public static final String from the IObject.class
         options -- Parameters. Unused.
         Returns: An initialized collection.
         """

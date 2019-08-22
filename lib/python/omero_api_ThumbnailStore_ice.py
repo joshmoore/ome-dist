@@ -139,7 +139,27 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
             in the on-disk cache it will be returned directly,
             otherwise it will be created as in
             getThumbnailDirect, placed in the on-disk
-            cache and returned.
+            cache and returned. If the thumbnail is missing, a clock will
+            be returned to signify that the thumbnail is yet to be generated.
+            Arguments:
+            _cb -- The asynchronous callback object.
+            sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
+            sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
+            current -- The Current object for the invocation.
+            Throws:
+            ApiUsageException -- if: sizeX > pixels.sizeX sizeX is negative sizeY > pixels.sizeY sizeY is negative setPixelsId has not yet been called
+            """
+            pass
+
+        def getThumbnailWithoutDefault_async(self, _cb, sizeX, sizeY, current=None):
+            """
+            Retrieves a thumbnail for a pixels set using a given set of
+            rendering settings (RenderingDef). If the thumbnail exists
+            in the on-disk cache it will be returned directly,
+            otherwise it will be created as in
+            getThumbnailDirect, placed in the on-disk
+            cache and returned. If the thumbnail is still to be generated, an empty array will
+            be returned.
             Arguments:
             _cb -- The asynchronous callback object.
             sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
@@ -522,7 +542,8 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
         in the on-disk cache it will be returned directly,
         otherwise it will be created as in
         getThumbnailDirect, placed in the on-disk
-        cache and returned.
+        cache and returned. If the thumbnail is missing, a clock will
+        be returned to signify that the thumbnail is yet to be generated.
         Arguments:
         sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
         sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
@@ -540,7 +561,8 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
         in the on-disk cache it will be returned directly,
         otherwise it will be created as in
         getThumbnailDirect, placed in the on-disk
-        cache and returned.
+        cache and returned. If the thumbnail is missing, a clock will
+        be returned to signify that the thumbnail is yet to be generated.
         Arguments:
         sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
         sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
@@ -559,7 +581,8 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
         in the on-disk cache it will be returned directly,
         otherwise it will be created as in
         getThumbnailDirect, placed in the on-disk
-        cache and returned.
+        cache and returned. If the thumbnail is missing, a clock will
+        be returned to signify that the thumbnail is yet to be generated.
         Arguments:
         sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
         sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
@@ -569,6 +592,63 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
         """
         def end_getThumbnail(self, _r):
             return _M_omero.api.ThumbnailStore._op_getThumbnail.end(self, _r)
+
+        """
+        Retrieves a thumbnail for a pixels set using a given set of
+        rendering settings (RenderingDef). If the thumbnail exists
+        in the on-disk cache it will be returned directly,
+        otherwise it will be created as in
+        getThumbnailDirect, placed in the on-disk
+        cache and returned. If the thumbnail is still to be generated, an empty array will
+        be returned.
+        Arguments:
+        sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
+        sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
+        _ctx -- The request context for the invocation.
+        Returns: a JPEG thumbnail byte buffer
+        Throws:
+        ApiUsageException -- if: sizeX > pixels.sizeX sizeX is negative sizeY > pixels.sizeY sizeY is negative setPixelsId has not yet been called
+        """
+        def getThumbnailWithoutDefault(self, sizeX, sizeY, _ctx=None):
+            return _M_omero.api.ThumbnailStore._op_getThumbnailWithoutDefault.invoke(self, ((sizeX, sizeY), _ctx))
+
+        """
+        Retrieves a thumbnail for a pixels set using a given set of
+        rendering settings (RenderingDef). If the thumbnail exists
+        in the on-disk cache it will be returned directly,
+        otherwise it will be created as in
+        getThumbnailDirect, placed in the on-disk
+        cache and returned. If the thumbnail is still to be generated, an empty array will
+        be returned.
+        Arguments:
+        sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
+        sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
+        _response -- The asynchronous response callback.
+        _ex -- The asynchronous exception callback.
+        _sent -- The asynchronous sent callback.
+        _ctx -- The request context for the invocation.
+        Returns: An asynchronous result object for the invocation.
+        """
+        def begin_getThumbnailWithoutDefault(self, sizeX, sizeY, _response=None, _ex=None, _sent=None, _ctx=None):
+            return _M_omero.api.ThumbnailStore._op_getThumbnailWithoutDefault.begin(self, ((sizeX, sizeY), _response, _ex, _sent, _ctx))
+
+        """
+        Retrieves a thumbnail for a pixels set using a given set of
+        rendering settings (RenderingDef). If the thumbnail exists
+        in the on-disk cache it will be returned directly,
+        otherwise it will be created as in
+        getThumbnailDirect, placed in the on-disk
+        cache and returned. If the thumbnail is still to be generated, an empty array will
+        be returned.
+        Arguments:
+        sizeX -- the X-axis width of the thumbnail. null specifies the default size of 48.
+        sizeY -- the Y-axis width of the thumbnail. null specifies the default size of 48.
+        Returns: a JPEG thumbnail byte buffer
+        Throws:
+        ApiUsageException -- if: sizeX > pixels.sizeX sizeX is negative sizeY > pixels.sizeY sizeY is negative setPixelsId has not yet been called
+        """
+        def end_getThumbnailWithoutDefault(self, _r):
+            return _M_omero.api.ThumbnailStore._op_getThumbnailWithoutDefault.end(self, _r)
 
         """
         Retrieves a number of thumbnails for pixels sets using
@@ -1178,6 +1258,7 @@ if 'ThumbnailStore' not in _M_omero.api.__dict__:
     ThumbnailStore._op_setRenderingDefId = IcePy.Operation('setRenderingDefId', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), IcePy._t_long, False, 0),), (), None, (_M_omero._t_ServerError,))
     ThumbnailStore._op_getRenderingDefId = IcePy.Operation('getRenderingDefId', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (), (), ((), IcePy._t_long, False, 0), (_M_omero._t_ServerError,))
     ThumbnailStore._op_getThumbnail = IcePy.Operation('getThumbnail', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RInt, False, 0), ((), _M_omero._t_RInt, False, 0)), (), ((), _M_Ice._t_ByteSeq, False, 0), (_M_omero._t_ServerError,))
+    ThumbnailStore._op_getThumbnailWithoutDefault = IcePy.Operation('getThumbnailWithoutDefault', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RInt, False, 0), ((), _M_omero._t_RInt, False, 0)), (), ((), _M_Ice._t_ByteSeq, False, 0), (_M_omero._t_ServerError,))
     ThumbnailStore._op_getThumbnailSet = IcePy.Operation('getThumbnailSet', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RInt, False, 0), ((), _M_omero._t_RInt, False, 0), ((), _M_omero.sys._t_LongList, False, 0)), (), ((), _M_omero.sys._t_IdByteMap, False, 0), (_M_omero._t_ServerError,))
     ThumbnailStore._op_getThumbnailByLongestSideSet = IcePy.Operation('getThumbnailByLongestSideSet', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RInt, False, 0), ((), _M_omero.sys._t_LongList, False, 0)), (), ((), _M_omero.sys._t_IdByteMap, False, 0), (_M_omero._t_ServerError,))
     ThumbnailStore._op_getThumbnailByLongestSide = IcePy.Operation('getThumbnailByLongestSide', Ice.OperationMode.Idempotent, Ice.OperationMode.Idempotent, True, None, (), (((), _M_omero._t_RInt, False, 0),), (), ((), _M_Ice._t_ByteSeq, False, 0), (_M_omero._t_ServerError,))
