@@ -408,7 +408,7 @@ necessarily be called for every step.'''
 
         def finished(self, rsp, s, current=None):
             '''Called when the command has completed in any fashion
-including cancellation. The [Status::flags] list will
+including cancellation. The Status#flags list will
 contain information about whether or not the process
 was cancelled.'''
             pass
@@ -440,21 +440,21 @@ necessarily be called for every step.'''
             return _M_omero.cmd.CmdCallback._op_step.end(self, _r)
 
         '''Called when the command has completed in any fashion
-including cancellation. The [Status::flags] list will
+including cancellation. The Status#flags list will
 contain information about whether or not the process
 was cancelled.'''
         def finished(self, rsp, s, _ctx=None):
             return _M_omero.cmd.CmdCallback._op_finished.invoke(self, ((rsp, s), _ctx))
 
         '''Called when the command has completed in any fashion
-including cancellation. The [Status::flags] list will
+including cancellation. The Status#flags list will
 contain information about whether or not the process
 was cancelled.'''
         def begin_finished(self, rsp, s, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.cmd.CmdCallback._op_finished.begin(self, ((rsp, s), _response, _ex, _sent, _ctx))
 
         '''Called when the command has completed in any fashion
-including cancellation. The [Status::flags] list will
+including cancellation. The Status#flags list will
 contain information about whether or not the process
 was cancelled.'''
         def end_finished(self, _r):
@@ -521,13 +521,13 @@ execution, otherwise returns null.'''
             '''Returns a status object for the current execution.
 
 This will likely be the same object that would be
-returned as a component of the [Response] value.
+returned as a component of the Response value.
 
 Never null.'''
             pass
 
         def cancel(self, current=None):
-            '''Attempts to cancel execution of this [Request]. Returns
+            '''Attempts to cancel execution of this Request. Returns
 true if cancellation was successful. Returns false if not,
 in which case likely this request will run to completion.'''
             pass
@@ -621,7 +621,7 @@ execution, otherwise returns null.'''
         '''Returns a status object for the current execution.
 
 This will likely be the same object that would be
-returned as a component of the [Response] value.
+returned as a component of the Response value.
 
 Never null.'''
         def getStatus(self, _ctx=None):
@@ -630,7 +630,7 @@ Never null.'''
         '''Returns a status object for the current execution.
 
 This will likely be the same object that would be
-returned as a component of the [Response] value.
+returned as a component of the Response value.
 
 Never null.'''
         def begin_getStatus(self, _response=None, _ex=None, _sent=None, _ctx=None):
@@ -639,7 +639,7 @@ Never null.'''
         '''Returns a status object for the current execution.
 
 This will likely be the same object that would be
-returned as a component of the [Response] value.
+returned as a component of the Response value.
 
 Never null.'''
         def end_getStatus(self, _r):
@@ -648,31 +648,31 @@ Never null.'''
         '''Returns a status object for the current execution.
 
 This will likely be the same object that would be
-returned as a component of the [Response] value.
+returned as a component of the Response value.
 
 Never null.'''
         def getStatus_async(self, _cb, _ctx=None):
             return _M_omero.cmd.Handle._op_getStatus.invokeAsync(self, (_cb, (), _ctx))
 
-        '''Attempts to cancel execution of this [Request]. Returns
+        '''Attempts to cancel execution of this Request. Returns
 true if cancellation was successful. Returns false if not,
 in which case likely this request will run to completion.'''
         def cancel(self, _ctx=None):
             return _M_omero.cmd.Handle._op_cancel.invoke(self, ((), _ctx))
 
-        '''Attempts to cancel execution of this [Request]. Returns
+        '''Attempts to cancel execution of this Request. Returns
 true if cancellation was successful. Returns false if not,
 in which case likely this request will run to completion.'''
         def begin_cancel(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.cmd.Handle._op_cancel.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''Attempts to cancel execution of this [Request]. Returns
+        '''Attempts to cancel execution of this Request. Returns
 true if cancellation was successful. Returns false if not,
 in which case likely this request will run to completion.'''
         def end_cancel(self, _r):
             return _M_omero.cmd.Handle._op_cancel.end(self, _r)
 
-        '''Attempts to cancel execution of this [Request]. Returns
+        '''Attempts to cancel execution of this Request. Returns
 true if cancellation was successful. Returns false if not,
 in which case likely this request will run to completion.'''
         def cancel_async(self, _cb, _ctx=None):

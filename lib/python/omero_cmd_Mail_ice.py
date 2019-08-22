@@ -64,10 +64,10 @@ and is an active user
 - omero.cmd.SendEmailRequest(subject, body, everyone=True, inactive=True)
 sends message to everyone who has email set,
 even inactive users
-- omero.cmd.SendEmailRequest(subject, body, groupIds=[...],
-userIds=[...] )
+- omero.cmd.SendEmailRequest(subject, body, groupIds=\[...],
+userIds=\[...] )
 sends email to active members of given groups and selected users
-- extra=[...] allows to set extra email address if not in DB'''
+- extra=\[...] allows to set extra email address if not in DB'''
         def __init__(self, subject='', body='', html=False, userIds=None, groupIds=None, extra=None, inactive=False, everyone=False):
             _M_omero.cmd.Request.__init__(self)
             self.subject = subject
@@ -128,9 +128,10 @@ sends email to active members of given groups and selected users
 if 'SendEmailResponse' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.SendEmailResponse = Ice.createTempClass()
     class SendEmailResponse(_M_omero.cmd.Response):
-        '''Successful response for [SendEmailRequest]. Contains
+        '''Successful response for SendEmailRequest. Contains
 a list of invalid users that has no email address set.
-If no recipients or invalid users found, an [ERR] will be returned.
+If no recipients or invalid users found, an ERR will be
+returned.
 
 - invalidusers is a list of userIds that email didn't pass criteria
 such as was empty or less then 5 characters

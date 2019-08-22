@@ -61,7 +61,7 @@ svc = sf.getScriptService()
 scripts = svc.getScripts()
 
 if len(scripts) >= 1:
-script_id = svc.keys()[0]
+script_id = svc.keys()\[-1]
 else:
 script_id = svc.uploadScript('/test/my_script.py', SCRIPT_TEXT)
 
@@ -97,18 +97,23 @@ See OMERO.scripts for more information.'''
         ice_staticId = staticmethod(ice_staticId)
 
         def getScripts_async(self, _cb, current=None):
-            '''This method returns official server scripts as a list of [omero::model::OriginalFile] objects.
-These scripts will be executed by the server if submitted via [runScript]. The input parameters
-necessary for proper functioning can be retrieved via [getParams].
+            '''This method returns official server scripts as a list of
+omero.model.OriginalFile objects.
+These scripts will be executed by the server if submitted
+via runScript. The input parameters
+necessary for proper functioning can be retrieved via
+getParams.
 
-The [omero::model::OriginalFil::path] value can be used in other official scripts via the
-language specific import command, since the script directory will be placed on the appropriate
+The omero.model.OriginalFile#path value can be used
+in other official scripts via the
+language specific import command, since the script
+directory will be placed on the appropriate
 environment path variable.
 
 scripts = scriptService.getScripts()
 for script in scripts:
 text = scriptService.getScriptText(script.id.val)
-path = script.path.val[1:] # First symbol is a "/"
+path = script.path.val\[1:\] # First symbol is a "/"
 path = path.replace("/",".")
 print "Possible import: %s" % path
 
@@ -169,8 +174,9 @@ Exceptions:
             pass
 
         def uploadOfficialScript_async(self, _cb, path, scriptText, current=None):
-            '''Like [uploadScript] but is only callable by administrators. The parameters
-for the script are also checked.'''
+            '''Like uploadScript but is only callable by
+administrators. The parameters for the script are also
+checked.'''
             pass
 
         def editScript_async(self, _cb, fileObject, scriptText, current=None):
@@ -216,18 +222,19 @@ Exceptions:
             pass
 
         def runScript_async(self, _cb, scriptID, inputs, waitSecs, current=None):
-            '''If [ResourceError] is thrown, then no [Processor] is available. Use [scheduleJob]
-to create a [omero::model::ScriptJob] in the "Waiting" state. A [Processor] may
-become available.
+            '''If ResourceError is thrown, then no
+Processor is available. Use scheduleJob
+to create a omero.model.ScriptJob in the "Waiting"
+state. A Processor may become available.
 
 try:
 proc = scriptService.runScript(1, {}, None)
 except ResourceError:
 job = scriptService.scheduleScript(1, {}, None)
 
-The [ScriptProcess] proxy MUST be closed before exiting.
-If you would like the script execution to continue in the
-background, pass "True" as the argument.
+The ScriptProcess proxy MUST be closed before
+exiting. If you would like the script execution to continue
+in the background, pass "True" as the argument.
 
 try:
 proc.poll()         # See if process is finished
@@ -237,17 +244,21 @@ proc.close(True)    # Detach and execution can continue
             pass
 
         def canRunScript_async(self, _cb, scriptID, current=None):
-            '''Returns true if there is a processor which will run the given script.
+            '''Returns true if there is a processor which will run the
+given script.
 
-Either the script is an official script and this method will return true
-(though an individual invocation may fail with an [omero::ResourceError]
-for some reason) or this is a user script, and a usermode processor
+Either the script is an official script and this method
+will return true (though an individual invocation may fail
+with an omero.ResourceError for some reason)
+or this is a user script, and a usermode processor
 must be active which takes the scripts user or group.'''
             pass
 
         def validateScript_async(self, _cb, j, acceptsList, current=None):
-            '''Used internally by processor.py to check if the script attached to the [omero::model::Job]
-has a valid script attached, based on the [acceptsList] and the current security context.
+            '''Used internally by processor.py to check if the script
+attached to the omero.model.Job has a valid script
+attached, based on the acceptsList and the current
+security context.
 
 An example of an acceptsList might be Experimenter(myUserId, False), meaning that
 only scripts belonging to me should be trusted. An empty list implies that the server should
@@ -264,18 +275,23 @@ A valid script will be returned if it exists; otherwise null.'''
     _M_omero.api.IScriptPrx = Ice.createTempClass()
     class IScriptPrx(_M_omero.api.ServiceInterfacePrx):
 
-        '''This method returns official server scripts as a list of [omero::model::OriginalFile] objects.
-These scripts will be executed by the server if submitted via [runScript]. The input parameters
-necessary for proper functioning can be retrieved via [getParams].
+        '''This method returns official server scripts as a list of
+omero.model.OriginalFile objects.
+These scripts will be executed by the server if submitted
+via runScript. The input parameters
+necessary for proper functioning can be retrieved via
+getParams.
 
-The [omero::model::OriginalFil::path] value can be used in other official scripts via the
-language specific import command, since the script directory will be placed on the appropriate
+The omero.model.OriginalFile#path value can be used
+in other official scripts via the
+language specific import command, since the script
+directory will be placed on the appropriate
 environment path variable.
 
 scripts = scriptService.getScripts()
 for script in scripts:
 text = scriptService.getScriptText(script.id.val)
-path = script.path.val[1:] # First symbol is a "/"
+path = script.path.val\[1:\] # First symbol is a "/"
 path = path.replace("/",".")
 print "Possible import: %s" % path
 
@@ -287,18 +303,23 @@ Exceptions:
         def getScripts(self, _ctx=None):
             return _M_omero.api.IScript._op_getScripts.invoke(self, ((), _ctx))
 
-        '''This method returns official server scripts as a list of [omero::model::OriginalFile] objects.
-These scripts will be executed by the server if submitted via [runScript]. The input parameters
-necessary for proper functioning can be retrieved via [getParams].
+        '''This method returns official server scripts as a list of
+omero.model.OriginalFile objects.
+These scripts will be executed by the server if submitted
+via runScript. The input parameters
+necessary for proper functioning can be retrieved via
+getParams.
 
-The [omero::model::OriginalFil::path] value can be used in other official scripts via the
-language specific import command, since the script directory will be placed on the appropriate
+The omero.model.OriginalFile#path value can be used
+in other official scripts via the
+language specific import command, since the script
+directory will be placed on the appropriate
 environment path variable.
 
 scripts = scriptService.getScripts()
 for script in scripts:
 text = scriptService.getScriptText(script.id.val)
-path = script.path.val[1:] # First symbol is a "/"
+path = script.path.val\[1:\] # First symbol is a "/"
 path = path.replace("/",".")
 print "Possible import: %s" % path
 
@@ -310,18 +331,23 @@ Exceptions:
         def begin_getScripts(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IScript._op_getScripts.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''This method returns official server scripts as a list of [omero::model::OriginalFile] objects.
-These scripts will be executed by the server if submitted via [runScript]. The input parameters
-necessary for proper functioning can be retrieved via [getParams].
+        '''This method returns official server scripts as a list of
+omero.model.OriginalFile objects.
+These scripts will be executed by the server if submitted
+via runScript. The input parameters
+necessary for proper functioning can be retrieved via
+getParams.
 
-The [omero::model::OriginalFil::path] value can be used in other official scripts via the
-language specific import command, since the script directory will be placed on the appropriate
+The omero.model.OriginalFile#path value can be used
+in other official scripts via the
+language specific import command, since the script
+directory will be placed on the appropriate
 environment path variable.
 
 scripts = scriptService.getScripts()
 for script in scripts:
 text = scriptService.getScriptText(script.id.val)
-path = script.path.val[1:] # First symbol is a "/"
+path = script.path.val\[1:\] # First symbol is a "/"
 path = path.replace("/",".")
 print "Possible import: %s" % path
 
@@ -333,18 +359,23 @@ Exceptions:
         def end_getScripts(self, _r):
             return _M_omero.api.IScript._op_getScripts.end(self, _r)
 
-        '''This method returns official server scripts as a list of [omero::model::OriginalFile] objects.
-These scripts will be executed by the server if submitted via [runScript]. The input parameters
-necessary for proper functioning can be retrieved via [getParams].
+        '''This method returns official server scripts as a list of
+omero.model.OriginalFile objects.
+These scripts will be executed by the server if submitted
+via runScript. The input parameters
+necessary for proper functioning can be retrieved via
+getParams.
 
-The [omero::model::OriginalFil::path] value can be used in other official scripts via the
-language specific import command, since the script directory will be placed on the appropriate
+The omero.model.OriginalFile#path value can be used
+in other official scripts via the
+language specific import command, since the script
+directory will be placed on the appropriate
 environment path variable.
 
 scripts = scriptService.getScripts()
 for script in scripts:
 text = scriptService.getScriptText(script.id.val)
-path = script.path.val[1:] # First symbol is a "/"
+path = script.path.val\[1:\] # First symbol is a "/"
 path = path.replace("/",".")
 print "Possible import: %s" % path
 
@@ -552,23 +583,27 @@ Exceptions:
         def uploadScript_async(self, _cb, path, scriptText, _ctx=None):
             return _M_omero.api.IScript._op_uploadScript.invokeAsync(self, (_cb, (path, scriptText), _ctx))
 
-        '''Like [uploadScript] but is only callable by administrators. The parameters
-for the script are also checked.'''
+        '''Like uploadScript but is only callable by
+administrators. The parameters for the script are also
+checked.'''
         def uploadOfficialScript(self, path, scriptText, _ctx=None):
             return _M_omero.api.IScript._op_uploadOfficialScript.invoke(self, ((path, scriptText), _ctx))
 
-        '''Like [uploadScript] but is only callable by administrators. The parameters
-for the script are also checked.'''
+        '''Like uploadScript but is only callable by
+administrators. The parameters for the script are also
+checked.'''
         def begin_uploadOfficialScript(self, path, scriptText, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IScript._op_uploadOfficialScript.begin(self, ((path, scriptText), _response, _ex, _sent, _ctx))
 
-        '''Like [uploadScript] but is only callable by administrators. The parameters
-for the script are also checked.'''
+        '''Like uploadScript but is only callable by
+administrators. The parameters for the script are also
+checked.'''
         def end_uploadOfficialScript(self, _r):
             return _M_omero.api.IScript._op_uploadOfficialScript.end(self, _r)
 
-        '''Like [uploadScript] but is only callable by administrators. The parameters
-for the script are also checked.'''
+        '''Like uploadScript but is only callable by
+administrators. The parameters for the script are also
+checked.'''
         def uploadOfficialScript_async(self, _cb, path, scriptText, _ctx=None):
             return _M_omero.api.IScript._op_uploadOfficialScript.invokeAsync(self, (_cb, (path, scriptText), _ctx))
 
@@ -740,18 +775,19 @@ Exceptions:
         def deleteScript_async(self, _cb, scriptID, _ctx=None):
             return _M_omero.api.IScript._op_deleteScript.invokeAsync(self, (_cb, (scriptID, ), _ctx))
 
-        '''If [ResourceError] is thrown, then no [Processor] is available. Use [scheduleJob]
-to create a [omero::model::ScriptJob] in the "Waiting" state. A [Processor] may
-become available.
+        '''If ResourceError is thrown, then no
+Processor is available. Use scheduleJob
+to create a omero.model.ScriptJob in the "Waiting"
+state. A Processor may become available.
 
 try:
 proc = scriptService.runScript(1, {}, None)
 except ResourceError:
 job = scriptService.scheduleScript(1, {}, None)
 
-The [ScriptProcess] proxy MUST be closed before exiting.
-If you would like the script execution to continue in the
-background, pass "True" as the argument.
+The ScriptProcess proxy MUST be closed before
+exiting. If you would like the script execution to continue
+in the background, pass "True" as the argument.
 
 try:
 proc.poll()         # See if process is finished
@@ -761,18 +797,19 @@ proc.close(True)    # Detach and execution can continue
         def runScript(self, scriptID, inputs, waitSecs, _ctx=None):
             return _M_omero.api.IScript._op_runScript.invoke(self, ((scriptID, inputs, waitSecs), _ctx))
 
-        '''If [ResourceError] is thrown, then no [Processor] is available. Use [scheduleJob]
-to create a [omero::model::ScriptJob] in the "Waiting" state. A [Processor] may
-become available.
+        '''If ResourceError is thrown, then no
+Processor is available. Use scheduleJob
+to create a omero.model.ScriptJob in the "Waiting"
+state. A Processor may become available.
 
 try:
 proc = scriptService.runScript(1, {}, None)
 except ResourceError:
 job = scriptService.scheduleScript(1, {}, None)
 
-The [ScriptProcess] proxy MUST be closed before exiting.
-If you would like the script execution to continue in the
-background, pass "True" as the argument.
+The ScriptProcess proxy MUST be closed before
+exiting. If you would like the script execution to continue
+in the background, pass "True" as the argument.
 
 try:
 proc.poll()         # See if process is finished
@@ -782,18 +819,19 @@ proc.close(True)    # Detach and execution can continue
         def begin_runScript(self, scriptID, inputs, waitSecs, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IScript._op_runScript.begin(self, ((scriptID, inputs, waitSecs), _response, _ex, _sent, _ctx))
 
-        '''If [ResourceError] is thrown, then no [Processor] is available. Use [scheduleJob]
-to create a [omero::model::ScriptJob] in the "Waiting" state. A [Processor] may
-become available.
+        '''If ResourceError is thrown, then no
+Processor is available. Use scheduleJob
+to create a omero.model.ScriptJob in the "Waiting"
+state. A Processor may become available.
 
 try:
 proc = scriptService.runScript(1, {}, None)
 except ResourceError:
 job = scriptService.scheduleScript(1, {}, None)
 
-The [ScriptProcess] proxy MUST be closed before exiting.
-If you would like the script execution to continue in the
-background, pass "True" as the argument.
+The ScriptProcess proxy MUST be closed before
+exiting. If you would like the script execution to continue
+in the background, pass "True" as the argument.
 
 try:
 proc.poll()         # See if process is finished
@@ -803,18 +841,19 @@ proc.close(True)    # Detach and execution can continue
         def end_runScript(self, _r):
             return _M_omero.api.IScript._op_runScript.end(self, _r)
 
-        '''If [ResourceError] is thrown, then no [Processor] is available. Use [scheduleJob]
-to create a [omero::model::ScriptJob] in the "Waiting" state. A [Processor] may
-become available.
+        '''If ResourceError is thrown, then no
+Processor is available. Use scheduleJob
+to create a omero.model.ScriptJob in the "Waiting"
+state. A Processor may become available.
 
 try:
 proc = scriptService.runScript(1, {}, None)
 except ResourceError:
 job = scriptService.scheduleScript(1, {}, None)
 
-The [ScriptProcess] proxy MUST be closed before exiting.
-If you would like the script execution to continue in the
-background, pass "True" as the argument.
+The ScriptProcess proxy MUST be closed before
+exiting. If you would like the script execution to continue
+in the background, pass "True" as the argument.
 
 try:
 proc.poll()         # See if process is finished
@@ -824,44 +863,54 @@ proc.close(True)    # Detach and execution can continue
         def runScript_async(self, _cb, scriptID, inputs, waitSecs, _ctx=None):
             return _M_omero.api.IScript._op_runScript.invokeAsync(self, (_cb, (scriptID, inputs, waitSecs), _ctx))
 
-        '''Returns true if there is a processor which will run the given script.
+        '''Returns true if there is a processor which will run the
+given script.
 
-Either the script is an official script and this method will return true
-(though an individual invocation may fail with an [omero::ResourceError]
-for some reason) or this is a user script, and a usermode processor
+Either the script is an official script and this method
+will return true (though an individual invocation may fail
+with an omero.ResourceError for some reason)
+or this is a user script, and a usermode processor
 must be active which takes the scripts user or group.'''
         def canRunScript(self, scriptID, _ctx=None):
             return _M_omero.api.IScript._op_canRunScript.invoke(self, ((scriptID, ), _ctx))
 
-        '''Returns true if there is a processor which will run the given script.
+        '''Returns true if there is a processor which will run the
+given script.
 
-Either the script is an official script and this method will return true
-(though an individual invocation may fail with an [omero::ResourceError]
-for some reason) or this is a user script, and a usermode processor
+Either the script is an official script and this method
+will return true (though an individual invocation may fail
+with an omero.ResourceError for some reason)
+or this is a user script, and a usermode processor
 must be active which takes the scripts user or group.'''
         def begin_canRunScript(self, scriptID, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IScript._op_canRunScript.begin(self, ((scriptID, ), _response, _ex, _sent, _ctx))
 
-        '''Returns true if there is a processor which will run the given script.
+        '''Returns true if there is a processor which will run the
+given script.
 
-Either the script is an official script and this method will return true
-(though an individual invocation may fail with an [omero::ResourceError]
-for some reason) or this is a user script, and a usermode processor
+Either the script is an official script and this method
+will return true (though an individual invocation may fail
+with an omero.ResourceError for some reason)
+or this is a user script, and a usermode processor
 must be active which takes the scripts user or group.'''
         def end_canRunScript(self, _r):
             return _M_omero.api.IScript._op_canRunScript.end(self, _r)
 
-        '''Returns true if there is a processor which will run the given script.
+        '''Returns true if there is a processor which will run the
+given script.
 
-Either the script is an official script and this method will return true
-(though an individual invocation may fail with an [omero::ResourceError]
-for some reason) or this is a user script, and a usermode processor
+Either the script is an official script and this method
+will return true (though an individual invocation may fail
+with an omero.ResourceError for some reason)
+or this is a user script, and a usermode processor
 must be active which takes the scripts user or group.'''
         def canRunScript_async(self, _cb, scriptID, _ctx=None):
             return _M_omero.api.IScript._op_canRunScript.invokeAsync(self, (_cb, (scriptID, ), _ctx))
 
-        '''Used internally by processor.py to check if the script attached to the [omero::model::Job]
-has a valid script attached, based on the [acceptsList] and the current security context.
+        '''Used internally by processor.py to check if the script
+attached to the omero.model.Job has a valid script
+attached, based on the acceptsList and the current
+security context.
 
 An example of an acceptsList might be Experimenter(myUserId, False), meaning that
 only scripts belonging to me should be trusted. An empty list implies that the server should
@@ -871,8 +920,10 @@ A valid script will be returned if it exists; otherwise null.'''
         def validateScript(self, j, acceptsList, _ctx=None):
             return _M_omero.api.IScript._op_validateScript.invoke(self, ((j, acceptsList), _ctx))
 
-        '''Used internally by processor.py to check if the script attached to the [omero::model::Job]
-has a valid script attached, based on the [acceptsList] and the current security context.
+        '''Used internally by processor.py to check if the script
+attached to the omero.model.Job has a valid script
+attached, based on the acceptsList and the current
+security context.
 
 An example of an acceptsList might be Experimenter(myUserId, False), meaning that
 only scripts belonging to me should be trusted. An empty list implies that the server should
@@ -882,8 +933,10 @@ A valid script will be returned if it exists; otherwise null.'''
         def begin_validateScript(self, j, acceptsList, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IScript._op_validateScript.begin(self, ((j, acceptsList), _response, _ex, _sent, _ctx))
 
-        '''Used internally by processor.py to check if the script attached to the [omero::model::Job]
-has a valid script attached, based on the [acceptsList] and the current security context.
+        '''Used internally by processor.py to check if the script
+attached to the omero.model.Job has a valid script
+attached, based on the acceptsList and the current
+security context.
 
 An example of an acceptsList might be Experimenter(myUserId, False), meaning that
 only scripts belonging to me should be trusted. An empty list implies that the server should
@@ -893,8 +946,10 @@ A valid script will be returned if it exists; otherwise null.'''
         def end_validateScript(self, _r):
             return _M_omero.api.IScript._op_validateScript.end(self, _r)
 
-        '''Used internally by processor.py to check if the script attached to the [omero::model::Job]
-has a valid script attached, based on the [acceptsList] and the current security context.
+        '''Used internally by processor.py to check if the script
+attached to the omero.model.Job has a valid script
+attached, based on the acceptsList and the current
+security context.
 
 An example of an acceptsList might be Experimenter(myUserId, False), meaning that
 only scripts belonging to me should be trusted. An empty list implies that the server should

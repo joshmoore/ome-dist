@@ -70,7 +70,8 @@ _M_omero.metadatastore.__doc__ = '''Types used during import.'''
 if 'IObjectContainer' not in _M_omero.metadatastore.__dict__:
     _M_omero.metadatastore.IObjectContainer = Ice.createTempClass()
     class IObjectContainer(Ice.Object):
-        '''Container-class used by the import mechanism. Passed to [omero::api::MetadataStore]'''
+        '''Container-class used by the import mechanism. Passed to
+omero.api.MetadataStore'''
         def __init__(self, LSID='', indexes=None, sourceObject=None):
             self.LSID = LSID
             self.indexes = indexes

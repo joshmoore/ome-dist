@@ -421,9 +421,9 @@ if 'ChownRsp' not in _M_omero.cmd.__dict__:
 if 'Delete' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.Delete = Ice.createTempClass()
     class Delete(_M_omero.cmd.GraphModify):
-        '''Delete requests will return a [omero::cmd::DeleteRsp]
+        '''Delete requests will return a omero.cmd.DeleteRsp
 unless an error has occurred in which case a standard
-[omero::cmd::ERR] may be returned.'''
+omero.cmd.ERR may be returned.'''
         def __init__(self, type='', id=0, options=None):
             _M_omero.cmd.GraphModify.__init__(self, type, id, options)
 
@@ -1097,6 +1097,109 @@ is as from the given request.'''
 
     _M_omero.cmd.SkipHeadPrx = SkipHeadPrx
     del SkipHeadPrx
+
+if 'Duplicate' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.Duplicate = Ice.createTempClass()
+    class Duplicate(_M_omero.cmd.GraphModify2):
+        '''Duplicate model objects with some selection of their subgraph.
+All target model objects must be in the current group context.
+The extra three data members allow adjustment of the related
+subgraph. The same type must not be listed in more than one of
+those data members. Use of a more specific sub-type in a data
+member always overrides the more general type in another.'''
+        def __init__(self, targetObjects=None, childOptions=None, dryRun=False, typesToDuplicate=None, typesToReference=None, typesToIgnore=None):
+            _M_omero.cmd.GraphModify2.__init__(self, targetObjects, childOptions, dryRun)
+            self.typesToDuplicate = typesToDuplicate
+            self.typesToReference = typesToReference
+            self.typesToIgnore = typesToIgnore
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::Duplicate', '::omero::cmd::GraphModify2', '::omero::cmd::Request')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::Duplicate'
+
+        def ice_staticId():
+            return '::omero::cmd::Duplicate'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_Duplicate)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.DuplicatePrx = Ice.createTempClass()
+    class DuplicatePrx(_M_omero.cmd.GraphModify2Prx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.DuplicatePrx.ice_checkedCast(proxy, '::omero::cmd::Duplicate', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.DuplicatePrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_DuplicatePrx = IcePy.defineProxy('::omero::cmd::Duplicate', DuplicatePrx)
+
+    _M_omero.cmd._t_Duplicate = IcePy.declareClass('::omero::cmd::Duplicate')
+
+    _M_omero.cmd._t_Duplicate = IcePy.defineClass('::omero::cmd::Duplicate', Duplicate, -1, (), False, False, _M_omero.cmd._t_GraphModify2, (), (
+        ('typesToDuplicate', (), _M_omero.api._t_StringSet, False, 0),
+        ('typesToReference', (), _M_omero.api._t_StringSet, False, 0),
+        ('typesToIgnore', (), _M_omero.api._t_StringSet, False, 0)
+    ))
+    Duplicate._ice_type = _M_omero.cmd._t_Duplicate
+
+    _M_omero.cmd.Duplicate = Duplicate
+    del Duplicate
+
+    _M_omero.cmd.DuplicatePrx = DuplicatePrx
+    del DuplicatePrx
+
+if 'DuplicateResponse' not in _M_omero.cmd.__dict__:
+    _M_omero.cmd.DuplicateResponse = Ice.createTempClass()
+    class DuplicateResponse(_M_omero.cmd.OK):
+        '''Result of duplicating model objects.'''
+        def __init__(self, duplicates=None):
+            _M_omero.cmd.OK.__init__(self)
+            self.duplicates = duplicates
+
+        def ice_ids(self, current=None):
+            return ('::Ice::Object', '::omero::cmd::DuplicateResponse', '::omero::cmd::OK', '::omero::cmd::Response')
+
+        def ice_id(self, current=None):
+            return '::omero::cmd::DuplicateResponse'
+
+        def ice_staticId():
+            return '::omero::cmd::DuplicateResponse'
+        ice_staticId = staticmethod(ice_staticId)
+
+        def __str__(self):
+            return IcePy.stringify(self, _M_omero.cmd._t_DuplicateResponse)
+
+        __repr__ = __str__
+
+    _M_omero.cmd.DuplicateResponsePrx = Ice.createTempClass()
+    class DuplicateResponsePrx(_M_omero.cmd.OKPrx):
+
+        def checkedCast(proxy, facetOrCtx=None, _ctx=None):
+            return _M_omero.cmd.DuplicateResponsePrx.ice_checkedCast(proxy, '::omero::cmd::DuplicateResponse', facetOrCtx, _ctx)
+        checkedCast = staticmethod(checkedCast)
+
+        def uncheckedCast(proxy, facet=None):
+            return _M_omero.cmd.DuplicateResponsePrx.ice_uncheckedCast(proxy, facet)
+        uncheckedCast = staticmethod(uncheckedCast)
+
+    _M_omero.cmd._t_DuplicateResponsePrx = IcePy.defineProxy('::omero::cmd::DuplicateResponse', DuplicateResponsePrx)
+
+    _M_omero.cmd._t_DuplicateResponse = IcePy.defineClass('::omero::cmd::DuplicateResponse', DuplicateResponse, -1, (), False, False, _M_omero.cmd._t_OK, (), (('duplicates', (), _M_omero.api._t_StringLongListMap, False, 0),))
+    DuplicateResponse._ice_type = _M_omero.cmd._t_DuplicateResponse
+
+    _M_omero.cmd.DuplicateResponse = DuplicateResponse
+    del DuplicateResponse
+
+    _M_omero.cmd.DuplicateResponsePrx = DuplicateResponsePrx
+    del DuplicateResponsePrx
 
 if 'LegalGraphTargets' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.LegalGraphTargets = Ice.createTempClass()

@@ -51,11 +51,11 @@ http://trac.openmicroscopy.org.uk/ome/wiki/ExceptionHandling
 including examples of what a appropriate try/catch block would look like.
 
 All exceptions that are thrown by a remote call (any call on a *Prx instance)
-will be either a subclass of [Ice::UserException] or [Ice::LocalException].
+will be either a subclass of Ice.UserException or Ice.LocalException.
 Inheritance Hierarchy for Exceptions
 from the Ice manual shows the entire exception hierarchy. The exceptions described in
-this file will subclass from [Ice::UserException]. Other Ice-runtime exceptions subclass
-from [Ice::LocalException].
+this file will subclass from Ice.UserException. Other Ice-runtime exceptions subclass
+from Ice.LocalException.
 
 OMERO Specific:
 ===============
@@ -91,8 +91,8 @@ ServerError (root server exception)
 |_ SessionTimeoutException (session timed out; not yet removed)
 \_ ShutdownInProgress      (session on this server will most likely be destroyed)
 
-However, in addition to [Ice::LocalException] subclasses, the Ice runtime also
-defines subclasses of [Ice::UserException]. In some cases, OMERO subclasses
+However, in addition to Ice.LocalException subclasses, the Ice runtime also
+defines subclasses of Ice.UserException. In some cases, OMERO subclasses
 from these exceptions. The subclasses shown below are not exhaustive, but show those
 which an application's exception handler may want to deal with.
 

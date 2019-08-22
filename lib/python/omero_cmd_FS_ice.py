@@ -55,8 +55,8 @@ if 'OriginalMetadataRequest' not in _M_omero.cmd.__dict__:
         '''Requests the file metadata to be loaded for a given
 image. This should handle both the pre-FS metadata
 in file annotations as well as loading the metadata
-directly from the FS files. A [OriginalMetadataResponse]
-will be returned under normal conditions, otherwise a [ERR]
+directly from the FS files. A OriginalMetadataResponse
+will be returned under normal conditions, otherwise a ERR
 will be returned.'''
         def __init__(self, imageId=0):
             _M_omero.cmd.Request.__init__(self)
@@ -102,11 +102,11 @@ will be returned.'''
 if 'OriginalMetadataResponse' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.OriginalMetadataResponse = Ice.createTempClass()
     class OriginalMetadataResponse(_M_omero.cmd.Response):
-        '''Successful response for [OriginalMetadataRequest]. Contains
+        '''Successful response for OriginalMetadataRequest. Contains
 both the global and the series metadata as maps. Only one
-of [filesetId] or [filesetAnnotationId] will be set. Pre-FS
-images will have [filesetAnnotationId] set; otherwise
-[filesetId] will be set.'''
+of filesetId or filesetAnnotationId will be set.
+Pre-FS images will have filesetAnnotationId set; otherwise
+filesetId will be set.'''
         def __init__(self, filesetId=None, fileAnnotationId=None, globalMetadata=None, seriesMetadata=None):
             _M_omero.cmd.Response.__init__(self)
             self.filesetId = filesetId
@@ -314,14 +314,15 @@ if 'ManageImageBinaries' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.ManageImageBinaries = Ice.createTempClass()
     class ManageImageBinaries(_M_omero.cmd.Request):
         '''Queries and modifies the various binary artifacts
-which may be linked to an [omero::model::Image].
+which may be linked to an omero.model.Image.
 
 This can be useful, e.g., after converting pre-OMERO-5
-archived original files into [omero::model::Fileset].
+archived original files into omero.model.Fileset.
 
 The command works in several stages:
 
-1. loads an [omero::model::Image] by id, failing if none present.
+1. loads an omero.model.Image by id, failing if none
+present.
 2. renames Pixels file to '*_bak'
 3. deletes existing Pyramidfiles if present;
 
@@ -377,7 +378,7 @@ to iteratively test if the migration is working.'''
 if 'ManageImageBinariesResponse' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.ManageImageBinariesResponse = Ice.createTempClass()
     class ManageImageBinariesResponse(_M_omero.cmd.Response):
-        '''[Response] from a [ManageImageBinaries] [Request].
+        '''Response from a ManageImageBinaries Request.
 If no action is requested, then the fields of this
 instance can be examined to see what would be done
 if requested.'''

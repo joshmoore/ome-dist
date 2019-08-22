@@ -33,7 +33,7 @@ __name__ = 'omero'
 if 'RObject' not in _M_omero.__dict__:
     _M_omero.RObject = Ice.createTempClass()
     class RObject(_M_omero.RType):
-        '''Wrapper for an [omero::model::IObject] instance.'''
+        '''Wrapper for an omero.model.IObject instance.'''
         def __init__(self, _val=None):
             if Ice.getType(self) == _M_omero.RObject:
                 raise RuntimeError('omero.RObject is an abstract class')

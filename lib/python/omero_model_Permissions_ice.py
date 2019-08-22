@@ -73,7 +73,7 @@ logic to the Unix filesystem.'''
 
         def setPerm1(self, value, current=None):
             '''Do not use!
-Throws [omero::ClientError] if mutation not allowed.'''
+Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def isDisallow(self, restriction, current=None):
@@ -152,39 +152,39 @@ already identifies that it's readable.'''
             pass
 
         def setUserRead(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setUserAnnotate(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setUserWrite(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setGroupRead(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setGroupAnnotate(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setGroupWrite(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setWorldRead(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setWorldAnnotate(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def setWorldWrite(self, value, current=None):
-            '''Throws [omero::ClientError] if mutation not allowed.'''
+            '''Throws omero.ClientError if mutation not allowed.'''
             pass
 
         def __str__(self):
@@ -208,17 +208,17 @@ already identifies that it's readable.'''
             return _M_omero.model.Permissions._op_getPerm1.end(self, _r)
 
         '''Do not use!
-Throws [omero::ClientError] if mutation not allowed.'''
+Throws omero.ClientError if mutation not allowed.'''
         def setPerm1(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setPerm1.invoke(self, ((value, ), _ctx))
 
         '''Do not use!
-Throws [omero::ClientError] if mutation not allowed.'''
+Throws omero.ClientError if mutation not allowed.'''
         def begin_setPerm1(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setPerm1.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
         '''Do not use!
-Throws [omero::ClientError] if mutation not allowed.'''
+Throws omero.ClientError if mutation not allowed.'''
         def end_setPerm1(self, _r):
             return _M_omero.model.Permissions._op_setPerm1.end(self, _r)
 
@@ -447,111 +447,111 @@ already identifies that it's readable.'''
         def end_isWorldWrite(self, _r):
             return _M_omero.model.Permissions._op_isWorldWrite.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setUserRead(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setUserRead.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setUserRead(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setUserRead.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setUserRead(self, _r):
             return _M_omero.model.Permissions._op_setUserRead.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setUserAnnotate(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setUserAnnotate.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setUserAnnotate(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setUserAnnotate.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setUserAnnotate(self, _r):
             return _M_omero.model.Permissions._op_setUserAnnotate.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setUserWrite(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setUserWrite.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setUserWrite(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setUserWrite.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setUserWrite(self, _r):
             return _M_omero.model.Permissions._op_setUserWrite.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setGroupRead(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupRead.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setGroupRead(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupRead.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setGroupRead(self, _r):
             return _M_omero.model.Permissions._op_setGroupRead.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setGroupAnnotate(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupAnnotate.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setGroupAnnotate(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupAnnotate.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setGroupAnnotate(self, _r):
             return _M_omero.model.Permissions._op_setGroupAnnotate.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setGroupWrite(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupWrite.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setGroupWrite(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setGroupWrite.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setGroupWrite(self, _r):
             return _M_omero.model.Permissions._op_setGroupWrite.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setWorldRead(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldRead.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setWorldRead(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldRead.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setWorldRead(self, _r):
             return _M_omero.model.Permissions._op_setWorldRead.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setWorldAnnotate(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldAnnotate.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setWorldAnnotate(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldAnnotate.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setWorldAnnotate(self, _r):
             return _M_omero.model.Permissions._op_setWorldAnnotate.end(self, _r)
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def setWorldWrite(self, value, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldWrite.invoke(self, ((value, ), _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def begin_setWorldWrite(self, value, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Permissions._op_setWorldWrite.begin(self, ((value, ), _response, _ex, _sent, _ctx))
 
-        '''Throws [omero::ClientError] if mutation not allowed.'''
+        '''Throws omero.ClientError if mutation not allowed.'''
         def end_setWorldWrite(self, _r):
             return _M_omero.model.Permissions._op_setWorldWrite.end(self, _r)
 

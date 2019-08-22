@@ -72,7 +72,7 @@ if 'Column' not in _M_omero.grid.__dict__:
     class Column(Ice.Object):
         '''Base type for dealing working with tabular data. For efficiency,
 data is grouped by type, i.e. column. These value objects are passed
-through the [Table] interface.'''
+through the Table interface.'''
         def __init__(self, name='', description=''):
             self.name = name
             self.description = description
@@ -814,8 +814,9 @@ TODO:Test effect of returning a billion rows matching getWhereList()'''
         def readCoordinates(self, rowNumbers, current=None):
             '''Read the given rows of data.
 
-[rowNumbers] must contain at least one element or an
-[omero::ApiUsageException] will be thrown.'''
+Arguments:
+{    rowNumbers} must contain at least one element or an
+omero.ApiUsageException will be thrown.'''
             pass
 
         def read(self, colNumbers, start, stop, current=None):
@@ -834,8 +835,8 @@ Python examples:
 data = table.slice(None, None)
 assert len(data.rowNumbers) == table.getNumberOfRows()
 
-data = table.slice(None, [3,2,1])
-assert data.rowNumbers == [3,2,1]'''
+data = table.slice(None, \[3,2,1])
+assert data.rowNumbers == \[3,2,1]'''
             pass
 
         def addData(self, cols, current=None):
@@ -844,8 +845,8 @@ assert data.rowNumbers == [3,2,1]'''
         def update(self, modifiedData, current=None):
             '''Allows the user to modify a Data instance passed back
 from a query method and have the values modified. It
-is critical that the [Data::lastModification] and the
-[Data::rowNumbers] fields are properly set. An exception
+is critical that the Data#lastModification and the
+Data#rowNumbers fields are properly set. An exception
 will be thrown if the data has since been modified.'''
             pass
 
@@ -957,29 +958,33 @@ TODO:Test effect of returning a billion rows matching getWhereList()'''
 
         '''Read the given rows of data.
 
-[rowNumbers] must contain at least one element or an
-[omero::ApiUsageException] will be thrown.'''
+Arguments:
+{    rowNumbers} must contain at least one element or an
+omero.ApiUsageException will be thrown.'''
         def readCoordinates(self, rowNumbers, _ctx=None):
             return _M_omero.grid.Table._op_readCoordinates.invoke(self, ((rowNumbers, ), _ctx))
 
         '''Read the given rows of data.
 
-[rowNumbers] must contain at least one element or an
-[omero::ApiUsageException] will be thrown.'''
+Arguments:
+{    rowNumbers} must contain at least one element or an
+omero.ApiUsageException will be thrown.'''
         def begin_readCoordinates(self, rowNumbers, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Table._op_readCoordinates.begin(self, ((rowNumbers, ), _response, _ex, _sent, _ctx))
 
         '''Read the given rows of data.
 
-[rowNumbers] must contain at least one element or an
-[omero::ApiUsageException] will be thrown.'''
+Arguments:
+{    rowNumbers} must contain at least one element or an
+omero.ApiUsageException will be thrown.'''
         def end_readCoordinates(self, _r):
             return _M_omero.grid.Table._op_readCoordinates.end(self, _r)
 
         '''Read the given rows of data.
 
-[rowNumbers] must contain at least one element or an
-[omero::ApiUsageException] will be thrown.'''
+Arguments:
+{    rowNumbers} must contain at least one element or an
+omero.ApiUsageException will be thrown.'''
         def readCoordinates_async(self, _cb, rowNumbers, _ctx=None):
             return _M_omero.grid.Table._op_readCoordinates.invokeAsync(self, (_cb, (rowNumbers, ), _ctx))
 
@@ -1010,8 +1015,8 @@ Python examples:
 data = table.slice(None, None)
 assert len(data.rowNumbers) == table.getNumberOfRows()
 
-data = table.slice(None, [3,2,1])
-assert data.rowNumbers == [3,2,1]'''
+data = table.slice(None, \[3,2,1])
+assert data.rowNumbers == \[3,2,1]'''
         def slice(self, colNumbers, rowNumbers, _ctx=None):
             return _M_omero.grid.Table._op_slice.invoke(self, ((colNumbers, rowNumbers), _ctx))
 
@@ -1026,8 +1031,8 @@ Python examples:
 data = table.slice(None, None)
 assert len(data.rowNumbers) == table.getNumberOfRows()
 
-data = table.slice(None, [3,2,1])
-assert data.rowNumbers == [3,2,1]'''
+data = table.slice(None, \[3,2,1])
+assert data.rowNumbers == \[3,2,1]'''
         def begin_slice(self, colNumbers, rowNumbers, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Table._op_slice.begin(self, ((colNumbers, rowNumbers), _response, _ex, _sent, _ctx))
 
@@ -1042,8 +1047,8 @@ Python examples:
 data = table.slice(None, None)
 assert len(data.rowNumbers) == table.getNumberOfRows()
 
-data = table.slice(None, [3,2,1])
-assert data.rowNumbers == [3,2,1]'''
+data = table.slice(None, \[3,2,1])
+assert data.rowNumbers == \[3,2,1]'''
         def end_slice(self, _r):
             return _M_omero.grid.Table._op_slice.end(self, _r)
 
@@ -1058,8 +1063,8 @@ Python examples:
 data = table.slice(None, None)
 assert len(data.rowNumbers) == table.getNumberOfRows()
 
-data = table.slice(None, [3,2,1])
-assert data.rowNumbers == [3,2,1]'''
+data = table.slice(None, \[3,2,1])
+assert data.rowNumbers == \[3,2,1]'''
         def slice_async(self, _cb, colNumbers, rowNumbers, _ctx=None):
             return _M_omero.grid.Table._op_slice.invokeAsync(self, (_cb, (colNumbers, rowNumbers), _ctx))
 
@@ -1077,32 +1082,32 @@ assert data.rowNumbers == [3,2,1]'''
 
         '''Allows the user to modify a Data instance passed back
 from a query method and have the values modified. It
-is critical that the [Data::lastModification] and the
-[Data::rowNumbers] fields are properly set. An exception
+is critical that the Data#lastModification and the
+Data#rowNumbers fields are properly set. An exception
 will be thrown if the data has since been modified.'''
         def update(self, modifiedData, _ctx=None):
             return _M_omero.grid.Table._op_update.invoke(self, ((modifiedData, ), _ctx))
 
         '''Allows the user to modify a Data instance passed back
 from a query method and have the values modified. It
-is critical that the [Data::lastModification] and the
-[Data::rowNumbers] fields are properly set. An exception
+is critical that the Data#lastModification and the
+Data#rowNumbers fields are properly set. An exception
 will be thrown if the data has since been modified.'''
         def begin_update(self, modifiedData, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Table._op_update.begin(self, ((modifiedData, ), _response, _ex, _sent, _ctx))
 
         '''Allows the user to modify a Data instance passed back
 from a query method and have the values modified. It
-is critical that the [Data::lastModification] and the
-[Data::rowNumbers] fields are properly set. An exception
+is critical that the Data#lastModification and the
+Data#rowNumbers fields are properly set. An exception
 will be thrown if the data has since been modified.'''
         def end_update(self, _r):
             return _M_omero.grid.Table._op_update.end(self, _r)
 
         '''Allows the user to modify a Data instance passed back
 from a query method and have the values modified. It
-is critical that the [Data::lastModification] and the
-[Data::rowNumbers] fields are properly set. An exception
+is critical that the Data#lastModification and the
+Data#rowNumbers fields are properly set. An exception
 will be thrown if the data has since been modified.'''
         def update_async(self, _cb, modifiedData, _ctx=None):
             return _M_omero.grid.Table._op_update.invokeAsync(self, (_cb, (modifiedData, ), _ctx))
@@ -1274,7 +1279,7 @@ if 'Tables' not in _M_omero.grid.__dict__:
 This service will open the file locally to access the data.
 After any modification, the file will be saved locally and
 the server asked to update the database record. This is done
-via services in the [omero::api::ServiceFactory].'''
+via services in the omero.api.ServiceFactory.'''
             pass
 
         def __str__(self):
@@ -1305,7 +1310,7 @@ via services in the [omero::api::ServiceFactory].'''
 This service will open the file locally to access the data.
 After any modification, the file will be saved locally and
 the server asked to update the database record. This is done
-via services in the [omero::api::ServiceFactory].'''
+via services in the omero.api.ServiceFactory.'''
         def getTable(self, file, sf, _ctx=None):
             return _M_omero.grid.Tables._op_getTable.invoke(self, ((file, sf), _ctx))
 
@@ -1313,7 +1318,7 @@ via services in the [omero::api::ServiceFactory].'''
 This service will open the file locally to access the data.
 After any modification, the file will be saved locally and
 the server asked to update the database record. This is done
-via services in the [omero::api::ServiceFactory].'''
+via services in the omero.api.ServiceFactory.'''
         def begin_getTable(self, file, sf, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Tables._op_getTable.begin(self, ((file, sf), _response, _ex, _sent, _ctx))
 
@@ -1321,7 +1326,7 @@ via services in the [omero::api::ServiceFactory].'''
 This service will open the file locally to access the data.
 After any modification, the file will be saved locally and
 the server asked to update the database record. This is done
-via services in the [omero::api::ServiceFactory].'''
+via services in the omero.api.ServiceFactory.'''
         def end_getTable(self, _r):
             return _M_omero.grid.Tables._op_getTable.end(self, _r)
 
@@ -1329,7 +1334,7 @@ via services in the [omero::api::ServiceFactory].'''
 This service will open the file locally to access the data.
 After any modification, the file will be saved locally and
 the server asked to update the database record. This is done
-via services in the [omero::api::ServiceFactory].'''
+via services in the omero.api.ServiceFactory.'''
         def getTable_async(self, _cb, file, sf, _ctx=None):
             return _M_omero.grid.Tables._op_getTable.invokeAsync(self, (_cb, (file, sf), _ctx))
 

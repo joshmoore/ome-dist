@@ -93,7 +93,7 @@ are predominantly write-only or involve the population of
 a brand new pixel buffer using true here is a safe
 optimization otherwise false is expected.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def getPixelsId_async(self, _cb, current=None):
@@ -310,7 +310,7 @@ Exceptions:
     BufferOverflowException if an attempt is made to write off the
 end of the file.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def setRegion_async(self, _cb, size, offset, buf, current=None):
@@ -320,7 +320,7 @@ Arguments:
     offset offset within the pixel buffer.
     buf a byte array of the data.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def setRow_async(self, _cb, buf, y, z, c, t, current=None):
@@ -332,7 +332,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def setPlane_async(self, _cb, buf, z, c, t, current=None):
@@ -343,7 +343,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def setStack_async(self, _cb, buf, z, c, t, current=None):
@@ -354,7 +354,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def setTimepoint_async(self, _cb, buf, t, current=None):
@@ -364,7 +364,7 @@ Arguments:
     buf a byte array of the data comprising this timepoint.
     t offset across the T-axis of the pixel buffer.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
             pass
 
         def getByteWidth_async(self, _cb, current=None):
@@ -395,7 +395,7 @@ Returns:
 only be called AFTER all data is successfully set. Future invocations
 of set methods may be disallowed. This read-only status will allow
 background processing (generation of thumbnails, compression, etc)
-to begin. More information under [RawPixelsStore].
+to begin. More information under RawPixelsStore.
 
 A null instance will be returned if no save was performed.'''
             pass
@@ -417,7 +417,7 @@ are predominantly write-only or involve the population of
 a brand new pixel buffer using true here is a safe
 optimization otherwise false is expected.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setPixelsId(self, pixelsId, bypassOriginalFile, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPixelsId.invoke(self, ((pixelsId, bypassOriginalFile), _ctx))
 
@@ -430,7 +430,7 @@ are predominantly write-only or involve the population of
 a brand new pixel buffer using true here is a safe
 optimization otherwise false is expected.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setPixelsId(self, pixelsId, bypassOriginalFile, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPixelsId.begin(self, ((pixelsId, bypassOriginalFile), _response, _ex, _sent, _ctx))
 
@@ -443,7 +443,7 @@ are predominantly write-only or involve the population of
 a brand new pixel buffer using true here is a safe
 optimization otherwise false is expected.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setPixelsId(self, _r):
             return _M_omero.api.RawPixelsStore._op_setPixelsId.end(self, _r)
 
@@ -456,7 +456,7 @@ are predominantly write-only or involve the population of
 a brand new pixel buffer using true here is a safe
 optimization otherwise false is expected.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setPixelsId_async(self, _cb, pixelsId, bypassOriginalFile, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPixelsId.invokeAsync(self, (_cb, (pixelsId, bypassOriginalFile), _ctx))
 
@@ -1267,7 +1267,7 @@ Exceptions:
     BufferOverflowException if an attempt is made to write off the
 end of the file.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setTile(self, buf, z, c, t, x, y, w, h, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTile.invoke(self, ((buf, z, c, t, x, y, w, h), _ctx))
 
@@ -1286,7 +1286,7 @@ Exceptions:
     BufferOverflowException if an attempt is made to write off the
 end of the file.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setTile(self, buf, z, c, t, x, y, w, h, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTile.begin(self, ((buf, z, c, t, x, y, w, h), _response, _ex, _sent, _ctx))
 
@@ -1305,7 +1305,7 @@ Exceptions:
     BufferOverflowException if an attempt is made to write off the
 end of the file.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setTile(self, _r):
             return _M_omero.api.RawPixelsStore._op_setTile.end(self, _r)
 
@@ -1324,7 +1324,7 @@ Exceptions:
     BufferOverflowException if an attempt is made to write off the
 end of the file.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setTile_async(self, _cb, buf, z, c, t, x, y, w, h, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTile.invokeAsync(self, (_cb, (buf, z, c, t, x, y, w, h), _ctx))
 
@@ -1334,7 +1334,7 @@ Arguments:
     offset offset within the pixel buffer.
     buf a byte array of the data.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setRegion(self, size, offset, buf, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRegion.invoke(self, ((size, offset, buf), _ctx))
 
@@ -1344,7 +1344,7 @@ Arguments:
     offset offset within the pixel buffer.
     buf a byte array of the data.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setRegion(self, size, offset, buf, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRegion.begin(self, ((size, offset, buf), _response, _ex, _sent, _ctx))
 
@@ -1354,7 +1354,7 @@ Arguments:
     offset offset within the pixel buffer.
     buf a byte array of the data.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setRegion(self, _r):
             return _M_omero.api.RawPixelsStore._op_setRegion.end(self, _r)
 
@@ -1364,7 +1364,7 @@ Arguments:
     offset offset within the pixel buffer.
     buf a byte array of the data.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setRegion_async(self, _cb, size, offset, buf, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRegion.invokeAsync(self, (_cb, (size, offset, buf), _ctx))
 
@@ -1376,7 +1376,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setRow(self, buf, y, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRow.invoke(self, ((buf, y, z, c, t), _ctx))
 
@@ -1388,7 +1388,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setRow(self, buf, y, z, c, t, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRow.begin(self, ((buf, y, z, c, t), _response, _ex, _sent, _ctx))
 
@@ -1400,7 +1400,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setRow(self, _r):
             return _M_omero.api.RawPixelsStore._op_setRow.end(self, _r)
 
@@ -1412,7 +1412,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setRow_async(self, _cb, buf, y, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setRow.invokeAsync(self, (_cb, (buf, y, z, c, t), _ctx))
 
@@ -1423,7 +1423,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setPlane(self, buf, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPlane.invoke(self, ((buf, z, c, t), _ctx))
 
@@ -1434,7 +1434,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setPlane(self, buf, z, c, t, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPlane.begin(self, ((buf, z, c, t), _response, _ex, _sent, _ctx))
 
@@ -1445,7 +1445,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setPlane(self, _r):
             return _M_omero.api.RawPixelsStore._op_setPlane.end(self, _r)
 
@@ -1456,7 +1456,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setPlane_async(self, _cb, buf, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setPlane.invokeAsync(self, (_cb, (buf, z, c, t), _ctx))
 
@@ -1467,7 +1467,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setStack(self, buf, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setStack.invoke(self, ((buf, z, c, t), _ctx))
 
@@ -1478,7 +1478,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setStack(self, buf, z, c, t, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setStack.begin(self, ((buf, z, c, t), _response, _ex, _sent, _ctx))
 
@@ -1489,7 +1489,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setStack(self, _r):
             return _M_omero.api.RawPixelsStore._op_setStack.end(self, _r)
 
@@ -1500,7 +1500,7 @@ Arguments:
     c offset across the C-axis of the pixel store.
     t offset across the T-axis of the pixel store.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setStack_async(self, _cb, buf, z, c, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setStack.invokeAsync(self, (_cb, (buf, z, c, t), _ctx))
 
@@ -1510,7 +1510,7 @@ Arguments:
     buf a byte array of the data comprising this timepoint.
     t offset across the T-axis of the pixel buffer.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setTimepoint(self, buf, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTimepoint.invoke(self, ((buf, t), _ctx))
 
@@ -1520,7 +1520,7 @@ Arguments:
     buf a byte array of the data comprising this timepoint.
     t offset across the T-axis of the pixel buffer.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def begin_setTimepoint(self, buf, t, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTimepoint.begin(self, ((buf, t), _response, _ex, _sent, _ctx))
 
@@ -1530,7 +1530,7 @@ Arguments:
     buf a byte array of the data comprising this timepoint.
     t offset across the T-axis of the pixel buffer.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def end_setTimepoint(self, _r):
             return _M_omero.api.RawPixelsStore._op_setTimepoint.end(self, _r)
 
@@ -1540,7 +1540,7 @@ Arguments:
     buf a byte array of the data comprising this timepoint.
     t offset across the T-axis of the pixel buffer.
 
-See "read-only caveat" under [RawPixelsStore]'''
+See "read-only caveat" under RawPixelsStore'''
         def setTimepoint_async(self, _cb, buf, t, _ctx=None):
             return _M_omero.api.RawPixelsStore._op_setTimepoint.invokeAsync(self, (_cb, (buf, t), _ctx))
 
@@ -1640,7 +1640,7 @@ Returns:
 only be called AFTER all data is successfully set. Future invocations
 of set methods may be disallowed. This read-only status will allow
 background processing (generation of thumbnails, compression, etc)
-to begin. More information under [RawPixelsStore].
+to begin. More information under RawPixelsStore.
 
 A null instance will be returned if no save was performed.'''
         def save(self, _ctx=None):
@@ -1650,7 +1650,7 @@ A null instance will be returned if no save was performed.'''
 only be called AFTER all data is successfully set. Future invocations
 of set methods may be disallowed. This read-only status will allow
 background processing (generation of thumbnails, compression, etc)
-to begin. More information under [RawPixelsStore].
+to begin. More information under RawPixelsStore.
 
 A null instance will be returned if no save was performed.'''
         def begin_save(self, _response=None, _ex=None, _sent=None, _ctx=None):
@@ -1660,7 +1660,7 @@ A null instance will be returned if no save was performed.'''
 only be called AFTER all data is successfully set. Future invocations
 of set methods may be disallowed. This read-only status will allow
 background processing (generation of thumbnails, compression, etc)
-to begin. More information under [RawPixelsStore].
+to begin. More information under RawPixelsStore.
 
 A null instance will be returned if no save was performed.'''
         def end_save(self, _r):
@@ -1670,7 +1670,7 @@ A null instance will be returned if no save was performed.'''
 only be called AFTER all data is successfully set. Future invocations
 of set methods may be disallowed. This read-only status will allow
 background processing (generation of thumbnails, compression, etc)
-to begin. More information under [RawPixelsStore].
+to begin. More information under RawPixelsStore.
 
 A null instance will be returned if no save was performed.'''
         def save_async(self, _cb, _ctx=None):

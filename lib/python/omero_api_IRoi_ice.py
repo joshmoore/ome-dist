@@ -416,30 +416,36 @@ Loads Rois as findByRoi.'''
             pass
 
         def getRoiMeasurements_async(self, _cb, imageId, opts, current=None):
-            '''Returns a list of [omero::model::FileAnnotation] instances with the namespace
-"openmicroscopy.org/measurements" which are attached to the [omero::model::Plate]
-containing the given image AND which are attached to at least one [omero::model::Roi]
+            '''Returns a list of omero.model.FileAnnotation
+instances with the namespace
+"openmicroscopy.org/measurements" which are attached to the
+omero.model.Plate containing the given image AND
+which are attached to at least one
+omero.model.Roi
 
 Arguments:
-    opts, userId and groupId are respected based on the ownership of the annotation.'''
+    opts, userId and groupId are respected based on the
+ownership of the annotation.'''
             pass
 
         def getMeasuredRois_async(self, _cb, imageId, annotationId, opts, current=None):
-            '''Loads the ROIs which are linked to by the given [omero::model::FileAnnotation] id for
-the given image.
+            '''Loads the ROIs which are linked to by the given
+omero.model.FileAnnotation id for the given image.
 
 Arguments:
     annotationId if -1, logic is identical to findByImage(imageId, opts)'''
             pass
 
         def getMeasuredRoisMap_async(self, _cb, imageId, annotationIds, opts, current=None):
-            '''Returns a map from [omero::model::FileAnnotation] ids to [RoiResult] instances.
+            '''Returns a map from omero.model.FileAnnotation ids
+to RoiResult instances.
 Logic is identical to getMeasuredRois, but Roi data will not be duplicated. (i.e.
 the objects are referentially identical)'''
             pass
 
         def getTable_async(self, _cb, annotationId, current=None):
-            '''Returns the OMERO.tables service via the [omero::model::FileAnnotation] id returned
+            '''Returns the OMERO.tables service via the
+omero.model.FileAnnotation id returned
 by getImageMeasurements.'''
             pass
 
@@ -594,114 +600,138 @@ Loads Rois as findByRoi.'''
         def getShapeStatsList_async(self, _cb, shapeIdList, _ctx=None):
             return _M_omero.api.IRoi._op_getShapeStatsList.invokeAsync(self, (_cb, (shapeIdList, ), _ctx))
 
-        '''Returns a list of [omero::model::FileAnnotation] instances with the namespace
-"openmicroscopy.org/measurements" which are attached to the [omero::model::Plate]
-containing the given image AND which are attached to at least one [omero::model::Roi]
+        '''Returns a list of omero.model.FileAnnotation
+instances with the namespace
+"openmicroscopy.org/measurements" which are attached to the
+omero.model.Plate containing the given image AND
+which are attached to at least one
+omero.model.Roi
 
 Arguments:
-    opts, userId and groupId are respected based on the ownership of the annotation.'''
+    opts, userId and groupId are respected based on the
+ownership of the annotation.'''
         def getRoiMeasurements(self, imageId, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getRoiMeasurements.invoke(self, ((imageId, opts), _ctx))
 
-        '''Returns a list of [omero::model::FileAnnotation] instances with the namespace
-"openmicroscopy.org/measurements" which are attached to the [omero::model::Plate]
-containing the given image AND which are attached to at least one [omero::model::Roi]
+        '''Returns a list of omero.model.FileAnnotation
+instances with the namespace
+"openmicroscopy.org/measurements" which are attached to the
+omero.model.Plate containing the given image AND
+which are attached to at least one
+omero.model.Roi
 
 Arguments:
-    opts, userId and groupId are respected based on the ownership of the annotation.'''
+    opts, userId and groupId are respected based on the
+ownership of the annotation.'''
         def begin_getRoiMeasurements(self, imageId, opts, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IRoi._op_getRoiMeasurements.begin(self, ((imageId, opts), _response, _ex, _sent, _ctx))
 
-        '''Returns a list of [omero::model::FileAnnotation] instances with the namespace
-"openmicroscopy.org/measurements" which are attached to the [omero::model::Plate]
-containing the given image AND which are attached to at least one [omero::model::Roi]
+        '''Returns a list of omero.model.FileAnnotation
+instances with the namespace
+"openmicroscopy.org/measurements" which are attached to the
+omero.model.Plate containing the given image AND
+which are attached to at least one
+omero.model.Roi
 
 Arguments:
-    opts, userId and groupId are respected based on the ownership of the annotation.'''
+    opts, userId and groupId are respected based on the
+ownership of the annotation.'''
         def end_getRoiMeasurements(self, _r):
             return _M_omero.api.IRoi._op_getRoiMeasurements.end(self, _r)
 
-        '''Returns a list of [omero::model::FileAnnotation] instances with the namespace
-"openmicroscopy.org/measurements" which are attached to the [omero::model::Plate]
-containing the given image AND which are attached to at least one [omero::model::Roi]
+        '''Returns a list of omero.model.FileAnnotation
+instances with the namespace
+"openmicroscopy.org/measurements" which are attached to the
+omero.model.Plate containing the given image AND
+which are attached to at least one
+omero.model.Roi
 
 Arguments:
-    opts, userId and groupId are respected based on the ownership of the annotation.'''
+    opts, userId and groupId are respected based on the
+ownership of the annotation.'''
         def getRoiMeasurements_async(self, _cb, imageId, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getRoiMeasurements.invokeAsync(self, (_cb, (imageId, opts), _ctx))
 
-        '''Loads the ROIs which are linked to by the given [omero::model::FileAnnotation] id for
-the given image.
+        '''Loads the ROIs which are linked to by the given
+omero.model.FileAnnotation id for the given image.
 
 Arguments:
     annotationId if -1, logic is identical to findByImage(imageId, opts)'''
         def getMeasuredRois(self, imageId, annotationId, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRois.invoke(self, ((imageId, annotationId, opts), _ctx))
 
-        '''Loads the ROIs which are linked to by the given [omero::model::FileAnnotation] id for
-the given image.
+        '''Loads the ROIs which are linked to by the given
+omero.model.FileAnnotation id for the given image.
 
 Arguments:
     annotationId if -1, logic is identical to findByImage(imageId, opts)'''
         def begin_getMeasuredRois(self, imageId, annotationId, opts, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRois.begin(self, ((imageId, annotationId, opts), _response, _ex, _sent, _ctx))
 
-        '''Loads the ROIs which are linked to by the given [omero::model::FileAnnotation] id for
-the given image.
+        '''Loads the ROIs which are linked to by the given
+omero.model.FileAnnotation id for the given image.
 
 Arguments:
     annotationId if -1, logic is identical to findByImage(imageId, opts)'''
         def end_getMeasuredRois(self, _r):
             return _M_omero.api.IRoi._op_getMeasuredRois.end(self, _r)
 
-        '''Loads the ROIs which are linked to by the given [omero::model::FileAnnotation] id for
-the given image.
+        '''Loads the ROIs which are linked to by the given
+omero.model.FileAnnotation id for the given image.
 
 Arguments:
     annotationId if -1, logic is identical to findByImage(imageId, opts)'''
         def getMeasuredRois_async(self, _cb, imageId, annotationId, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRois.invokeAsync(self, (_cb, (imageId, annotationId, opts), _ctx))
 
-        '''Returns a map from [omero::model::FileAnnotation] ids to [RoiResult] instances.
+        '''Returns a map from omero.model.FileAnnotation ids
+to RoiResult instances.
 Logic is identical to getMeasuredRois, but Roi data will not be duplicated. (i.e.
 the objects are referentially identical)'''
         def getMeasuredRoisMap(self, imageId, annotationIds, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRoisMap.invoke(self, ((imageId, annotationIds, opts), _ctx))
 
-        '''Returns a map from [omero::model::FileAnnotation] ids to [RoiResult] instances.
+        '''Returns a map from omero.model.FileAnnotation ids
+to RoiResult instances.
 Logic is identical to getMeasuredRois, but Roi data will not be duplicated. (i.e.
 the objects are referentially identical)'''
         def begin_getMeasuredRoisMap(self, imageId, annotationIds, opts, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRoisMap.begin(self, ((imageId, annotationIds, opts), _response, _ex, _sent, _ctx))
 
-        '''Returns a map from [omero::model::FileAnnotation] ids to [RoiResult] instances.
+        '''Returns a map from omero.model.FileAnnotation ids
+to RoiResult instances.
 Logic is identical to getMeasuredRois, but Roi data will not be duplicated. (i.e.
 the objects are referentially identical)'''
         def end_getMeasuredRoisMap(self, _r):
             return _M_omero.api.IRoi._op_getMeasuredRoisMap.end(self, _r)
 
-        '''Returns a map from [omero::model::FileAnnotation] ids to [RoiResult] instances.
+        '''Returns a map from omero.model.FileAnnotation ids
+to RoiResult instances.
 Logic is identical to getMeasuredRois, but Roi data will not be duplicated. (i.e.
 the objects are referentially identical)'''
         def getMeasuredRoisMap_async(self, _cb, imageId, annotationIds, opts, _ctx=None):
             return _M_omero.api.IRoi._op_getMeasuredRoisMap.invokeAsync(self, (_cb, (imageId, annotationIds, opts), _ctx))
 
-        '''Returns the OMERO.tables service via the [omero::model::FileAnnotation] id returned
+        '''Returns the OMERO.tables service via the
+omero.model.FileAnnotation id returned
 by getImageMeasurements.'''
         def getTable(self, annotationId, _ctx=None):
             return _M_omero.api.IRoi._op_getTable.invoke(self, ((annotationId, ), _ctx))
 
-        '''Returns the OMERO.tables service via the [omero::model::FileAnnotation] id returned
+        '''Returns the OMERO.tables service via the
+omero.model.FileAnnotation id returned
 by getImageMeasurements.'''
         def begin_getTable(self, annotationId, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.IRoi._op_getTable.begin(self, ((annotationId, ), _response, _ex, _sent, _ctx))
 
-        '''Returns the OMERO.tables service via the [omero::model::FileAnnotation] id returned
+        '''Returns the OMERO.tables service via the
+omero.model.FileAnnotation id returned
 by getImageMeasurements.'''
         def end_getTable(self, _r):
             return _M_omero.api.IRoi._op_getTable.end(self, _r)
 
-        '''Returns the OMERO.tables service via the [omero::model::FileAnnotation] id returned
+        '''Returns the OMERO.tables service via the
+omero.model.FileAnnotation id returned
 by getImageMeasurements.'''
         def getTable_async(self, _cb, annotationId, _ctx=None):
             return _M_omero.api.IRoi._op_getTable.invokeAsync(self, (_cb, (annotationId, ), _ctx))

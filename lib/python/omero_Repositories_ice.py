@@ -102,7 +102,7 @@ if 'UnregisteredFileException' not in _M_omero.grid.__dict__:
     class UnregisteredFileException(_M_omero.grid.RepositoryException):
         '''Specifies that a file is located at the given location
 that is not otherwise known by the repository. A
-subsequent call to [Repository::register] will create
+subsequent call to Repository.register will create
 the given file. The mimetype field of the file may or
 may not be set. If it is set, clients are suggested to
 either omit the mimetype argument to the register method
@@ -161,7 +161,7 @@ the directory denoted by an abstract pathname.'''
 files in the directory denoted by an abstract pathname.  It
 is expected that at a minimum the "name", "path", "size" and
 "mtime" attributes will be present for each
-[omero::model::OriginalFile] instance.'''
+omero.model.OriginalFile instance.'''
             pass
 
         def register(self, path, mimetype, current=None):
@@ -187,8 +187,8 @@ ValidationException will be thrown.'''
 
         def fileExists(self, path, current=None):
             '''Returns true if the file or path exists within the repository.
-In other words, if a call on `dirname path` to [listFiles] would
-return an object for this path.'''
+In other words, if a call on `dirname path` to
+listFiles would return an object for this path.'''
             pass
 
         def makeDir(self, path, parents, current=None):
@@ -200,12 +200,12 @@ filesystem and be readable.'''
             pass
 
         def treeList(self, path, current=None):
-            '''Similar to [list] but recursive and returns only primitive
-values for the file at each location. Guaranteed for each
-path is only the values id and mimetype.
+            '''Similar to list but recursive and returns only
+primitive values for the file at each location. Guaranteed for
+each path is only the values id and mimetype.
 
-After a call to unwrap, the returned [omero::RMap] for a call
-to treeList("/user_1/dir0") might look something like:
+After a call to unwrap, the returned omero.RMap for a
+call to treeList("/user_1/dir0") might look something like:
 
 {
 "/user_1/dir0/file1.txt" :
@@ -236,7 +236,7 @@ to treeList("/user_1/dir0") might look something like:
 
         def deletePaths(self, paths, recursively, force, current=None):
             '''Delete several individual paths. Internally, this converts
-all of the paths into a single [omero::cmd::Delete2] command
+all of the paths into a single omero.cmd.Delete2 command
 and submits it.
 
 If a "recursively" is true, then directories will be searched
@@ -324,7 +324,7 @@ the directory denoted by an abstract pathname.'''
 files in the directory denoted by an abstract pathname.  It
 is expected that at a minimum the "name", "path", "size" and
 "mtime" attributes will be present for each
-[omero::model::OriginalFile] instance.'''
+omero.model.OriginalFile instance.'''
         def listFiles(self, path, _ctx=None):
             return _M_omero.grid.Repository._op_listFiles.invoke(self, ((path, ), _ctx))
 
@@ -332,7 +332,7 @@ is expected that at a minimum the "name", "path", "size" and
 files in the directory denoted by an abstract pathname.  It
 is expected that at a minimum the "name", "path", "size" and
 "mtime" attributes will be present for each
-[omero::model::OriginalFile] instance.'''
+omero.model.OriginalFile instance.'''
         def begin_listFiles(self, path, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Repository._op_listFiles.begin(self, ((path, ), _response, _ex, _sent, _ctx))
 
@@ -340,7 +340,7 @@ is expected that at a minimum the "name", "path", "size" and
 files in the directory denoted by an abstract pathname.  It
 is expected that at a minimum the "name", "path", "size" and
 "mtime" attributes will be present for each
-[omero::model::OriginalFile] instance.'''
+omero.model.OriginalFile instance.'''
         def end_listFiles(self, _r):
             return _M_omero.grid.Repository._op_listFiles.end(self, _r)
 
@@ -348,7 +348,7 @@ is expected that at a minimum the "name", "path", "size" and
 files in the directory denoted by an abstract pathname.  It
 is expected that at a minimum the "name", "path", "size" and
 "mtime" attributes will be present for each
-[omero::model::OriginalFile] instance.'''
+omero.model.OriginalFile instance.'''
         def listFiles_async(self, _cb, path, _ctx=None):
             return _M_omero.grid.Repository._op_listFiles.invokeAsync(self, (_cb, (path, ), _ctx))
 
@@ -437,26 +437,26 @@ ValidationException will be thrown.'''
             return _M_omero.grid.Repository._op_fileById.invokeAsync(self, (_cb, (id, ), _ctx))
 
         '''Returns true if the file or path exists within the repository.
-In other words, if a call on `dirname path` to [listFiles] would
-return an object for this path.'''
+In other words, if a call on `dirname path` to
+listFiles would return an object for this path.'''
         def fileExists(self, path, _ctx=None):
             return _M_omero.grid.Repository._op_fileExists.invoke(self, ((path, ), _ctx))
 
         '''Returns true if the file or path exists within the repository.
-In other words, if a call on `dirname path` to [listFiles] would
-return an object for this path.'''
+In other words, if a call on `dirname path` to
+listFiles would return an object for this path.'''
         def begin_fileExists(self, path, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Repository._op_fileExists.begin(self, ((path, ), _response, _ex, _sent, _ctx))
 
         '''Returns true if the file or path exists within the repository.
-In other words, if a call on `dirname path` to [listFiles] would
-return an object for this path.'''
+In other words, if a call on `dirname path` to
+listFiles would return an object for this path.'''
         def end_fileExists(self, _r):
             return _M_omero.grid.Repository._op_fileExists.end(self, _r)
 
         '''Returns true if the file or path exists within the repository.
-In other words, if a call on `dirname path` to [listFiles] would
-return an object for this path.'''
+In other words, if a call on `dirname path` to
+listFiles would return an object for this path.'''
         def fileExists_async(self, _cb, path, _ctx=None):
             return _M_omero.grid.Repository._op_fileExists.invokeAsync(self, (_cb, (path, ), _ctx))
 
@@ -492,12 +492,12 @@ filesystem and be readable.'''
         def makeDir_async(self, _cb, path, parents, _ctx=None):
             return _M_omero.grid.Repository._op_makeDir.invokeAsync(self, (_cb, (path, parents), _ctx))
 
-        '''Similar to [list] but recursive and returns only primitive
-values for the file at each location. Guaranteed for each
-path is only the values id and mimetype.
+        '''Similar to list but recursive and returns only
+primitive values for the file at each location. Guaranteed for
+each path is only the values id and mimetype.
 
-After a call to unwrap, the returned [omero::RMap] for a call
-to treeList("/user_1/dir0") might look something like:
+After a call to unwrap, the returned omero.RMap for a
+call to treeList("/user_1/dir0") might look something like:
 
 {
 "/user_1/dir0/file1.txt" :
@@ -527,12 +527,12 @@ to treeList("/user_1/dir0") might look something like:
         def treeList(self, path, _ctx=None):
             return _M_omero.grid.Repository._op_treeList.invoke(self, ((path, ), _ctx))
 
-        '''Similar to [list] but recursive and returns only primitive
-values for the file at each location. Guaranteed for each
-path is only the values id and mimetype.
+        '''Similar to list but recursive and returns only
+primitive values for the file at each location. Guaranteed for
+each path is only the values id and mimetype.
 
-After a call to unwrap, the returned [omero::RMap] for a call
-to treeList("/user_1/dir0") might look something like:
+After a call to unwrap, the returned omero.RMap for a
+call to treeList("/user_1/dir0") might look something like:
 
 {
 "/user_1/dir0/file1.txt" :
@@ -562,12 +562,12 @@ to treeList("/user_1/dir0") might look something like:
         def begin_treeList(self, path, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Repository._op_treeList.begin(self, ((path, ), _response, _ex, _sent, _ctx))
 
-        '''Similar to [list] but recursive and returns only primitive
-values for the file at each location. Guaranteed for each
-path is only the values id and mimetype.
+        '''Similar to list but recursive and returns only
+primitive values for the file at each location. Guaranteed for
+each path is only the values id and mimetype.
 
-After a call to unwrap, the returned [omero::RMap] for a call
-to treeList("/user_1/dir0") might look something like:
+After a call to unwrap, the returned omero.RMap for a
+call to treeList("/user_1/dir0") might look something like:
 
 {
 "/user_1/dir0/file1.txt" :
@@ -597,12 +597,12 @@ to treeList("/user_1/dir0") might look something like:
         def end_treeList(self, _r):
             return _M_omero.grid.Repository._op_treeList.end(self, _r)
 
-        '''Similar to [list] but recursive and returns only primitive
-values for the file at each location. Guaranteed for each
-path is only the values id and mimetype.
+        '''Similar to list but recursive and returns only
+primitive values for the file at each location. Guaranteed for
+each path is only the values id and mimetype.
 
-After a call to unwrap, the returned [omero::RMap] for a call
-to treeList("/user_1/dir0") might look something like:
+After a call to unwrap, the returned omero.RMap for a
+call to treeList("/user_1/dir0") might look something like:
 
 {
 "/user_1/dir0/file1.txt" :
@@ -633,7 +633,7 @@ to treeList("/user_1/dir0") might look something like:
             return _M_omero.grid.Repository._op_treeList.invokeAsync(self, (_cb, (path, ), _ctx))
 
         '''Delete several individual paths. Internally, this converts
-all of the paths into a single [omero::cmd::Delete2] command
+all of the paths into a single omero.cmd.Delete2 command
 and submits it.
 
 If a "recursively" is true, then directories will be searched
@@ -655,7 +655,7 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.invoke(self, ((paths, recursively, force), _ctx))
 
         '''Delete several individual paths. Internally, this converts
-all of the paths into a single [omero::cmd::Delete2] command
+all of the paths into a single omero.cmd.Delete2 command
 and submits it.
 
 If a "recursively" is true, then directories will be searched
@@ -677,7 +677,7 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.begin(self, ((paths, recursively, force), _response, _ex, _sent, _ctx))
 
         '''Delete several individual paths. Internally, this converts
-all of the paths into a single [omero::cmd::Delete2] command
+all of the paths into a single omero.cmd.Delete2 command
 and submits it.
 
 If a "recursively" is true, then directories will be searched
@@ -699,7 +699,7 @@ directories.'''
             return _M_omero.grid.Repository._op_deletePaths.end(self, _r)
 
         '''Delete several individual paths. Internally, this converts
-all of the paths into a single [omero::cmd::Delete2] command
+all of the paths into a single omero.cmd.Delete2 command
 and submits it.
 
 If a "recursively" is true, then directories will be searched
@@ -755,7 +755,7 @@ directories.'''
 if 'ImportLocation' not in _M_omero.grid.__dict__:
     _M_omero.grid.ImportLocation = Ice.createTempClass()
     class ImportLocation(Ice.Object):
-        '''Returned by [ManagedRepository::importFileset] with
+        '''Returned by ManagedRepository#importFileset with
 the information needed to proceed with an FS import.
 For the examples that follow, assume that the used
 files passed to importFileset were:
@@ -899,19 +899,22 @@ before the import is initiated.'''
         def getUploader(self, i, current=None):
             '''Step 1: Returns a RawFileStore that can be used to upload one of
 the used files. The index is the same as the used file listed in
-[ImportLocation]. [omero::api::RawFileStore::close] should be
-called once all data has been transferred. If the file must be
-re-written, call [getUploader] with the same index again. Once
-all uploads have been completed, [verifyUpload] should be called
-to initiate background processing'''
+ImportLocation. omero.api.RawFileStore#close
+should be called once all data has been transferred. If the
+file must be re-written, call getUploader with the
+same index again. Once all uploads have been completed,
+verifyUpload should be called to initiate background
+processing'''
             pass
 
         def verifyUpload(self, hash, current=None):
-            '''Step 2: Passes a set of client-side calculated hashes to the server
-for verifying that all of the files were correctly uploaded. If this
-passes then a [omero::cmd::Handle] proxy is returned, which completes
-all the necessary import steps. A successful import will return an
-[ImportResponse]. Otherwise, some [omero::cmd::ERR] will be returned.'''
+            '''Step 2: Passes a set of client-side calculated hashes to the
+server for verifying that all of the files were correctly
+uploaded. If this passes then a omero.cmd.Handle
+proxy is returned, which completes all the necessary import
+steps. A successful import will return an
+ImportResponse. Otherwise, some omero.cmd.ERR
+will be returned.'''
             pass
 
         def getUploadOffset(self, i, current=None):
@@ -921,10 +924,10 @@ location of the last successful upload.'''
 
         def getHandle(self, current=None):
             '''Reacquire the handle which was returned by
-[verifyUpload]. This is useful in case a new
+verifyUpload. This is useful in case a new
 client is re-attaching to a running import.
-From the [omero::cmd::Handle] instance, the
-original [ImportRequest] can also be found.'''
+From the omero.cmd.Handle instance, the
+original ImportRequest can also be found.'''
             pass
 
         def getImportSettings(self, current=None):
@@ -940,55 +943,64 @@ original [ImportRequest] can also be found.'''
 
         '''Step 1: Returns a RawFileStore that can be used to upload one of
 the used files. The index is the same as the used file listed in
-[ImportLocation]. [omero::api::RawFileStore::close] should be
-called once all data has been transferred. If the file must be
-re-written, call [getUploader] with the same index again. Once
-all uploads have been completed, [verifyUpload] should be called
-to initiate background processing'''
+ImportLocation. omero.api.RawFileStore#close
+should be called once all data has been transferred. If the
+file must be re-written, call getUploader with the
+same index again. Once all uploads have been completed,
+verifyUpload should be called to initiate background
+processing'''
         def getUploader(self, i, _ctx=None):
             return _M_omero.grid.ImportProcess._op_getUploader.invoke(self, ((i, ), _ctx))
 
         '''Step 1: Returns a RawFileStore that can be used to upload one of
 the used files. The index is the same as the used file listed in
-[ImportLocation]. [omero::api::RawFileStore::close] should be
-called once all data has been transferred. If the file must be
-re-written, call [getUploader] with the same index again. Once
-all uploads have been completed, [verifyUpload] should be called
-to initiate background processing'''
+ImportLocation. omero.api.RawFileStore#close
+should be called once all data has been transferred. If the
+file must be re-written, call getUploader with the
+same index again. Once all uploads have been completed,
+verifyUpload should be called to initiate background
+processing'''
         def begin_getUploader(self, i, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ImportProcess._op_getUploader.begin(self, ((i, ), _response, _ex, _sent, _ctx))
 
         '''Step 1: Returns a RawFileStore that can be used to upload one of
 the used files. The index is the same as the used file listed in
-[ImportLocation]. [omero::api::RawFileStore::close] should be
-called once all data has been transferred. If the file must be
-re-written, call [getUploader] with the same index again. Once
-all uploads have been completed, [verifyUpload] should be called
-to initiate background processing'''
+ImportLocation. omero.api.RawFileStore#close
+should be called once all data has been transferred. If the
+file must be re-written, call getUploader with the
+same index again. Once all uploads have been completed,
+verifyUpload should be called to initiate background
+processing'''
         def end_getUploader(self, _r):
             return _M_omero.grid.ImportProcess._op_getUploader.end(self, _r)
 
-        '''Step 2: Passes a set of client-side calculated hashes to the server
-for verifying that all of the files were correctly uploaded. If this
-passes then a [omero::cmd::Handle] proxy is returned, which completes
-all the necessary import steps. A successful import will return an
-[ImportResponse]. Otherwise, some [omero::cmd::ERR] will be returned.'''
+        '''Step 2: Passes a set of client-side calculated hashes to the
+server for verifying that all of the files were correctly
+uploaded. If this passes then a omero.cmd.Handle
+proxy is returned, which completes all the necessary import
+steps. A successful import will return an
+ImportResponse. Otherwise, some omero.cmd.ERR
+will be returned.'''
         def verifyUpload(self, hash, _ctx=None):
             return _M_omero.grid.ImportProcess._op_verifyUpload.invoke(self, ((hash, ), _ctx))
 
-        '''Step 2: Passes a set of client-side calculated hashes to the server
-for verifying that all of the files were correctly uploaded. If this
-passes then a [omero::cmd::Handle] proxy is returned, which completes
-all the necessary import steps. A successful import will return an
-[ImportResponse]. Otherwise, some [omero::cmd::ERR] will be returned.'''
+        '''Step 2: Passes a set of client-side calculated hashes to the
+server for verifying that all of the files were correctly
+uploaded. If this passes then a omero.cmd.Handle
+proxy is returned, which completes all the necessary import
+steps. A successful import will return an
+ImportResponse. Otherwise, some omero.cmd.ERR
+will be returned.'''
         def begin_verifyUpload(self, hash, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ImportProcess._op_verifyUpload.begin(self, ((hash, ), _response, _ex, _sent, _ctx))
 
-        '''Step 2: Passes a set of client-side calculated hashes to the server
-for verifying that all of the files were correctly uploaded. If this
-passes then a [omero::cmd::Handle] proxy is returned, which completes
-all the necessary import steps. A successful import will return an
-[ImportResponse]. Otherwise, some [omero::cmd::ERR] will be returned.'''
+        '''Step 2: Passes a set of client-side calculated hashes to the
+server for verifying that all of the files were correctly
+uploaded. If this passes then a omero.cmd.Handle
+proxy is returned, which completes all the necessary import
+steps. A successful import will return an
+ImportResponse. Otherwise, some omero.cmd.ERR
+will be returned.'''
         def end_verifyUpload(self, _r):
             return _M_omero.grid.ImportProcess._op_verifyUpload.end(self, _r)
 
@@ -1008,26 +1020,26 @@ location of the last successful upload.'''
             return _M_omero.grid.ImportProcess._op_getUploadOffset.end(self, _r)
 
         '''Reacquire the handle which was returned by
-[verifyUpload]. This is useful in case a new
+verifyUpload. This is useful in case a new
 client is re-attaching to a running import.
-From the [omero::cmd::Handle] instance, the
-original [ImportRequest] can also be found.'''
+From the omero.cmd.Handle instance, the
+original ImportRequest can also be found.'''
         def getHandle(self, _ctx=None):
             return _M_omero.grid.ImportProcess._op_getHandle.invoke(self, ((), _ctx))
 
         '''Reacquire the handle which was returned by
-[verifyUpload]. This is useful in case a new
+verifyUpload. This is useful in case a new
 client is re-attaching to a running import.
-From the [omero::cmd::Handle] instance, the
-original [ImportRequest] can also be found.'''
+From the omero.cmd.Handle instance, the
+original ImportRequest can also be found.'''
         def begin_getHandle(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ImportProcess._op_getHandle.begin(self, ((), _response, _ex, _sent, _ctx))
 
         '''Reacquire the handle which was returned by
-[verifyUpload]. This is useful in case a new
+verifyUpload. This is useful in case a new
 client is re-attaching to a running import.
-From the [omero::cmd::Handle] instance, the
-original [ImportRequest] can also be found.'''
+From the omero.cmd.Handle instance, the
+original ImportRequest can also be found.'''
         def end_getHandle(self, _r):
             return _M_omero.grid.ImportProcess._op_getHandle.end(self, _r)
 
@@ -1072,8 +1084,8 @@ if 'ImportRequest' not in _M_omero.grid.__dict__:
     _M_omero.grid.ImportRequest = Ice.createTempClass()
     class ImportRequest(_M_omero.cmd.Request):
         '''Command object which will be used to create
-the [omero::cmd::Handle] instances passed
-back by the [ImportProcess].'''
+the omero.cmd.Handle instances passed
+back by the ImportProcess.'''
         def __init__(self, clientUuid='', repoUuid='', process=None, activity=None, settings=None, location=None, logFile=None):
             _M_omero.cmd.Request.__init__(self)
             self.clientUuid = clientUuid
@@ -1135,7 +1147,7 @@ if 'ImportResponse' not in _M_omero.grid.__dict__:
     _M_omero.grid.ImportResponse = Ice.createTempClass()
     class ImportResponse(_M_omero.cmd.Response):
         '''Successful response returned from execution
-of [ImportRequest]. This is the simplest way
+of ImportRequest. This is the simplest way
 to return the results, but is likely not the
 overall best strategy.'''
         def __init__(self, pixels=None, objects=None):
@@ -1205,31 +1217,31 @@ into Images by using Bio-Formats to import them.'''
         ice_staticId = staticmethod(ice_staticId)
 
         def importFileset(self, fs, settings, current=None):
-            '''Returns an [ImportProcess] which can be used to upload files.
-On [ImportProcess::verifyUpload], an [omero::cmd::Handle] will be
+            '''Returns an ImportProcess which can be used to upload files.
+On ImportProcess#verifyUpload, an omero.cmd.Handle will be
 returned which can be watched for knowing when the server-side import
 is complete.
 
 Client paths set in the fileset entries must /-separate their components.
 
-Once the upload is complete, the [ImportProcess] must be closed.
-Once [omero::cmd::Handle::getResponse] returns a non-null value, the
+Once the upload is complete, the ImportProcess must be closed.
+Once omero.cmd.Handle#getResponse returns a non-null value, the
 handle instance can and must be closed.'''
             pass
 
         def importPaths(self, filePaths, current=None):
             '''For clients without access to Bio-Formats, the simplified
-[importPaths] method allows passing solely the absolute
+importPaths method allows passing solely the absolute
 path of the files to be uploaded (no directories) and all
 configuration happens server-side. Much of the functionality
-provided via [omero::model::Fileset] and [omero::grid::ImportSettings]
-is of course lost.'''
+provided via omero.model.Fileset and
+omero.grid.ImportSettings is of course lost.'''
             pass
 
         def listImports(self, current=None):
             '''List imports that are currently running in this importer.
 These will be limited based on user/group membership for
-the [omero::model::Fileset] object which is being created
+the omero.model.Fileset object which is being created
 by the import. If the user has write permissions for the
 fileset, then the import will be included.'''
             pass
@@ -1243,12 +1255,12 @@ It is possible for the same algorithm to be offered with
 different bit widths.
 They are listed in descending order of preference,
 as set by the server administrator, and any of them may
-be specified for [ImportSettings::checksumAlgorithm].'''
+be specified for ImportSettings#checksumAlgorithm.'''
             pass
 
         def suggestChecksumAlgorithm(self, supported, current=None):
             '''Suggest a checksum algorithm to use for
-[ImportSettings::checksumAlgorithm] according to the
+ImportSettings#checksumAlgorithm according to the
 preferences set by the server administrator. Provide a
 list of the algorithms supported by the client, and the
 server will report which of them is most preferred by
@@ -1283,97 +1295,97 @@ have a checksum set for the given algorithm.'''
     _M_omero.grid.ManagedRepositoryPrx = Ice.createTempClass()
     class ManagedRepositoryPrx(_M_omero.grid.RepositoryPrx):
 
-        '''Returns an [ImportProcess] which can be used to upload files.
-On [ImportProcess::verifyUpload], an [omero::cmd::Handle] will be
+        '''Returns an ImportProcess which can be used to upload files.
+On ImportProcess#verifyUpload, an omero.cmd.Handle will be
 returned which can be watched for knowing when the server-side import
 is complete.
 
 Client paths set in the fileset entries must /-separate their components.
 
-Once the upload is complete, the [ImportProcess] must be closed.
-Once [omero::cmd::Handle::getResponse] returns a non-null value, the
+Once the upload is complete, the ImportProcess must be closed.
+Once omero.cmd.Handle#getResponse returns a non-null value, the
 handle instance can and must be closed.'''
         def importFileset(self, fs, settings, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importFileset.invoke(self, ((fs, settings), _ctx))
 
-        '''Returns an [ImportProcess] which can be used to upload files.
-On [ImportProcess::verifyUpload], an [omero::cmd::Handle] will be
+        '''Returns an ImportProcess which can be used to upload files.
+On ImportProcess#verifyUpload, an omero.cmd.Handle will be
 returned which can be watched for knowing when the server-side import
 is complete.
 
 Client paths set in the fileset entries must /-separate their components.
 
-Once the upload is complete, the [ImportProcess] must be closed.
-Once [omero::cmd::Handle::getResponse] returns a non-null value, the
+Once the upload is complete, the ImportProcess must be closed.
+Once omero.cmd.Handle#getResponse returns a non-null value, the
 handle instance can and must be closed.'''
         def begin_importFileset(self, fs, settings, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importFileset.begin(self, ((fs, settings), _response, _ex, _sent, _ctx))
 
-        '''Returns an [ImportProcess] which can be used to upload files.
-On [ImportProcess::verifyUpload], an [omero::cmd::Handle] will be
+        '''Returns an ImportProcess which can be used to upload files.
+On ImportProcess#verifyUpload, an omero.cmd.Handle will be
 returned which can be watched for knowing when the server-side import
 is complete.
 
 Client paths set in the fileset entries must /-separate their components.
 
-Once the upload is complete, the [ImportProcess] must be closed.
-Once [omero::cmd::Handle::getResponse] returns a non-null value, the
+Once the upload is complete, the ImportProcess must be closed.
+Once omero.cmd.Handle#getResponse returns a non-null value, the
 handle instance can and must be closed.'''
         def end_importFileset(self, _r):
             return _M_omero.grid.ManagedRepository._op_importFileset.end(self, _r)
 
-        '''Returns an [ImportProcess] which can be used to upload files.
-On [ImportProcess::verifyUpload], an [omero::cmd::Handle] will be
+        '''Returns an ImportProcess which can be used to upload files.
+On ImportProcess#verifyUpload, an omero.cmd.Handle will be
 returned which can be watched for knowing when the server-side import
 is complete.
 
 Client paths set in the fileset entries must /-separate their components.
 
-Once the upload is complete, the [ImportProcess] must be closed.
-Once [omero::cmd::Handle::getResponse] returns a non-null value, the
+Once the upload is complete, the ImportProcess must be closed.
+Once omero.cmd.Handle#getResponse returns a non-null value, the
 handle instance can and must be closed.'''
         def importFileset_async(self, _cb, fs, settings, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importFileset.invokeAsync(self, (_cb, (fs, settings), _ctx))
 
         '''For clients without access to Bio-Formats, the simplified
-[importPaths] method allows passing solely the absolute
+importPaths method allows passing solely the absolute
 path of the files to be uploaded (no directories) and all
 configuration happens server-side. Much of the functionality
-provided via [omero::model::Fileset] and [omero::grid::ImportSettings]
-is of course lost.'''
+provided via omero.model.Fileset and
+omero.grid.ImportSettings is of course lost.'''
         def importPaths(self, filePaths, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importPaths.invoke(self, ((filePaths, ), _ctx))
 
         '''For clients without access to Bio-Formats, the simplified
-[importPaths] method allows passing solely the absolute
+importPaths method allows passing solely the absolute
 path of the files to be uploaded (no directories) and all
 configuration happens server-side. Much of the functionality
-provided via [omero::model::Fileset] and [omero::grid::ImportSettings]
-is of course lost.'''
+provided via omero.model.Fileset and
+omero.grid.ImportSettings is of course lost.'''
         def begin_importPaths(self, filePaths, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importPaths.begin(self, ((filePaths, ), _response, _ex, _sent, _ctx))
 
         '''For clients without access to Bio-Formats, the simplified
-[importPaths] method allows passing solely the absolute
+importPaths method allows passing solely the absolute
 path of the files to be uploaded (no directories) and all
 configuration happens server-side. Much of the functionality
-provided via [omero::model::Fileset] and [omero::grid::ImportSettings]
-is of course lost.'''
+provided via omero.model.Fileset and
+omero.grid.ImportSettings is of course lost.'''
         def end_importPaths(self, _r):
             return _M_omero.grid.ManagedRepository._op_importPaths.end(self, _r)
 
         '''For clients without access to Bio-Formats, the simplified
-[importPaths] method allows passing solely the absolute
+importPaths method allows passing solely the absolute
 path of the files to be uploaded (no directories) and all
 configuration happens server-side. Much of the functionality
-provided via [omero::model::Fileset] and [omero::grid::ImportSettings]
-is of course lost.'''
+provided via omero.model.Fileset and
+omero.grid.ImportSettings is of course lost.'''
         def importPaths_async(self, _cb, filePaths, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_importPaths.invokeAsync(self, (_cb, (filePaths, ), _ctx))
 
         '''List imports that are currently running in this importer.
 These will be limited based on user/group membership for
-the [omero::model::Fileset] object which is being created
+the omero.model.Fileset object which is being created
 by the import. If the user has write permissions for the
 fileset, then the import will be included.'''
         def listImports(self, _ctx=None):
@@ -1381,7 +1393,7 @@ fileset, then the import will be included.'''
 
         '''List imports that are currently running in this importer.
 These will be limited based on user/group membership for
-the [omero::model::Fileset] object which is being created
+the omero.model.Fileset object which is being created
 by the import. If the user has write permissions for the
 fileset, then the import will be included.'''
         def begin_listImports(self, _response=None, _ex=None, _sent=None, _ctx=None):
@@ -1389,7 +1401,7 @@ fileset, then the import will be included.'''
 
         '''List imports that are currently running in this importer.
 These will be limited based on user/group membership for
-the [omero::model::Fileset] object which is being created
+the omero.model.Fileset object which is being created
 by the import. If the user has write permissions for the
 fileset, then the import will be included.'''
         def end_listImports(self, _r):
@@ -1397,7 +1409,7 @@ fileset, then the import will be included.'''
 
         '''List imports that are currently running in this importer.
 These will be limited based on user/group membership for
-the [omero::model::Fileset] object which is being created
+the omero.model.Fileset object which is being created
 by the import. If the user has write permissions for the
 fileset, then the import will be included.'''
         def listImports_async(self, _cb, _ctx=None):
@@ -1411,7 +1423,7 @@ It is possible for the same algorithm to be offered with
 different bit widths.
 They are listed in descending order of preference,
 as set by the server administrator, and any of them may
-be specified for [ImportSettings::checksumAlgorithm].'''
+be specified for ImportSettings#checksumAlgorithm.'''
         def listChecksumAlgorithms(self, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_listChecksumAlgorithms.invoke(self, ((), _ctx))
 
@@ -1423,7 +1435,7 @@ It is possible for the same algorithm to be offered with
 different bit widths.
 They are listed in descending order of preference,
 as set by the server administrator, and any of them may
-be specified for [ImportSettings::checksumAlgorithm].'''
+be specified for ImportSettings#checksumAlgorithm.'''
         def begin_listChecksumAlgorithms(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_listChecksumAlgorithms.begin(self, ((), _response, _ex, _sent, _ctx))
 
@@ -1435,7 +1447,7 @@ It is possible for the same algorithm to be offered with
 different bit widths.
 They are listed in descending order of preference,
 as set by the server administrator, and any of them may
-be specified for [ImportSettings::checksumAlgorithm].'''
+be specified for ImportSettings#checksumAlgorithm.'''
         def end_listChecksumAlgorithms(self, _r):
             return _M_omero.grid.ManagedRepository._op_listChecksumAlgorithms.end(self, _r)
 
@@ -1447,12 +1459,12 @@ It is possible for the same algorithm to be offered with
 different bit widths.
 They are listed in descending order of preference,
 as set by the server administrator, and any of them may
-be specified for [ImportSettings::checksumAlgorithm].'''
+be specified for ImportSettings#checksumAlgorithm.'''
         def listChecksumAlgorithms_async(self, _cb, _ctx=None):
             return _M_omero.grid.ManagedRepository._op_listChecksumAlgorithms.invokeAsync(self, (_cb, (), _ctx))
 
         '''Suggest a checksum algorithm to use for
-[ImportSettings::checksumAlgorithm] according to the
+ImportSettings#checksumAlgorithm according to the
 preferences set by the server administrator. Provide a
 list of the algorithms supported by the client, and the
 server will report which of them is most preferred by
@@ -1461,7 +1473,7 @@ the server, or return null if none of them are supported.'''
             return _M_omero.grid.ManagedRepository._op_suggestChecksumAlgorithm.invoke(self, ((supported, ), _ctx))
 
         '''Suggest a checksum algorithm to use for
-[ImportSettings::checksumAlgorithm] according to the
+ImportSettings#checksumAlgorithm according to the
 preferences set by the server administrator. Provide a
 list of the algorithms supported by the client, and the
 server will report which of them is most preferred by
@@ -1470,7 +1482,7 @@ the server, or return null if none of them are supported.'''
             return _M_omero.grid.ManagedRepository._op_suggestChecksumAlgorithm.begin(self, ((supported, ), _response, _ex, _sent, _ctx))
 
         '''Suggest a checksum algorithm to use for
-[ImportSettings::checksumAlgorithm] according to the
+ImportSettings#checksumAlgorithm according to the
 preferences set by the server administrator. Provide a
 list of the algorithms supported by the client, and the
 server will report which of them is most preferred by
@@ -1479,7 +1491,7 @@ the server, or return null if none of them are supported.'''
             return _M_omero.grid.ManagedRepository._op_suggestChecksumAlgorithm.end(self, _r)
 
         '''Suggest a checksum algorithm to use for
-[ImportSettings::checksumAlgorithm] according to the
+ImportSettings#checksumAlgorithm according to the
 preferences set by the server administrator. Provide a
 list of the algorithms supported by the client, and the
 server will report which of them is most preferred by
@@ -1832,7 +1844,7 @@ if '_t_RepositoryProxyList' not in _M_omero.grid.__dict__:
 if 'RepositoryMap' not in _M_omero.grid.__dict__:
     _M_omero.grid.RepositoryMap = Ice.createTempClass()
     class RepositoryMap(object):
-        '''Return value for [omero::grid::SharedResources].acquireRepositories()
+        '''Return value for omero.grid.SharedResources#repositories
 The descriptions and proxies arrays will have the same size and each
 index in descriptions (non-null) will match a possibly null proxy, if
 the given repository is not currently accessible.'''

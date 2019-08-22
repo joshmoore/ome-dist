@@ -74,9 +74,9 @@ See also RawFileStore.html'''
 
         def setFileId_async(self, _cb, fileId, current=None):
             '''This method manages the state of the service. This method
-will throw a [omero::SecurityViolation] if for the current user
-context either the file is not readable or a
-[omero::constants::permissions:DOWNLOAD] restriction is in
+will throw a omero.SecurityViolation if for the
+current user context either the file is not readable or a
+omero.constants.permissions#DOWNLOAD restriction is in
 place.'''
             pass
 
@@ -111,33 +111,33 @@ place.'''
     class RawFileStorePrx(_M_omero.api.StatefulServiceInterfacePrx):
 
         '''This method manages the state of the service. This method
-will throw a [omero::SecurityViolation] if for the current user
-context either the file is not readable or a
-[omero::constants::permissions:DOWNLOAD] restriction is in
+will throw a omero.SecurityViolation if for the
+current user context either the file is not readable or a
+omero.constants.permissions#DOWNLOAD restriction is in
 place.'''
         def setFileId(self, fileId, _ctx=None):
             return _M_omero.api.RawFileStore._op_setFileId.invoke(self, ((fileId, ), _ctx))
 
         '''This method manages the state of the service. This method
-will throw a [omero::SecurityViolation] if for the current user
-context either the file is not readable or a
-[omero::constants::permissions:DOWNLOAD] restriction is in
+will throw a omero.SecurityViolation if for the
+current user context either the file is not readable or a
+omero.constants.permissions#DOWNLOAD restriction is in
 place.'''
         def begin_setFileId(self, fileId, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.RawFileStore._op_setFileId.begin(self, ((fileId, ), _response, _ex, _sent, _ctx))
 
         '''This method manages the state of the service. This method
-will throw a [omero::SecurityViolation] if for the current user
-context either the file is not readable or a
-[omero::constants::permissions:DOWNLOAD] restriction is in
+will throw a omero.SecurityViolation if for the
+current user context either the file is not readable or a
+omero.constants.permissions#DOWNLOAD restriction is in
 place.'''
         def end_setFileId(self, _r):
             return _M_omero.api.RawFileStore._op_setFileId.end(self, _r)
 
         '''This method manages the state of the service. This method
-will throw a [omero::SecurityViolation] if for the current user
-context either the file is not readable or a
-[omero::constants::permissions:DOWNLOAD] restriction is in
+will throw a omero.SecurityViolation if for the
+current user context either the file is not readable or a
+omero.constants.permissions#DOWNLOAD restriction is in
 place.'''
         def setFileId_async(self, _cb, fileId, _ctx=None):
             return _M_omero.api.RawFileStore._op_setFileId.invokeAsync(self, (_cb, (fileId, ), _ctx))

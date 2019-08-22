@@ -27,7 +27,7 @@ __name__ = 'omero'
 if 'RType' not in _M_omero.__dict__:
     _M_omero.RType = Ice.createTempClass()
     class RType(Ice.Object):
-        '''Simple base ["protected"] class. Essentially abstract.'''
+        '''Simple base "protected" class. Essentially abstract.'''
         def __init__(self):
             if Ice.getType(self) == _M_omero.RType:
                 raise RuntimeError('omero.RType is an abstract class')
@@ -49,7 +49,7 @@ created by the same constructor call, e.g.
 
 rbool(true).compare(rbool(true)) == 0
 
-This method was originally addd (Oct 2008) to force the
+This method was originally added (Oct 2008) to force the
 base RType class to be abstract in all languages.'''
             pass
 
@@ -67,7 +67,7 @@ created by the same constructor call, e.g.
 
 rbool(true).compare(rbool(true)) == 0
 
-This method was originally addd (Oct 2008) to force the
+This method was originally added (Oct 2008) to force the
 base RType class to be abstract in all languages.'''
         def compare(self, rhs, _ctx=None):
             return _M_omero.RType._op_compare.invoke(self, ((rhs, ), _ctx))
@@ -78,7 +78,7 @@ created by the same constructor call, e.g.
 
 rbool(true).compare(rbool(true)) == 0
 
-This method was originally addd (Oct 2008) to force the
+This method was originally added (Oct 2008) to force the
 base RType class to be abstract in all languages.'''
         def begin_compare(self, rhs, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.RType._op_compare.begin(self, ((rhs, ), _response, _ex, _sent, _ctx))
@@ -89,7 +89,7 @@ created by the same constructor call, e.g.
 
 rbool(true).compare(rbool(true)) == 0
 
-This method was originally addd (Oct 2008) to force the
+This method was originally added (Oct 2008) to force the
 base RType class to be abstract in all languages.'''
         def end_compare(self, _r):
             return _M_omero.RType._op_compare.end(self, _r)
@@ -486,8 +486,8 @@ if 'RClass' not in _M_omero.__dict__:
     class RClass(_M_omero.RString):
         '''Extends RString and simply provides runtime
 information to the server that this string
-is intended as a ["protected"] class parameter. Used especially
-by omero::system::ParamMap (omero/System.ice)
+is intended as a "protected" class parameter. Used especially
+by omero.system.ParamMap (omero/System.ice)
 
 Usage:
 
@@ -606,11 +606,11 @@ if '_t_RTypeSeqSeq' not in _M_omero.__dict__:
 if 'RCollection' not in _M_omero.__dict__:
     _M_omero.RCollection = Ice.createTempClass()
     class RCollection(_M_omero.RType):
-        '''The collection ["protected"] classes permit the passing of sequences of all
-other RTypes (including other collections) and it is itself
-nullable. The allows for similar arguments to collections in
-languages with a unified inheritance hierarchy (e.g., Java in
-which all ["protected"] classes extend from java.lang.Object).
+        '''The collection "protected" classes permit the passing of sequences of all
+other RTypes (including other collections) and it is itself nullable. The
+allows for similar arguments to collections in languages with a unified
+inheritance hierarchy (e.g., Java in which all "protected" classes extend
+from java.lang.Object).
 
 Unlike the other rtypes which are used internally within the
 omero.model classes, these types are mutable since they solely
@@ -732,7 +732,7 @@ the flexibility brings a performance penalty.'''
 if 'RArray' not in _M_omero.__dict__:
     _M_omero.RArray = Ice.createTempClass()
     class RArray(_M_omero.RCollection):
-        '''[RCollection] mapped to an array on the server of a type given
+        '''RCollection mapped to an array on the server of a type given
 by a random member of the RTypeSeq. Only pass consistent arrays!
 homogenous lists.'''
         def __init__(self, _val=None):
@@ -782,7 +782,7 @@ homogenous lists.'''
 if 'RList' not in _M_omero.__dict__:
     _M_omero.RList = Ice.createTempClass()
     class RList(_M_omero.RCollection):
-        '''[RCollection] mapped to a java.util.List on the server'''
+        '''RCollection mapped to a java.util.List on the server'''
         def __init__(self, _val=None):
             if Ice.getType(self) == _M_omero.RList:
                 raise RuntimeError('omero.RList is an abstract class')
@@ -830,7 +830,7 @@ if 'RList' not in _M_omero.__dict__:
 if 'RSet' not in _M_omero.__dict__:
     _M_omero.RSet = Ice.createTempClass()
     class RSet(_M_omero.RCollection):
-        '''[RCollection] mapped to a java.util.HashSet on the server'''
+        '''RCollection mapped to a java.util.HashSet on the server'''
         def __init__(self, _val=None):
             if Ice.getType(self) == _M_omero.RSet:
                 raise RuntimeError('omero.RSet is an abstract class')
@@ -881,8 +881,8 @@ if '_t_RTypeDict' not in _M_omero.__dict__:
 if 'RMap' not in _M_omero.__dict__:
     _M_omero.RMap = Ice.createTempClass()
     class RMap(_M_omero.RType):
-        '''Similar to [RCollection], the [RMap] class permits the passing
-of a possible null [RTypeDict] where any other [RType] is
+        '''Similar to RCollection, the RMap class permits the passing
+of a possible null RTypeDict where any other RType is
 expected.'''
         def __init__(self, _val=None):
             if Ice.getType(self) == _M_omero.RMap:

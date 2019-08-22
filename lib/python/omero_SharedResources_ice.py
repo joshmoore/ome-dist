@@ -82,15 +82,15 @@ which can handle the given job.'''
             pass
 
         def addProcessor(self, proc, current=None):
-            '''Registers a [omero::grid::Processor] for Storm notifications
+            '''Registers a omero.grid.Processor for Storm notifications
 so that other sessions can query whether or not a given
 processor would accept a given task.'''
             pass
 
         def removeProcessor(self, proc, current=None):
-            '''Unregisters a [omero::grid::Processor] from Storm notifications.
-If the processor was not already registered via [addProcessor]
-this is a no-op.'''
+            '''Unregisters a omero.grid.Processor from Storm
+notifications. If the processor was not already registered via
+addProcessor this is a no-op.'''
             pass
 
         def repositories(self, current=None):
@@ -104,9 +104,9 @@ all official scripts available.'''
             pass
 
         def areTablesEnabled(self, current=None):
-            '''Returns true if a [Tables] service is active in the grid.
-If this value is false, then all calls to [newTable]
-or [openTable] will either fail or return null (possibly
+            '''Returns true if a Tables service is active in the grid.
+If this value is false, then all calls to newTable
+or openTable will either fail or return null (possibly
 blocking while waiting for a service to startup)'''
             pass
 
@@ -149,39 +149,39 @@ which can handle the given job.'''
         def end_acquireProcessor(self, _r):
             return _M_omero.grid.SharedResources._op_acquireProcessor.end(self, _r)
 
-        '''Registers a [omero::grid::Processor] for Storm notifications
+        '''Registers a omero.grid.Processor for Storm notifications
 so that other sessions can query whether or not a given
 processor would accept a given task.'''
         def addProcessor(self, proc, _ctx=None):
             return _M_omero.grid.SharedResources._op_addProcessor.invoke(self, ((proc, ), _ctx))
 
-        '''Registers a [omero::grid::Processor] for Storm notifications
+        '''Registers a omero.grid.Processor for Storm notifications
 so that other sessions can query whether or not a given
 processor would accept a given task.'''
         def begin_addProcessor(self, proc, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.SharedResources._op_addProcessor.begin(self, ((proc, ), _response, _ex, _sent, _ctx))
 
-        '''Registers a [omero::grid::Processor] for Storm notifications
+        '''Registers a omero.grid.Processor for Storm notifications
 so that other sessions can query whether or not a given
 processor would accept a given task.'''
         def end_addProcessor(self, _r):
             return _M_omero.grid.SharedResources._op_addProcessor.end(self, _r)
 
-        '''Unregisters a [omero::grid::Processor] from Storm notifications.
-If the processor was not already registered via [addProcessor]
-this is a no-op.'''
+        '''Unregisters a omero.grid.Processor from Storm
+notifications. If the processor was not already registered via
+addProcessor this is a no-op.'''
         def removeProcessor(self, proc, _ctx=None):
             return _M_omero.grid.SharedResources._op_removeProcessor.invoke(self, ((proc, ), _ctx))
 
-        '''Unregisters a [omero::grid::Processor] from Storm notifications.
-If the processor was not already registered via [addProcessor]
-this is a no-op.'''
+        '''Unregisters a omero.grid.Processor from Storm
+notifications. If the processor was not already registered via
+addProcessor this is a no-op.'''
         def begin_removeProcessor(self, proc, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.SharedResources._op_removeProcessor.begin(self, ((proc, ), _response, _ex, _sent, _ctx))
 
-        '''Unregisters a [omero::grid::Processor] from Storm notifications.
-If the processor was not already registered via [addProcessor]
-this is a no-op.'''
+        '''Unregisters a omero.grid.Processor from Storm
+notifications. If the processor was not already registered via
+addProcessor this is a no-op.'''
         def end_removeProcessor(self, _r):
             return _M_omero.grid.SharedResources._op_removeProcessor.end(self, _r)
 
@@ -215,23 +215,23 @@ all official scripts available.'''
         def end_getScriptRepository(self, _r):
             return _M_omero.grid.SharedResources._op_getScriptRepository.end(self, _r)
 
-        '''Returns true if a [Tables] service is active in the grid.
-If this value is false, then all calls to [newTable]
-or [openTable] will either fail or return null (possibly
+        '''Returns true if a Tables service is active in the grid.
+If this value is false, then all calls to newTable
+or openTable will either fail or return null (possibly
 blocking while waiting for a service to startup)'''
         def areTablesEnabled(self, _ctx=None):
             return _M_omero.grid.SharedResources._op_areTablesEnabled.invoke(self, ((), _ctx))
 
-        '''Returns true if a [Tables] service is active in the grid.
-If this value is false, then all calls to [newTable]
-or [openTable] will either fail or return null (possibly
+        '''Returns true if a Tables service is active in the grid.
+If this value is false, then all calls to newTable
+or openTable will either fail or return null (possibly
 blocking while waiting for a service to startup)'''
         def begin_areTablesEnabled(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.SharedResources._op_areTablesEnabled.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''Returns true if a [Tables] service is active in the grid.
-If this value is false, then all calls to [newTable]
-or [openTable] will either fail or return null (possibly
+        '''Returns true if a Tables service is active in the grid.
+If this value is false, then all calls to newTable
+or openTable will either fail or return null (possibly
 blocking while waiting for a service to startup)'''
         def end_areTablesEnabled(self, _r):
             return _M_omero.grid.SharedResources._op_areTablesEnabled.end(self, _r)

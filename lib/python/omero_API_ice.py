@@ -229,8 +229,9 @@ if 'ServiceFactory' not in _M_omero.api.__dict__:
         '''Starting point for all OMERO.blitz interaction.
 
  A ServiceFactory once acquired can be used to create any number
-of service proxies to the server. Most services implement [ServiceInterface]
-or its subinterface [StatefulServiceInterface].'''
+of service proxies to the server. Most services implement
+ServiceInterface or its subinterface
+StatefulServiceInterface.'''
         def __init__(self):
             if Ice.getType(self) == _M_omero.api.ServiceFactory:
                 raise RuntimeError('omero.api.ServiceFactory is an abstract class')
@@ -247,8 +248,8 @@ or its subinterface [StatefulServiceInterface].'''
 
         def getSecurityContexts(self, current=None):
             '''Provides a list of all valid security contexts for this session.
-Each of the returned [omero::model::IObject] instances can be
-passed to setSecurityContext.'''
+Each of the returned omero.model.IObject instances can
+be passed to setSecurityContext.'''
             pass
 
         def setSecurityContext(self, obj, current=None):
@@ -260,20 +261,23 @@ can be made.
 
  Current valid values for security context:
 
-[omero::model::ExperimenterGroup] - logs into a specific group
-[omero::model::Share] - uses IShare to activate a share
+omero.model.ExperimenterGroup - logs into a
+specific group
+omero.model.Share - uses IShare to activate a
+share
  
 
  Passing an unloaded version of either object type will change
 the way the current session operates. Note: only objects which
-are returned by the [getSecurityContexts] method are considered
-valid. Any other instance will cause an exception to be thrown. 
+are returned by the getSecurityContexts method are
+considered valid. Any other instance will cause an exception to
+be thrown. 
 
 Example usage in Python:
 
 sf = client.createSession()
 objs = sf.getSecurityContexts()
-old = sf.setSecurityContext(objs[-1])'''
+old = sf.setSecurityContext(objs\[-1])'''
             pass
 
         def setSecurityPassword(self, password, current=None):
@@ -355,8 +359,9 @@ See methods that mention "HasPassword".'''
             pass
 
         def sharedResources(self, current=None):
-            '''Returns a reference to a back-end manager. The [omero::grid::SharedResources]
-service provides look ups for various facilities offered by OMERO:
+            '''Returns a reference to a back-end manager. The
+omero.grid.SharedResources service provides look ups
+for various facilities offered by OMERO:
 
 OMERO.scripts
 OMERO.tables
@@ -454,20 +459,20 @@ throw an exception.'''
     class ServiceFactoryPrx(_M_omero.cmd.SessionPrx):
 
         '''Provides a list of all valid security contexts for this session.
-Each of the returned [omero::model::IObject] instances can be
-passed to setSecurityContext.'''
+Each of the returned omero.model.IObject instances can
+be passed to setSecurityContext.'''
         def getSecurityContexts(self, _ctx=None):
             return _M_omero.api.ServiceFactory._op_getSecurityContexts.invoke(self, ((), _ctx))
 
         '''Provides a list of all valid security contexts for this session.
-Each of the returned [omero::model::IObject] instances can be
-passed to setSecurityContext.'''
+Each of the returned omero.model.IObject instances can
+be passed to setSecurityContext.'''
         def begin_getSecurityContexts(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.ServiceFactory._op_getSecurityContexts.begin(self, ((), _response, _ex, _sent, _ctx))
 
         '''Provides a list of all valid security contexts for this session.
-Each of the returned [omero::model::IObject] instances can be
-passed to setSecurityContext.'''
+Each of the returned omero.model.IObject instances can
+be passed to setSecurityContext.'''
         def end_getSecurityContexts(self, _r):
             return _M_omero.api.ServiceFactory._op_getSecurityContexts.end(self, _r)
 
@@ -479,20 +484,23 @@ can be made.
 
  Current valid values for security context:
 
-[omero::model::ExperimenterGroup] - logs into a specific group
-[omero::model::Share] - uses IShare to activate a share
+omero.model.ExperimenterGroup - logs into a
+specific group
+omero.model.Share - uses IShare to activate a
+share
  
 
  Passing an unloaded version of either object type will change
 the way the current session operates. Note: only objects which
-are returned by the [getSecurityContexts] method are considered
-valid. Any other instance will cause an exception to be thrown. 
+are returned by the getSecurityContexts method are
+considered valid. Any other instance will cause an exception to
+be thrown. 
 
 Example usage in Python:
 
 sf = client.createSession()
 objs = sf.getSecurityContexts()
-old = sf.setSecurityContext(objs[-1])'''
+old = sf.setSecurityContext(objs\[-1])'''
         def setSecurityContext(self, obj, _ctx=None):
             return _M_omero.api.ServiceFactory._op_setSecurityContext.invoke(self, ((obj, ), _ctx))
 
@@ -504,20 +512,23 @@ can be made.
 
  Current valid values for security context:
 
-[omero::model::ExperimenterGroup] - logs into a specific group
-[omero::model::Share] - uses IShare to activate a share
+omero.model.ExperimenterGroup - logs into a
+specific group
+omero.model.Share - uses IShare to activate a
+share
  
 
  Passing an unloaded version of either object type will change
 the way the current session operates. Note: only objects which
-are returned by the [getSecurityContexts] method are considered
-valid. Any other instance will cause an exception to be thrown. 
+are returned by the getSecurityContexts method are
+considered valid. Any other instance will cause an exception to
+be thrown. 
 
 Example usage in Python:
 
 sf = client.createSession()
 objs = sf.getSecurityContexts()
-old = sf.setSecurityContext(objs[-1])'''
+old = sf.setSecurityContext(objs\[-1])'''
         def begin_setSecurityContext(self, obj, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.ServiceFactory._op_setSecurityContext.begin(self, ((obj, ), _response, _ex, _sent, _ctx))
 
@@ -529,20 +540,23 @@ can be made.
 
  Current valid values for security context:
 
-[omero::model::ExperimenterGroup] - logs into a specific group
-[omero::model::Share] - uses IShare to activate a share
+omero.model.ExperimenterGroup - logs into a
+specific group
+omero.model.Share - uses IShare to activate a
+share
  
 
  Passing an unloaded version of either object type will change
 the way the current session operates. Note: only objects which
-are returned by the [getSecurityContexts] method are considered
-valid. Any other instance will cause an exception to be thrown. 
+are returned by the getSecurityContexts method are
+considered valid. Any other instance will cause an exception to
+be thrown. 
 
 Example usage in Python:
 
 sf = client.createSession()
 objs = sf.getSecurityContexts()
-old = sf.setSecurityContext(objs[-1])'''
+old = sf.setSecurityContext(objs\[-1])'''
         def end_setSecurityContext(self, _r):
             return _M_omero.api.ServiceFactory._op_setSecurityContext.end(self, _r)
 
@@ -780,8 +794,9 @@ See methods that mention "HasPassword".'''
         def end_createThumbnailStore(self, _r):
             return _M_omero.api.ServiceFactory._op_createThumbnailStore.end(self, _r)
 
-        '''Returns a reference to a back-end manager. The [omero::grid::SharedResources]
-service provides look ups for various facilities offered by OMERO:
+        '''Returns a reference to a back-end manager. The
+omero.grid.SharedResources service provides look ups
+for various facilities offered by OMERO:
 
 OMERO.scripts
 OMERO.tables
@@ -790,8 +805,9 @@ These facilities may or may not be available on first request.'''
         def sharedResources(self, _ctx=None):
             return _M_omero.api.ServiceFactory._op_sharedResources.invoke(self, ((), _ctx))
 
-        '''Returns a reference to a back-end manager. The [omero::grid::SharedResources]
-service provides look ups for various facilities offered by OMERO:
+        '''Returns a reference to a back-end manager. The
+omero.grid.SharedResources service provides look ups
+for various facilities offered by OMERO:
 
 OMERO.scripts
 OMERO.tables
@@ -800,8 +816,9 @@ These facilities may or may not be available on first request.'''
         def begin_sharedResources(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.ServiceFactory._op_sharedResources.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''Returns a reference to a back-end manager. The [omero::grid::SharedResources]
-service provides look ups for various facilities offered by OMERO:
+        '''Returns a reference to a back-end manager. The
+omero.grid.SharedResources service provides look ups
+for various facilities offered by OMERO:
 
 OMERO.scripts
 OMERO.tables

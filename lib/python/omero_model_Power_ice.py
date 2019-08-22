@@ -40,7 +40,7 @@ if 'Power' not in _M_omero.model.__dict__:
     _M_omero.model.Power = Ice.createTempClass()
     class Power(Ice.Object):
         '''Unit of Power which is used through the model. This is not
-an [omero::model::IObject] implementation and as such does
+an omero.model.IObject implementation and as such does
 not have an ID value. Instead, the entire object is embedded
 into the containing class, so that the value and unit rows
 can be found on the table itself (e.g. lightSource.power
@@ -63,15 +63,16 @@ and lightSource.powerUnit).'''
 
         def getValue(self, current=None):
             '''Actual value for this unit-based field. The interpretation of
-the value is only possible along with the [omero::model::enums::UnitsPower]
-enum.'''
+the value is only possible along with the
+omero.model.enums.UnitsPower enum.'''
             pass
 
         def setValue(self, value, current=None):
             pass
 
         def getUnit(self, current=None):
-            '''[omero::model::enums::UnitsPower] instance which is an [omero::model::IObject]
+            '''omero.model.enums.UnitsPower instance which is an
+omero.model.IObject
 meaning that its ID is sufficient for identifying equality.'''
             pass
 
@@ -95,20 +96,20 @@ value for display.'''
     class PowerPrx(Ice.ObjectPrx):
 
         '''Actual value for this unit-based field. The interpretation of
-the value is only possible along with the [omero::model::enums::UnitsPower]
-enum.'''
+the value is only possible along with the
+omero.model.enums.UnitsPower enum.'''
         def getValue(self, _ctx=None):
             return _M_omero.model.Power._op_getValue.invoke(self, ((), _ctx))
 
         '''Actual value for this unit-based field. The interpretation of
-the value is only possible along with the [omero::model::enums::UnitsPower]
-enum.'''
+the value is only possible along with the
+omero.model.enums.UnitsPower enum.'''
         def begin_getValue(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Power._op_getValue.begin(self, ((), _response, _ex, _sent, _ctx))
 
         '''Actual value for this unit-based field. The interpretation of
-the value is only possible along with the [omero::model::enums::UnitsPower]
-enum.'''
+the value is only possible along with the
+omero.model.enums.UnitsPower enum.'''
         def end_getValue(self, _r):
             return _M_omero.model.Power._op_getValue.end(self, _r)
 
@@ -121,17 +122,20 @@ enum.'''
         def end_setValue(self, _r):
             return _M_omero.model.Power._op_setValue.end(self, _r)
 
-        '''[omero::model::enums::UnitsPower] instance which is an [omero::model::IObject]
+        '''omero.model.enums.UnitsPower instance which is an
+omero.model.IObject
 meaning that its ID is sufficient for identifying equality.'''
         def getUnit(self, _ctx=None):
             return _M_omero.model.Power._op_getUnit.invoke(self, ((), _ctx))
 
-        '''[omero::model::enums::UnitsPower] instance which is an [omero::model::IObject]
+        '''omero.model.enums.UnitsPower instance which is an
+omero.model.IObject
 meaning that its ID is sufficient for identifying equality.'''
         def begin_getUnit(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.model.Power._op_getUnit.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''[omero::model::enums::UnitsPower] instance which is an [omero::model::IObject]
+        '''omero.model.enums.UnitsPower instance which is an
+omero.model.IObject
 meaning that its ID is sufficient for identifying equality.'''
         def end_getUnit(self, _r):
             return _M_omero.model.Power._op_getUnit.end(self, _r)

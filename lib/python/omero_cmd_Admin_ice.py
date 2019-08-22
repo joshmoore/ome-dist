@@ -106,9 +106,9 @@ sends new password to the given user'''
 if 'ResetPasswordResponse' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.ResetPasswordResponse = Ice.createTempClass()
     class ResetPasswordResponse(_M_omero.cmd.Response):
-        '''Successful response for [ResetPasswordRequest].
+        '''Successful response for ResetPasswordRequest.
 If no valid user with matching email is found,
-an [ERR] will be returned.'''
+an ERR will be returned.'''
         def __init__(self):
             _M_omero.cmd.Response.__init__(self)
 
@@ -159,7 +159,7 @@ it will be ignored. Otherwise, the long value will be
 interpreted as the the millisecond value which should
 be set. Non-administrators will not be able to reduce
 current values. No special response is returned, but
-an [omero::cmd::OK] counts as success.'''
+an omero.cmd.OK counts as success.'''
         def __init__(self, session='', timeToLive=None, timeToIdle=None):
             _M_omero.cmd.Request.__init__(self)
             self.session = session
@@ -213,7 +213,7 @@ if 'CurrentSessionsRequest' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.CurrentSessionsRequest = Ice.createTempClass()
     class CurrentSessionsRequest(_M_omero.cmd.Request):
         '''Argument-less request that will produce a
-[CurrentSessionsResponse] if no [omero::cmd::ERR] occurs.'''
+CurrentSessionsResponse if no omero.cmd.ERR occurs.'''
         def __init__(self):
             _M_omero.cmd.Request.__init__(self)
 
@@ -257,14 +257,15 @@ if 'CurrentSessionsRequest' not in _M_omero.cmd.__dict__:
 if 'CurrentSessionsResponse' not in _M_omero.cmd.__dict__:
     _M_omero.cmd.CurrentSessionsResponse = Ice.createTempClass()
     class CurrentSessionsResponse(_M_omero.cmd.Response):
-        '''Return value from [omero::cmd::CurrentSessionsRequest] consisting of
-two ordered lists of matching length. The sessions field
-contains a list of the OMERO [omero::model::Session] objects
-that are currently active *after* all timeouts have been applied.
+        '''Return value from omero.cmd.CurrentSessionsRequest
+consisting of two ordered lists of matching length. The sessions
+field contains a list of the OMERO omero.model.Session
+objects that are currently active *after* all timeouts have been
+applied.
 This is the value that would be returned by
-[omero::api::ISession::getSession] when joined to that session.
+omero.api.ISession#getSession when joined to that session.
 Similarly, the contexts field contains the value that would be
-returned by a call to [omero::api::IAdmin::getEventContext].
+returned by a call to omero.api.IAdmin#getEventContext.
 For non-administrators, most values for all sessions other than
 those belonging to that user will be nulled.'''
         def __init__(self, sessions=None, contexts=None, data=None):

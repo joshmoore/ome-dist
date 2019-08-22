@@ -77,7 +77,7 @@ long length = e.generateTiff();
 // Exporter instances.
 
 long read = 0
-byte[] buf;
+byte\[] buf;
 while (true) {
 buf = e.read(read, 1000000);
 // Store to file locally here

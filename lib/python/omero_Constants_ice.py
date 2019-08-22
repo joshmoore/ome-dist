@@ -149,7 +149,7 @@ __name__ = 'omero.constants'
 _M_omero.constants.data = Ice.openModule('omero.constants.data')
 __name__ = 'omero.constants.data'
 _M_omero.constants.data.__doc__ = '''Constants used for field defaults and similar
-in the [omero::model::] classes.'''
+in the omero.model classes.'''
 
 _M_omero.constants.data.NONAMESET = "NO_NAME_SET"
 
@@ -160,7 +160,7 @@ __name__ = 'omero.constants'
 # Start of module omero.constants.metadata
 _M_omero.constants.metadata = Ice.openModule('omero.constants.metadata')
 __name__ = 'omero.constants.metadata'
-_M_omero.constants.metadata.__doc__ = '''Namespaces for the [omero::api::IMetadata] interface.'''
+_M_omero.constants.metadata.__doc__ = '''Namespaces for the omero.api.IMetadata interface.'''
 
 _M_omero.constants.metadata.NSINSIGHTTAGSET = "openmicroscopy.org/omero/insight/tagset"
 

@@ -48,7 +48,7 @@ __name__ = 'omero'
 if 'Internal' not in _M_omero.__dict__:
     _M_omero.Internal = Ice.createTempClass()
     class Internal(Ice.Object):
-        '''Base class similar to [omero::model::IObject] but for non-model-objects.'''
+        '''Base class similar to omero.model.IObject but for non-model-objects.'''
         def __init__(self):
             pass
 
@@ -92,7 +92,7 @@ if 'Internal' not in _M_omero.__dict__:
 if 'RInternal' not in _M_omero.__dict__:
     _M_omero.RInternal = Ice.createTempClass()
     class RInternal(_M_omero.RType):
-        '''Base type for [RType]s whose contents will not be parsed by
+        '''Base type for RTypes whose contents will not be parsed by
 the server. This allows Blitz-specific types to be safely
 passed in as the inputs/outputs of scripts.'''
         def __init__(self, _val=None):
@@ -161,7 +161,7 @@ if 'Plane' not in _M_omero.__dict__:
     _M_omero.Plane = Ice.createTempClass()
     class Plane(_M_omero.Internal):
         '''Sequences cannot subclass other types, so the Plane
-class extends [Internal] and wraps a [Bytes2D] instance.'''
+class extends Internal and wraps a Bytes2D instance.'''
         def __init__(self, data=None):
             _M_omero.Internal.__init__(self)
             self.data = data
@@ -325,7 +325,7 @@ For advanced setters not available on the Type classes (like omero.script.String
 use the getter type.param() and then set values directly.
 
 a = omero.scripts.String("a")
-a.param().values = ["hi", "bye"]'''
+a.param().values = \["hi", "bye"]'''
         def __init__(self, description='', optional=False, useDefault=False, prototype=None, min=None, max=None, values=None, grouping='', namespaces=None):
             self.description = description
             self.optional = optional
@@ -403,7 +403,7 @@ c = omero.scripts.client(name="my algorithm", version="0.0.1")
 Alternatively, a JobParams instance can be passed into the constructor:
 
 params = omero.grid.JobParams()
-params.authors = ["Andy", "Kathy"]
+params.authors = \["Andy", "Kathy"]
 params.version = "0.0.1"
 params.description = """
 Clever way to count to 5
@@ -847,10 +847,10 @@ throw an exception so that it can be called oneway.'''
 if 'ScriptProcess' not in _M_omero.grid.__dict__:
     _M_omero.grid.ScriptProcess = Ice.createTempClass()
     class ScriptProcess(_M_omero.grid.Process):
-        '''Extension of the [Process] interface which is returned by [IScript]
-when an [omero::model::ScriptJob] is launched. It is critical that
-instances of [ScriptProcess] are closed on completetion. See the close
-method for more information.'''
+        '''Extension of the Process interface which is returned by
+IScript when an omero.model.ScriptJob is launched.
+It is critical that instances of (@link ScriptProcess} are closed
+on completetion. See the close method for more information.'''
         def __init__(self):
             if Ice.getType(self) == _M_omero.grid.ScriptProcess:
                 raise RuntimeError('omero.grid.ScriptProcess is an abstract class')
@@ -874,12 +874,12 @@ may be of interest.'''
         def getResults(self, waitSecs, current=None):
             '''Returns the results immediately if present. If the process
 is not yet finished, waits "waitSecs" before throwing an
-[omero.ApiUsageException]. If poll has returned a non-null
+omero.ApiUsageException. If poll has returned a non-null
 value, then this method will always return a non-null value.'''
             pass
 
         def setMessage(self, message, current=None):
-            '''Sets the message on the [omero::model::ScriptJob] object.
+            '''Sets the message on the omero.model.ScriptJob object.
 This value MAY be overwritten by the server if the script
 fails.'''
             pass
@@ -888,7 +888,7 @@ fails.'''
             '''Closes this process and frees server resources attached to it.
 If the detach argument is True, then the background process
 will continue executing. The user can reconnect to the process
-via the [IScript] service.
+via the IScript service.
 
 If the detach argument is False, then the background process
 will be shutdown immediately, and all intermediate results
@@ -923,38 +923,38 @@ may be of interest.'''
 
         '''Returns the results immediately if present. If the process
 is not yet finished, waits "waitSecs" before throwing an
-[omero.ApiUsageException]. If poll has returned a non-null
+omero.ApiUsageException. If poll has returned a non-null
 value, then this method will always return a non-null value.'''
         def getResults(self, waitSecs, _ctx=None):
             return _M_omero.grid.ScriptProcess._op_getResults.invoke(self, ((waitSecs, ), _ctx))
 
         '''Returns the results immediately if present. If the process
 is not yet finished, waits "waitSecs" before throwing an
-[omero.ApiUsageException]. If poll has returned a non-null
+omero.ApiUsageException. If poll has returned a non-null
 value, then this method will always return a non-null value.'''
         def begin_getResults(self, waitSecs, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ScriptProcess._op_getResults.begin(self, ((waitSecs, ), _response, _ex, _sent, _ctx))
 
         '''Returns the results immediately if present. If the process
 is not yet finished, waits "waitSecs" before throwing an
-[omero.ApiUsageException]. If poll has returned a non-null
+omero.ApiUsageException. If poll has returned a non-null
 value, then this method will always return a non-null value.'''
         def end_getResults(self, _r):
             return _M_omero.grid.ScriptProcess._op_getResults.end(self, _r)
 
-        '''Sets the message on the [omero::model::ScriptJob] object.
+        '''Sets the message on the omero.model.ScriptJob object.
 This value MAY be overwritten by the server if the script
 fails.'''
         def setMessage(self, message, _ctx=None):
             return _M_omero.grid.ScriptProcess._op_setMessage.invoke(self, ((message, ), _ctx))
 
-        '''Sets the message on the [omero::model::ScriptJob] object.
+        '''Sets the message on the omero.model.ScriptJob object.
 This value MAY be overwritten by the server if the script
 fails.'''
         def begin_setMessage(self, message, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.ScriptProcess._op_setMessage.begin(self, ((message, ), _response, _ex, _sent, _ctx))
 
-        '''Sets the message on the [omero::model::ScriptJob] object.
+        '''Sets the message on the omero.model.ScriptJob object.
 This value MAY be overwritten by the server if the script
 fails.'''
         def end_setMessage(self, _r):
@@ -963,7 +963,7 @@ fails.'''
         '''Closes this process and frees server resources attached to it.
 If the detach argument is True, then the background process
 will continue executing. The user can reconnect to the process
-via the [IScript] service.
+via the IScript service.
 
 If the detach argument is False, then the background process
 will be shutdown immediately, and all intermediate results
@@ -974,7 +974,7 @@ will be shutdown immediately, and all intermediate results
         '''Closes this process and frees server resources attached to it.
 If the detach argument is True, then the background process
 will continue executing. The user can reconnect to the process
-via the [IScript] service.
+via the IScript service.
 
 If the detach argument is False, then the background process
 will be shutdown immediately, and all intermediate results
@@ -985,7 +985,7 @@ will be shutdown immediately, and all intermediate results
         '''Closes this process and frees server resources attached to it.
 If the detach argument is True, then the background process
 will continue executing. The user can reconnect to the process
-via the [IScript] service.
+via the IScript service.
 
 If the detach argument is False, then the background process
 will be shutdown immediately, and all intermediate results
@@ -1024,7 +1024,8 @@ if 'Processor' not in _M_omero.grid.__dict__:
 if 'ProcessorCallback' not in _M_omero.grid.__dict__:
     _M_omero.grid.ProcessorCallback = Ice.createTempClass()
     class ProcessorCallback(Ice.Object):
-        '''Internal callback interface which is passed to the [Processor::accepts] method
+        '''Internal callback interface which is passed to the
+Processor#accepts method
 to query whether or not a processor will accept a certain operation.'''
         def __init__(self):
             if Ice.getType(self) == _M_omero.grid.ProcessorCallback:
@@ -1131,30 +1132,32 @@ environment via the session id.'''
         ice_staticId = staticmethod(ice_staticId)
 
         def willAccept(self, userContext, groupContext, scriptContext, cb, current=None):
-            '''Called by [omero::grid::SharedResources] to find a suitable
-target for [omero::grid::SharedResources::acquireProcessor].
+            '''Called by omero.grid.SharedResources to find a suitable
+target for omero.grid.SharedResources#acquireProcessor.
 New processor instances are added to the checklist by using
-[omero::grid::SharedResources::addProcessor]. All processors
+omero.grid.SharedResources#addProcessor. All processors
 must respond with their session uuid in order to authorize
 the action.'''
             pass
 
         def requestRunning(self, cb, current=None):
             '''Used by servers to find out what jobs are still active.
-Response will be sent to [ProcessorCallback::responseRunning]'''
+Response will be sent to
+ProcessorCallback#responseRunning'''
             pass
 
         def parseJob(self, session, jobObject, current=None):
             '''Parses a job and returns metadata definition required
 for properly submitting the job. This object will be
-cached by the server, and passed back into [processJob]'''
+cached by the server, and passed back into processJob'''
             pass
 
         def processJob(self, session, params, jobObject, current=None):
             '''Starts a process based on the given job
 If this processor cannot handle the given job, a
-null process will be returned. The [params] argument
-was created by a previously call to [parseJob].'''
+Arguments:
+null process will be returned. The {    params} argument
+was created by a previously call to parseJob.'''
             pass
 
         def __str__(self):
@@ -1165,111 +1168,119 @@ was created by a previously call to [parseJob].'''
     _M_omero.grid.ProcessorPrx = Ice.createTempClass()
     class ProcessorPrx(Ice.ObjectPrx):
 
-        '''Called by [omero::grid::SharedResources] to find a suitable
-target for [omero::grid::SharedResources::acquireProcessor].
+        '''Called by omero.grid.SharedResources to find a suitable
+target for omero.grid.SharedResources#acquireProcessor.
 New processor instances are added to the checklist by using
-[omero::grid::SharedResources::addProcessor]. All processors
+omero.grid.SharedResources#addProcessor. All processors
 must respond with their session uuid in order to authorize
 the action.'''
         def willAccept(self, userContext, groupContext, scriptContext, cb, _ctx=None):
             return _M_omero.grid.Processor._op_willAccept.invoke(self, ((userContext, groupContext, scriptContext, cb), _ctx))
 
-        '''Called by [omero::grid::SharedResources] to find a suitable
-target for [omero::grid::SharedResources::acquireProcessor].
+        '''Called by omero.grid.SharedResources to find a suitable
+target for omero.grid.SharedResources#acquireProcessor.
 New processor instances are added to the checklist by using
-[omero::grid::SharedResources::addProcessor]. All processors
+omero.grid.SharedResources#addProcessor. All processors
 must respond with their session uuid in order to authorize
 the action.'''
         def begin_willAccept(self, userContext, groupContext, scriptContext, cb, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Processor._op_willAccept.begin(self, ((userContext, groupContext, scriptContext, cb), _response, _ex, _sent, _ctx))
 
-        '''Called by [omero::grid::SharedResources] to find a suitable
-target for [omero::grid::SharedResources::acquireProcessor].
+        '''Called by omero.grid.SharedResources to find a suitable
+target for omero.grid.SharedResources#acquireProcessor.
 New processor instances are added to the checklist by using
-[omero::grid::SharedResources::addProcessor]. All processors
+omero.grid.SharedResources#addProcessor. All processors
 must respond with their session uuid in order to authorize
 the action.'''
         def end_willAccept(self, _r):
             return _M_omero.grid.Processor._op_willAccept.end(self, _r)
 
-        '''Called by [omero::grid::SharedResources] to find a suitable
-target for [omero::grid::SharedResources::acquireProcessor].
+        '''Called by omero.grid.SharedResources to find a suitable
+target for omero.grid.SharedResources#acquireProcessor.
 New processor instances are added to the checklist by using
-[omero::grid::SharedResources::addProcessor]. All processors
+omero.grid.SharedResources#addProcessor. All processors
 must respond with their session uuid in order to authorize
 the action.'''
         def willAccept_async(self, _cb, userContext, groupContext, scriptContext, cb, _ctx=None):
             return _M_omero.grid.Processor._op_willAccept.invokeAsync(self, (_cb, (userContext, groupContext, scriptContext, cb), _ctx))
 
         '''Used by servers to find out what jobs are still active.
-Response will be sent to [ProcessorCallback::responseRunning]'''
+Response will be sent to
+ProcessorCallback#responseRunning'''
         def requestRunning(self, cb, _ctx=None):
             return _M_omero.grid.Processor._op_requestRunning.invoke(self, ((cb, ), _ctx))
 
         '''Used by servers to find out what jobs are still active.
-Response will be sent to [ProcessorCallback::responseRunning]'''
+Response will be sent to
+ProcessorCallback#responseRunning'''
         def begin_requestRunning(self, cb, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Processor._op_requestRunning.begin(self, ((cb, ), _response, _ex, _sent, _ctx))
 
         '''Used by servers to find out what jobs are still active.
-Response will be sent to [ProcessorCallback::responseRunning]'''
+Response will be sent to
+ProcessorCallback#responseRunning'''
         def end_requestRunning(self, _r):
             return _M_omero.grid.Processor._op_requestRunning.end(self, _r)
 
         '''Used by servers to find out what jobs are still active.
-Response will be sent to [ProcessorCallback::responseRunning]'''
+Response will be sent to
+ProcessorCallback#responseRunning'''
         def requestRunning_async(self, _cb, cb, _ctx=None):
             return _M_omero.grid.Processor._op_requestRunning.invokeAsync(self, (_cb, (cb, ), _ctx))
 
         '''Parses a job and returns metadata definition required
 for properly submitting the job. This object will be
-cached by the server, and passed back into [processJob]'''
+cached by the server, and passed back into processJob'''
         def parseJob(self, session, jobObject, _ctx=None):
             return _M_omero.grid.Processor._op_parseJob.invoke(self, ((session, jobObject), _ctx))
 
         '''Parses a job and returns metadata definition required
 for properly submitting the job. This object will be
-cached by the server, and passed back into [processJob]'''
+cached by the server, and passed back into processJob'''
         def begin_parseJob(self, session, jobObject, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Processor._op_parseJob.begin(self, ((session, jobObject), _response, _ex, _sent, _ctx))
 
         '''Parses a job and returns metadata definition required
 for properly submitting the job. This object will be
-cached by the server, and passed back into [processJob]'''
+cached by the server, and passed back into processJob'''
         def end_parseJob(self, _r):
             return _M_omero.grid.Processor._op_parseJob.end(self, _r)
 
         '''Parses a job and returns metadata definition required
 for properly submitting the job. This object will be
-cached by the server, and passed back into [processJob]'''
+cached by the server, and passed back into processJob'''
         def parseJob_async(self, _cb, session, jobObject, _ctx=None):
             return _M_omero.grid.Processor._op_parseJob.invokeAsync(self, (_cb, (session, jobObject), _ctx))
 
         '''Starts a process based on the given job
 If this processor cannot handle the given job, a
-null process will be returned. The [params] argument
-was created by a previously call to [parseJob].'''
+Arguments:
+null process will be returned. The {    params} argument
+was created by a previously call to parseJob.'''
         def processJob(self, session, params, jobObject, _ctx=None):
             return _M_omero.grid.Processor._op_processJob.invoke(self, ((session, params, jobObject), _ctx))
 
         '''Starts a process based on the given job
 If this processor cannot handle the given job, a
-null process will be returned. The [params] argument
-was created by a previously call to [parseJob].'''
+Arguments:
+null process will be returned. The {    params} argument
+was created by a previously call to parseJob.'''
         def begin_processJob(self, session, params, jobObject, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.Processor._op_processJob.begin(self, ((session, params, jobObject), _response, _ex, _sent, _ctx))
 
         '''Starts a process based on the given job
 If this processor cannot handle the given job, a
-null process will be returned. The [params] argument
-was created by a previously call to [parseJob].'''
+Arguments:
+null process will be returned. The {    params} argument
+was created by a previously call to parseJob.'''
         def end_processJob(self, _r):
             return _M_omero.grid.Processor._op_processJob.end(self, _r)
 
         '''Starts a process based on the given job
 If this processor cannot handle the given job, a
-null process will be returned. The [params] argument
-was created by a previously call to [parseJob].'''
+Arguments:
+null process will be returned. The {    params} argument
+was created by a previously call to parseJob.'''
         def processJob_async(self, _cb, session, params, jobObject, _ctx=None):
             return _M_omero.grid.Processor._op_processJob.invokeAsync(self, (_cb, (session, params, jobObject), _ctx))
 
@@ -1355,18 +1366,19 @@ same name.'''
 
         def setDetach(self, detach, current=None):
             '''Sets whether or not cancel will be called on the current
-[Process] on stop. If detach is true, then the [Process]
-will continue running. Otherwise, Process.cancel() willl
-be called, before prepairing for another run.
+Process on stop. If detach is true, then the
+Process will continue running. Otherwise,
+Process#cancel will be called, before preparing for
+another run.
 
 false by default'''
             pass
 
         def stop(self, current=None):
-            '''Clears the current execution of [omero::model::Job] from
+            '''Clears the current execution of omero.model.Job from
 the processor to prepare for another execution.
 
-cancel() will be called on the current [Process]
+cancel() will be called on the current Process
 if detach is set to false.'''
             pass
 
@@ -1519,69 +1531,73 @@ same name.'''
             return _M_omero.grid.InteractiveProcessor._op_getResults.invokeAsync(self, (_cb, (proc, ), _ctx))
 
         '''Sets whether or not cancel will be called on the current
-[Process] on stop. If detach is true, then the [Process]
-will continue running. Otherwise, Process.cancel() willl
-be called, before prepairing for another run.
+Process on stop. If detach is true, then the
+Process will continue running. Otherwise,
+Process#cancel will be called, before preparing for
+another run.
 
 false by default'''
         def setDetach(self, detach, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_setDetach.invoke(self, ((detach, ), _ctx))
 
         '''Sets whether or not cancel will be called on the current
-[Process] on stop. If detach is true, then the [Process]
-will continue running. Otherwise, Process.cancel() willl
-be called, before prepairing for another run.
+Process on stop. If detach is true, then the
+Process will continue running. Otherwise,
+Process#cancel will be called, before preparing for
+another run.
 
 false by default'''
         def begin_setDetach(self, detach, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_setDetach.begin(self, ((detach, ), _response, _ex, _sent, _ctx))
 
         '''Sets whether or not cancel will be called on the current
-[Process] on stop. If detach is true, then the [Process]
-will continue running. Otherwise, Process.cancel() willl
-be called, before prepairing for another run.
+Process on stop. If detach is true, then the
+Process will continue running. Otherwise,
+Process#cancel will be called, before preparing for
+another run.
 
 false by default'''
         def end_setDetach(self, _r):
             return _M_omero.grid.InteractiveProcessor._op_setDetach.end(self, _r)
 
         '''Sets whether or not cancel will be called on the current
-[Process] on stop. If detach is true, then the [Process]
-will continue running. Otherwise, Process.cancel() willl
-be called, before prepairing for another run.
+Process on stop. If detach is true, then the
+Process will continue running. Otherwise,
+Process#cancel will be called, before preparing for
+another run.
 
 false by default'''
         def setDetach_async(self, _cb, detach, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_setDetach.invokeAsync(self, (_cb, (detach, ), _ctx))
 
-        '''Clears the current execution of [omero::model::Job] from
+        '''Clears the current execution of omero.model.Job from
 the processor to prepare for another execution.
 
-cancel() will be called on the current [Process]
+cancel() will be called on the current Process
 if detach is set to false.'''
         def stop(self, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_stop.invoke(self, ((), _ctx))
 
-        '''Clears the current execution of [omero::model::Job] from
+        '''Clears the current execution of omero.model.Job from
 the processor to prepare for another execution.
 
-cancel() will be called on the current [Process]
+cancel() will be called on the current Process
 if detach is set to false.'''
         def begin_stop(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_stop.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''Clears the current execution of [omero::model::Job] from
+        '''Clears the current execution of omero.model.Job from
 the processor to prepare for another execution.
 
-cancel() will be called on the current [Process]
+cancel() will be called on the current Process
 if detach is set to false.'''
         def end_stop(self, _r):
             return _M_omero.grid.InteractiveProcessor._op_stop.end(self, _r)
 
-        '''Clears the current execution of [omero::model::Job] from
+        '''Clears the current execution of omero.model.Job from
 the processor to prepare for another execution.
 
-cancel() will be called on the current [Process]
+cancel() will be called on the current Process
 if detach is set to false.'''
         def stop_async(self, _cb, _ctx=None):
             return _M_omero.grid.InteractiveProcessor._op_stop.invokeAsync(self, (_cb, (), _ctx))

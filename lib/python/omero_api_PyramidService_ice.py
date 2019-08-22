@@ -133,9 +133,9 @@ pixels pyramid.'''
             pass
 
         def getResolutionDescriptions_async(self, _cb, current=None):
-            '''Retrives a more complete definition of the resolution
+            '''Retrieves a more complete definition of the resolution
 level in question. The size of this array will be of
-length [getResolutionLevels].'''
+length getResolutionLevels.'''
             pass
 
         def getResolutionLevel_async(self, _cb, current=None):
@@ -235,27 +235,27 @@ pixels pyramid.'''
         def getResolutionLevels_async(self, _cb, _ctx=None):
             return _M_omero.api.PyramidService._op_getResolutionLevels.invokeAsync(self, (_cb, (), _ctx))
 
-        '''Retrives a more complete definition of the resolution
+        '''Retrieves a more complete definition of the resolution
 level in question. The size of this array will be of
-length [getResolutionLevels].'''
+length getResolutionLevels.'''
         def getResolutionDescriptions(self, _ctx=None):
             return _M_omero.api.PyramidService._op_getResolutionDescriptions.invoke(self, ((), _ctx))
 
-        '''Retrives a more complete definition of the resolution
+        '''Retrieves a more complete definition of the resolution
 level in question. The size of this array will be of
-length [getResolutionLevels].'''
+length getResolutionLevels.'''
         def begin_getResolutionDescriptions(self, _response=None, _ex=None, _sent=None, _ctx=None):
             return _M_omero.api.PyramidService._op_getResolutionDescriptions.begin(self, ((), _response, _ex, _sent, _ctx))
 
-        '''Retrives a more complete definition of the resolution
+        '''Retrieves a more complete definition of the resolution
 level in question. The size of this array will be of
-length [getResolutionLevels].'''
+length getResolutionLevels.'''
         def end_getResolutionDescriptions(self, _r):
             return _M_omero.api.PyramidService._op_getResolutionDescriptions.end(self, _r)
 
-        '''Retrives a more complete definition of the resolution
+        '''Retrieves a more complete definition of the resolution
 level in question. The size of this array will be of
-length [getResolutionLevels].'''
+length getResolutionLevels.'''
         def getResolutionDescriptions_async(self, _cb, _ctx=None):
             return _M_omero.api.PyramidService._op_getResolutionDescriptions.invokeAsync(self, (_cb, (), _ctx))
 
