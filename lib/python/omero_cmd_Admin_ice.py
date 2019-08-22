@@ -57,6 +57,7 @@ if 'ResetPasswordRequest' not in _M_omero.cmd.__dict__:
     class ResetPasswordRequest(_M_omero.cmd.Request):
         """
         Requests a reset password for the given user.
+        The user must not be an administrator.
         examples:
         - omero.cmd.ResetPasswordRequest(omename, email)
         sends new password to the given user
